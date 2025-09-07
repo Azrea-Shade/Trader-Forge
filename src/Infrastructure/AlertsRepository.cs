@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using Dapper;
 
@@ -27,14 +28,16 @@ CREATE TABLE IF NOT EXISTS alerts(
   Below   REAL    NULL,
   Enabled INTEGER NOT NULL DEFAULT 1
 );";
-            _db.Conn.Execute(sql);
+            using IDbConnection con = _db.Open();
+            con.Execute(sql);
         }
 
         public long Add(string ticker, double? above, double? below, bool enabled)
         {
             const string sql = @"INSERT INTO alerts(Ticker,Above,Below,Enabled) VALUES (@t,@a,@b,@e);
                                  SELECT last_insert_rowid();";
-            var id = _db.Conn.ExecuteScalar<long>(sql, new
+            using IDbConnection con = _db.Open();
+            var id = con.ExecuteScalar<long>(sql, new
             {
                 t = ticker,
                 a = (object?)above,
@@ -47,14 +50,17 @@ CREATE TABLE IF NOT EXISTS alerts(
         public void SetEnabled(long id, bool enabled)
         {
             const string sql = @"UPDATE alerts SET Enabled=@e WHERE Id=@id;";
-            _db.Conn.Execute(sql, new { id, e = enabled ? 1 : 0 });
+            using IDbConnection con = _db.Open();
+            con.Execute(sql, new { id, e = enabled ? 1 : 0 });
         }
 
         public IReadOnlyList<AlertRow> All()
         {
             const string sql = @"SELECT Id, Ticker, Above, Below, Enabled FROM alerts;";
-            // Use dynamic + manual projection to avoid Dapper ctor mapping on records
-            var rows = _db.Conn.Query(sql).ToList();
+            using IDbConnection con = _db.Open();
+
+            // Manual projection to avoid Dapper's ctor mapping quirks on records
+            var rows = con.Query(sql).ToList();
             var list = new List<AlertRow>(rows.Count);
 
             foreach (var r in rows)
