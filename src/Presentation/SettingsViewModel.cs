@@ -25,7 +25,7 @@ namespace Presentation
 
         public ICommand SaveCmd { get; }
 
-        // Preferred constructor (explicit scheduler for DI)
+        // Preferred constructor (DI-friendly)
         public SettingsViewModel(SqliteDb db, Scheduler scheduler, IClock clock)
         {
             _db = db; _scheduler = scheduler; _clock = clock;
@@ -33,7 +33,7 @@ namespace Presentation
             Load();
         }
 
-        // Back-compat: 2-arg overload (db + clock)
+        // Back-compat: db + clock
         public SettingsViewModel(SqliteDb db, IClock clock)
             : this(
                 db,
@@ -48,7 +48,7 @@ namespace Presentation
                 clock)
         { }
 
-        // Back-compat: 1-arg overload (db only) — builds SystemClock + default Scheduler
+        // Back-compat: db only
         public SettingsViewModel(SqliteDb db)
             : this(
                 db,
@@ -63,12 +63,12 @@ namespace Presentation
                 new SystemClock())
         { }
 
-        // Extra safety: 1-arg overload (clock only) — creates a shared db instance
+        // Back-compat: clock only (creates its own db)
         public SettingsViewModel(IClock clock)
             : this(
                 new SqliteDb(),
                 new Scheduler(
-                    new SqliteDb(), // shared local variable to keep same path
+                    new SqliteDb(),
                     clock,
                     new BriefService(
                         new WatchlistReader(new SqliteDb()),
@@ -76,6 +76,21 @@ namespace Presentation
                         clock),
                     new FileNotifier()),
                 clock)
+        { }
+
+        // *** NEW *** Back-compat: SettingsService (older tests pass this)
+        public SettingsViewModel(SettingsService _)
+            : this(
+                new SqliteDb(),
+                new Scheduler(
+                    new SqliteDb(),
+                    new SystemClock(),
+                    new BriefService(
+                        new WatchlistReader(new SqliteDb()),
+                        new PortfolioService(new PortfoliosRepository(new SqliteDb()), new DummyPriceFeed()),
+                        new SystemClock()),
+                    new FileNotifier()),
+                new SystemClock())
         { }
 
         private void Load()
