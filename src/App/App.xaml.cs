@@ -6,6 +6,7 @@ using Microsoft.Extensions.Hosting;
 using Serilog;
 using Domain;
 using Integrations;
+using Services.Feeds;
 
 namespace AzreaCompanion
 {
@@ -46,12 +47,16 @@ namespace AzreaCompanion
                     services.AddSingleton<Services.AlertsService>();
                     services.AddSingleton<Services.AppPathsService>();
 
-                    // Engines / HTTP (Phase 2 ready)
+                    // Phase 2 engines / providers
                     services.AddHttpClient();
                     services.AddSingleton<Services.BriefingService>();
                     services.AddSingleton<IQuoteProvider, DummyQuoteProvider>();
 
-                    // Page VMs (Phase 3)
+                    // Phase 4: price feed + watchlist facade
+                    services.AddSingleton<IPriceFeed, DummyPriceFeed>();
+                    services.AddSingleton<Services.WatchlistFacade>();
+
+                    // Page VMs
                     services.AddSingleton<Presentation.DashboardViewModel>();
                     services.AddSingleton<Presentation.WatchlistViewModel>();
                     services.AddSingleton<Presentation.FavoritesViewModel>();
