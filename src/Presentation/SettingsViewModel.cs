@@ -44,7 +44,6 @@ namespace Presentation
             Set("Brief.GenerateAt", GenerateAt.Trim());
             Set("Brief.NotifyAt",   NotifyAt.Trim());
             Set("Autostart",        Autostart ? "On" : "Off");
-            // Run a one-shot evaluation to apply autostart and validate times
             _scheduler.RunOnce();
         }
 
@@ -74,19 +73,5 @@ namespace Presentation
         public event PropertyChangedEventHandler? PropertyChanged;
         private void OnPropertyChanged([CallerMemberName] string? p=null)
             => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(p));
-    }
-
-    // Shared tiny ICommand helper
-    public class RelayCommand : ICommand
-    {
-        private readonly Action<object?> _run;
-        private readonly Predicate<object?>? _can;
-        public RelayCommand(Action<object?> run, Predicate<object?>? canExecute = null)
-        {
-            _run = run; _can = canExecute;
-        }
-        public bool CanExecute(object? parameter) => _can?.Invoke(parameter) ?? true;
-        public void Execute(object? parameter) => _run(parameter);
-        public event EventHandler? CanExecuteChanged { add { } remove { } }
     }
 }
