@@ -11,3 +11,4 @@ Pre-Phase-5 housekeeping — ✅
 - Theme merge verified, UI currency polish applied
 
 Next: Phase 5 — Portfolio (schema, CRUD, dashboards)
+Phase 9 — Daily Brief pipeline (engine + SQLite + CLI + tests)

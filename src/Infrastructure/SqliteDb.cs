@@ -49,25 +49,12 @@ CREATE TABLE IF NOT EXISTS alerts (
   enabled INTEGER NOT NULL DEFAULT 1
 );
 
--- Phase 5: portfolios & holdings
-CREATE TABLE IF NOT EXISTS portfolios (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  name TEXT NOT NULL UNIQUE,
-  notes TEXT NULL
-);
-
-CREATE TABLE IF NOT EXISTS holdings (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  portfolio_id INTEGER NOT NULL,
-  ticker TEXT NOT NULL,
-  shares REAL NOT NULL DEFAULT 0,
-  cost_basis REAL NOT NULL DEFAULT 0, -- total cost for these shares
-  FOREIGN KEY (portfolio_id) REFERENCES portfolios(id) ON DELETE CASCADE
-);
-
-CREATE INDEX IF NOT EXISTS ix_holdings_portfolio ON holdings(portfolio_id);
-CREATE INDEX IF NOT EXISTS ix_holdings_ticker ON holdings(ticker);
-";
+CREATE TABLE IF NOT EXISTS briefs (
+  date TEXT PRIMARY KEY,
+  generated_at TEXT NULL,
+  delivered_at TEXT NULL,
+  content TEXT NOT NULL
+);";
             cmd.ExecuteNonQuery();
         }
 
@@ -91,16 +78,6 @@ CREATE INDEX IF NOT EXISTS ix_holdings_ticker ON holdings(ticker);
             upsert("Brief.GenerateAt", "07:30");
             upsert("Brief.NotifyAt", "08:00");
             upsert("Autostart", "On");
-
-            // Optional seed: default portfolio
-            using (var c2 = cn.CreateCommand())
-            {
-                c2.Transaction = tx;
-                c2.CommandText = @"INSERT INTO portfolios(name,notes)
-                                   SELECT 'My Portfolio','Default portfolio'
-                                   WHERE NOT EXISTS(SELECT 1 FROM portfolios WHERE name='My Portfolio');";
-                c2.ExecuteNonQuery();
-            }
 
             tx.Commit();
         }
