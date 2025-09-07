@@ -1,7 +1,8 @@
 using System;
 using System.IO;
 using System.Runtime.InteropServices;
-using CommunityToolkit.WinUI.Notifications; // NuGet: CommunityToolkit.WinUI.Notifications
+using CommunityToolkit.WinUI.Notifications; // ToastContentBuilder, ToastNotificationManagerCompat
+using Windows.UI.Notifications;             // ToastNotification
 using Services;
 
 namespace Presentation
@@ -20,7 +21,7 @@ namespace Presentation
         {
             _appId = appId;
             _title = title;
-            _shortcutName = shortcutName ?? "Trader Forge Companion.lnk";
+            _shortcutName = shortcutName ?? "Trader Forge.lnk";
             EnsureStartMenuShortcut();
         }
 
@@ -28,17 +29,23 @@ namespace Presentation
         {
             try
             {
-                new ToastContentBuilder()
+                // Build toast content (builder.Show(...) isn't available in 7.1.2)
+                var content = new ToastContentBuilder()
                     .AddText(string.IsNullOrWhiteSpace(title) ? _title : title)
-                    .AddText(message ?? "")
-                    .Show(toast =>
-                    {
-                        toast.ExpirationTime = DateTimeOffset.Now.AddMinutes(5);
-                    }, _appId);
+                    .AddText(message ?? string.Empty)
+                    .GetToastContent();
+
+                var xml   = content.GetXml();
+                var toast = new ToastNotification(xml)
+                {
+                    ExpirationTime = DateTimeOffset.Now.AddMinutes(5)
+                };
+
+                ToastNotificationManagerCompat.CreateToastNotifier(_appId).Show(toast);
             }
             catch
             {
-                // Swallow in case notifications are disabled on the box
+                // Swallow so notifications can't crash the app/scheduler
             }
         }
 
@@ -47,15 +54,15 @@ namespace Presentation
             try
             {
                 var startMenu = Environment.GetFolderPath(Environment.SpecialFolder.StartMenu);
-                var programs = Path.Combine(startMenu, "Programs");
-                var linkPath = Path.Combine(programs, _shortcutName);
+                var programs  = Path.Combine(startMenu, "Programs");
+                var linkPath  = Path.Combine(programs, _shortcutName);
 
                 if (File.Exists(linkPath)) return;
 
                 Directory.CreateDirectory(programs);
                 var exePath = Environment.ProcessPath ??
                               System.Diagnostics.Process.GetCurrentProcess().MainModule?.FileName ??
-                              "AzreaCompanion.exe";
+                              "TraderForge.exe";
 
                 // Create .lnk via IShellLink and set AppUserModelID via IPropertyStore
                 var shellLink = (IShellLinkW)new CShellLink();
@@ -70,13 +77,11 @@ namespace Presentation
                 using var pv = PropVariant.FromString(_appId);
                 Marshal.ThrowExceptionForHR(propStore.SetValue(ref APPID_PKEY, pv));
                 Marshal.ThrowExceptionForHR(propStore.Commit());
-
-                // Save again after setting property
                 Marshal.ThrowExceptionForHR(persistFile.Save(linkPath, true));
             }
             catch
             {
-                // If this fails (permissions, etc.) we still try to send toasts; worst case they won't show.
+                // Best effort; if this fails, toasts may not appear but app keeps running.
             }
         }
 
