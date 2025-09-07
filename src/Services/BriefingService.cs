@@ -1,27 +1,27 @@
-using Domain;
 using System;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
+using System.Linq;
+using Domain;
 
 namespace Services
 {
-    /// <summary>
-    /// Minimal, CI-safe implementation of IBriefingService.
-    /// You can enrich this later with real data + formatting.
-    /// </summary>
+    // Implements IBriefingService for CI/tests. No external deps.
     public sealed class BriefingService : IBriefingService
     {
-        public Task<string> GenerateAsync(CancellationToken ct = default)
+        public DailyBrief Generate(DateOnly date, string[] tickers)
         {
-            var now = DateTimeOffset.Now;
-            var sb = new StringBuilder();
-            sb.AppendLine($"Trader Forge – Daily Brief");
-            sb.AppendLine($"Date: {now:yyyy-MM-dd} (local {now:HH:mm})");
-            sb.AppendLine();
-            sb.AppendLine("• Quote: Stay focused. Small, steady gains compound.");
-            sb.AppendLine("• Tip: Review your watchlist alerts before market open.");
-            return Task.FromResult(sb.ToString());
+            tickers ??= Array.Empty<string>();
+
+            var summary = tickers.Length == 0
+                ? "No tickers selected."
+                : $"Watchlist: {string.Join(", ", tickers)}";
+
+            return new DailyBrief
+            {
+                Date = date,
+                GeneratedAtLocal = DateTimeOffset.Now, // keep it simple for CI
+                SummaryText = summary,
+                Tickers = tickers
+            };
         }
     }
 }
