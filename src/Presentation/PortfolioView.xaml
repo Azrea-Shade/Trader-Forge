@@ -26,7 +26,7 @@
         <Grid Grid.Column="2">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
-                <RowDefinition Height="160"/>
+                <RowDefinition Height="180"/>
                 <RowDefinition Height="8"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
@@ -65,12 +65,21 @@
                     </DataGrid.ContextMenu>
                 </DataGrid>
 
-                <!-- Add holding -->
-                <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,6,0,0">
-                    <TextBox Width="90" Margin="0,0,6,0" Text="{Binding NewTicker, UpdateSourceTrigger=PropertyChanged}" PlaceholderText="Ticker"/>
-                    <TextBox Width="90" Margin="0,0,6,0" Text="{Binding NewShares, UpdateSourceTrigger=PropertyChanged}" />
-                    <TextBox Width="120" Margin="0,0,6,0" Text="{Binding NewCost, UpdateSourceTrigger=PropertyChanged}" />
-                    <Button Content="Add" Command="{Binding AddHoldingCmd}"/>
+                <!-- Add holding (pure WPF: labels + textboxes, no PlaceholderText) -->
+                <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,6,0,0" VerticalAlignment="Center">
+                    <StackPanel Orientation="Vertical" Margin="0,0,6,0">
+                        <TextBlock Text="Ticker" Opacity="0.7" FontSize="11"/>
+                        <TextBox Width="90" Text="{Binding NewTicker, UpdateSourceTrigger=PropertyChanged}" />
+                    </StackPanel>
+                    <StackPanel Orientation="Vertical" Margin="0,0,6,0">
+                        <TextBlock Text="Shares" Opacity="0.7" FontSize="11"/>
+                        <TextBox Width="90" Text="{Binding NewShares, UpdateSourceTrigger=PropertyChanged}" />
+                    </StackPanel>
+                    <StackPanel Orientation="Vertical" Margin="0,0,6,0">
+                        <TextBlock Text="Cost (Total)" Opacity="0.7" FontSize="11"/>
+                        <TextBox Width="120" Text="{Binding NewCost, UpdateSourceTrigger=PropertyChanged}" />
+                    </StackPanel>
+                    <Button Content="Add" Command="{Binding AddHoldingCmd}" VerticalAlignment="Bottom" />
                 </StackPanel>
             </Grid>
 
