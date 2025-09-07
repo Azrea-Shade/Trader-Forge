@@ -3,18 +3,10 @@ using System.IO;
 
 namespace Services
 {
-    public interface INotifier
-    {
-        void Info(string message);
-        void Warn(string message);
-        void Error(string message);
-    }
-
-    /// <summary>Simple notifier that writes to a file (CI-safe).</summary>
     public sealed class FileNotifier : INotifier
     {
         private readonly string _path;
-        public FileNotifier(string path)
+        public FileNotifier(string path = "artifacts/brief.log")
         {
             _path = string.IsNullOrWhiteSpace(path) ? "artifacts/brief.log" : path;
             var dir = Path.GetDirectoryName(_path);
@@ -29,8 +21,4 @@ namespace Services
         public void Warn(string message)  => Write("WARN",  message);
         public void Error(string message) => Write("ERROR", message);
     }
-
-    /// <summary>Clock contract + system implementation used by Scheduler/Briefing.</summary>
-    public interface IClock { DateTime Now { get; } }
-    public sealed class SystemClock : IClock { public DateTime Now => DateTime.Now; }
 }
