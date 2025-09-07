@@ -5,6 +5,14 @@
   <Application.Resources>
     <ResourceDictionary>
       <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/Presentation;component/Theme/Colors.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/Presentation;component/Theme/Typography.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/Presentation;component/Theme/Controls.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/Presentation;component/Theme/DataGrid.xaml"/>
+      </ResourceDictionary.MergedDictionaries>
+    </ResourceDictionary>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="Resources/Colors.xaml" />
         <ResourceDictionary Source="Resources/Styles.xaml" />
       </ResourceDictionary.MergedDictionaries>
