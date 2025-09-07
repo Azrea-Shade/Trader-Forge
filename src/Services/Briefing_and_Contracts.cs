@@ -1,24 +1,19 @@
-using Services;
-using System.Collections.Generic;
+using System;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Services
 {
-    public class BriefingService
+    // Contract for the Daily Brief feature. Keep this file free of concrete implementations.
+    public interface IBriefingService
     {
-        public IEnumerable<string> GetMorningBriefStub()
-        {
-            yield return "Market overview at 8:00 AM (stub)";
-            yield return "Watchlist summaries (stub)";
-            yield return "Reminders & tasks for today (stub)";
-        }
+        /// <summary>
+        /// Generate the daily brief text (already formatted for display).
+        /// </summary>
+        Task<string> GenerateAsync(CancellationToken ct = default);
     }
 
-    public class WatchlistService
-    {
-        private readonly Infrastructure.WatchlistRepository _repo;
-        public WatchlistService(Infrastructure.WatchlistRepository repo) => _repo = repo;
-
-        public int GetCount() => _repo.Count();
-        public int AddSampleMsft() { _repo.Add("MSFT"); return _repo.Count(); }
-    }
+    // (Optional) lightweight model types if/when you expand the brief
+    public sealed record BriefSection(string Title, string Body);
+    public sealed record DailyBrief(DateOnly Date, BriefSection[] Sections);
 }
