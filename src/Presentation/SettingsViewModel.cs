@@ -25,6 +25,23 @@ namespace Presentation
 
         public ICommand SaveCmd { get; }
 
+        // NEW: Backward-compatible overload used by older tests
+        // Builds a default Scheduler using in-repo services (no external deps).
+        public SettingsViewModel(SqliteDb db, IClock clock)
+            : this(
+                db,
+                new Scheduler(
+                    db,
+                    clock,
+                    new BriefService(
+                        new WatchlistReader(db),
+                        new PortfolioService(new PortfoliosRepository(db), new DummyPriceFeed()),
+                        clock),
+                    new FileNotifier()),
+                clock)
+        { }
+
+        // Preferred constructor (explicit scheduler)
         public SettingsViewModel(SqliteDb db, Scheduler scheduler, IClock clock)
         {
             _db = db; _scheduler = scheduler; _clock = clock;
@@ -44,6 +61,7 @@ namespace Presentation
             Set("Brief.GenerateAt", GenerateAt.Trim());
             Set("Brief.NotifyAt",   NotifyAt.Trim());
             Set("Autostart",        Autostart ? "On" : "Off");
+            // One-shot evaluation (applies autostart on Windows, validates times)
             _scheduler.RunOnce();
         }
 
