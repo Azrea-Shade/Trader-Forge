@@ -17,8 +17,13 @@ namespace AzreaCompanion
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
-            var logs = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "AzreaCompanion", "logs");
+
+            var logs = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                "AzreaCompanion",
+                "logs");
             Directory.CreateDirectory(logs);
+
             Log.Logger = new LoggerConfiguration()
                 .WriteTo.File(Path.Combine(logs, "app-.log"), rollingInterval: RollingInterval.Day)
                 .CreateLogger();
@@ -34,18 +39,19 @@ namespace AzreaCompanion
                     services.AddSingleton<Infrastructure.SettingsRepository>();
                     services.AddSingleton<Infrastructure.AlertsRepository>();
 
-                    // Services
+                    // Phase 1 services
                     services.AddSingleton<Services.WatchlistService>();
                     services.AddSingleton<Services.FavoritesService>();
                     services.AddSingleton<Services.SettingsService>();
                     services.AddSingleton<Services.AlertsService>();
                     services.AddSingleton<Services.AppPathsService>();
 
+                    // Briefing stub + HTTP client
                     services.AddSingleton<Services.BriefingService>();
                     services.AddHttpClient();
 
-                    // Quotes
-                    services.AddSingleton<IQuoteProvider, DummyQuoteProvider>();
+                    // Quotes (dummy provider for now)
+                    services.AddSingleton<IQuoteProvider, Integrations.DummyQuoteProvider>();
 
                     // Presentation
                     services.AddSingleton<Presentation.MainViewModel>();

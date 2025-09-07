@@ -14,13 +14,11 @@ public class Phase1Tests
 
         var db = new Infrastructure.SqliteDb(dbFile);
 
-        // Settings seed present
         var settings = new Infrastructure.SettingsRepository(db);
         settings.Get("Brief.GenerateAt").Should().Be("07:30");
         settings.Get("Brief.NotifyAt").Should().Be("08:00");
         settings.Get("Autostart").Should().Be("On");
 
-        // Favorites & Alerts usable
         var favs = new Infrastructure.FavoritesRepository(db);
         favs.Count().Should().Be(0);
         favs.Add("MSFT");

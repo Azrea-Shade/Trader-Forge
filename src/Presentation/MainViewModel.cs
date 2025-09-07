@@ -7,17 +7,10 @@ namespace Presentation
 {
     public partial class MainViewModel : ObservableObject
     {
-        [ObservableProperty]
-        private string title = "Dashboard — Phase 1 (Data Foundation)";
-
-        [ObservableProperty]
-        private int watchCount;
-
-        [ObservableProperty]
-        private int favoriteCount;
-
-        [ObservableProperty]
-        private string dbPath = string.Empty;
+        [ObservableProperty] private string title = "Dashboard — Phase 1 (Data Foundation)";
+        [ObservableProperty] private int watchCount;
+        [ObservableProperty] private int favoriteCount;
+        [ObservableProperty] private string dbPath = string.Empty;
 
         public ObservableCollection<string> BriefItems { get; } = new();
 
@@ -44,23 +37,13 @@ namespace Presentation
             DbPath = _paths.DbPath;
         }
 
-        [RelayCommand]
-        private void AddMsft()
-        {
-            WatchCount = _watch.AddSampleMsft();
-        }
+        [RelayCommand] private void AddMsft() => WatchCount = _watch.AddSampleMsft();
 
         [RelayCommand]
         private void CopyDbPath()
         {
-            try
-            {
-                Clipboard.SetText(DbPath ?? "");
-            }
-            catch
-            {
-                // no-op; clipboard might be unavailable in test contexts
-            }
+            try { Clipboard.SetText(DbPath ?? ""); }
+            catch { /* ignore */ }
         }
     }
 }
