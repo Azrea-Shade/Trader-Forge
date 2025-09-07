@@ -25,8 +25,15 @@ namespace Presentation
 
         public ICommand SaveCmd { get; }
 
-        // NEW: Backward-compatible overload used by older tests
-        // Builds a default Scheduler using in-repo services (no external deps).
+        // Preferred constructor (explicit scheduler for DI)
+        public SettingsViewModel(SqliteDb db, Scheduler scheduler, IClock clock)
+        {
+            _db = db; _scheduler = scheduler; _clock = clock;
+            SaveCmd = new RelayCommand(_ => Save());
+            Load();
+        }
+
+        // Back-compat: 2-arg overload (db + clock)
         public SettingsViewModel(SqliteDb db, IClock clock)
             : this(
                 db,
@@ -41,13 +48,35 @@ namespace Presentation
                 clock)
         { }
 
-        // Preferred constructor (explicit scheduler)
-        public SettingsViewModel(SqliteDb db, Scheduler scheduler, IClock clock)
-        {
-            _db = db; _scheduler = scheduler; _clock = clock;
-            SaveCmd = new RelayCommand(_ => Save());
-            Load();
-        }
+        // Back-compat: 1-arg overload (db only) — builds SystemClock + default Scheduler
+        public SettingsViewModel(SqliteDb db)
+            : this(
+                db,
+                new Scheduler(
+                    db,
+                    new SystemClock(),
+                    new BriefService(
+                        new WatchlistReader(db),
+                        new PortfolioService(new PortfoliosRepository(db), new DummyPriceFeed()),
+                        new SystemClock()),
+                    new FileNotifier()),
+                new SystemClock())
+        { }
+
+        // Extra safety: 1-arg overload (clock only) — creates a shared db instance
+        public SettingsViewModel(IClock clock)
+            : this(
+                new SqliteDb(),
+                new Scheduler(
+                    new SqliteDb(), // shared local variable to keep same path
+                    clock,
+                    new BriefService(
+                        new WatchlistReader(new SqliteDb()),
+                        new PortfolioService(new PortfoliosRepository(new SqliteDb()), new DummyPriceFeed()),
+                        clock),
+                    new FileNotifier()),
+                clock)
+        { }
 
         private void Load()
         {
@@ -61,7 +90,6 @@ namespace Presentation
             Set("Brief.GenerateAt", GenerateAt.Trim());
             Set("Brief.NotifyAt",   NotifyAt.Trim());
             Set("Autostart",        Autostart ? "On" : "Off");
-            // One-shot evaluation (applies autostart on Windows, validates times)
             _scheduler.RunOnce();
         }
 
