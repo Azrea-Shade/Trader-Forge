@@ -1,90 +1,55 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Collections.Concurrent;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using Services;
 using Integrations;
 
 namespace Services
 {
     /// <summary>
-    /// Orchestrates live fetching with 15s cache TTL and fallbacks (Yahoo → Stooq).
+    /// Live price fetcher with 15s cache and Yahoo→Stooq fallback.
     /// </summary>
-    public sealed class LivePriceRouter : IPriceFeed
+    public sealed class LivePriceRouter
     {
-        private readonly IPriceFeed _primary;   // Yahoo
-        private readonly IPriceFeed _fallback;  // Stooq
+        private static readonly HttpClient _http = new HttpClient();
         private readonly TimeSpan _ttl = TimeSpan.FromSeconds(15);
 
-        private readonly Dictionary<string,(decimal price, DateTime ts)> _cache =
+        // cache: ticker -> (price, timestamp)
+        private readonly ConcurrentDictionary<string,(decimal price, DateTime ts)> _cache =
             new(StringComparer.OrdinalIgnoreCase);
 
-        public LivePriceRouter(HttpClient http)
+        public decimal LastPrice(string ticker)
         {
-            _primary = new YahooPriceFeed(http);
-            _fallback = new StooqPriceFeed(http);
+            if (string.IsNullOrWhiteSpace(ticker)) return 0m;
+            var key = ticker.Trim().ToUpperInvariant();
+            var now = DateTime.UtcNow;
+
+            if (_cache.TryGetValue(key, out var entry) && (now - entry.ts) < _ttl)
+                return entry.price;
+
+            var price = FetchAsync(key, CancellationToken.None).GetAwaiter().GetResult() ?? 0m;
+            _cache[key] = (price, now);
+            return price;
         }
 
-        public async Task<IDictionary<string, decimal>> GetPricesAsync(IEnumerable<string> tickers, CancellationToken ct = default)
+        private async Task<decimal?> FetchAsync(string ticker, CancellationToken ct)
         {
-            var req = tickers.Where(x => !string.IsNullOrWhiteSpace(x))
-                             .Select(x => x.Trim().ToUpperInvariant())
-                             .Distinct()
-                             .ToList();
-
-            var now = DateTime.UtcNow;
-            var result = new Dictionary<string, decimal>(StringComparer.OrdinalIgnoreCase);
-            var missing = new List<string>();
-
-            // 1) serve fresh cache
-            foreach (var t in req)
-            {
-                if (_cache.TryGetValue(t, out var entry) && (now - entry.ts) < _ttl)
-                {
-                    result[t] = entry.price;
-                }
-                else
-                {
-                    missing.Add(t);
-                }
-            }
-
-            if (missing.Count == 0) return result;
-
-            // 2) fetch from primary (Yahoo)
-            var http = new HttpClient();
-            IDictionary<string, decimal> got = new Dictionary<string, decimal>();
             try
             {
-                got = await _primary.GetPricesAsync(missing, ct).ConfigureAwait(false);
+                var y = await YahooQuotes.GetLastPriceAsync(_http, ticker, ct).ConfigureAwait(false);
+                if (y.HasValue && y.Value > 0) return y.Value;
             }
-            catch
-            {
-                // swallow and fallback
-            }
+            catch { /* ignore and fallback */ }
 
-            // 3) fill any remaining via fallback (Stooq)
-            var still = missing.Where(t => !got.ContainsKey(t)).ToList();
-            if (still.Count > 0)
+            try
             {
-                try
-                {
-                    var fb = await _fallback.GetPricesAsync(still, ct).ConfigureAwait(false);
-                    foreach (var kv in fb) got[kv.Key] = kv.Value;
-                }
-                catch { /* give up */ }
+                var s = await StooqQuotes.GetLastCloseAsync(_http, ticker, ct).ConfigureAwait(false);
+                if (s.HasValue && s.Value > 0) return s.Value;
             }
+            catch { /* give up */ }
 
-            // 4) update cache + result
-            foreach (var kv in got)
-            {
-                _cache[kv.Key] = (kv.Value, now);
-                result[kv.Key] = kv.Value;
-            }
-
-            return result;
+            return null;
         }
     }
 }
