@@ -7,7 +7,7 @@ using Microsoft.Data.Sqlite;
 
 namespace Infrastructure
 {
-    // Use the canonical AlertRow record defined in AlertRow.cs
+    // Canonical AlertRow is defined in AlertRow.cs
 
     public class AlertsRepository
     {
@@ -15,17 +15,23 @@ namespace Infrastructure
 
         public AlertsRepository(SqliteDb db)
         {
-            _db = db; // SqliteDb ensures schema/defaults in ctor
+            _db = db; // SqliteDb ensures schema/defaults in its ctor
         }
 
         private IDbConnection Open() => new SqliteConnection($"Data Source={_db.DbPath}");
 
-        // --- Backward-compatible overloads (match older tests) ---
-        public long Add(string ticker, double? above, bool enabled)
-            => Add(ticker, above, null, enabled);
+        // --- Convenience overloads for backward compatibility ---
+        public long Add(string ticker, double? above) =>
+            Add(ticker, above, null, enabled: true);
 
-        public long Add(string ticker, double? above, double? below)
-            => Add(ticker, above, below, enabled: true);
+        public long Add(string ticker, bool enabled) =>
+            Add(ticker, null, null, enabled);
+
+        public long Add(string ticker, double? above, double? below) =>
+            Add(ticker, above, below, enabled: true);
+
+        public long Add(string ticker, double? above, bool enabled) =>
+            Add(ticker, above, null, enabled);
 
         // --- Primary Add API (explicit) ---
         public long Add(string ticker, double? above, double? below, bool enabled)
