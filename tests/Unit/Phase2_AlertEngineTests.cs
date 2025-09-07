@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using FluentAssertions;
 using Services.Engines;
 using Xunit;
@@ -11,15 +12,15 @@ public class Phase2_AlertEngineTests
         var prices = new Dictionary<string, double> { ["MSFT"] = 350.0, ["AAPL"] = 180.0 };
         var rules = new[]
         {
-            new Infrastructure.AlertRow(1, "MSFT", 340.0, null, true),
-            new Infrastructure.AlertRow(2, "MSFT", null, 360.0, true),
-            new Infrastructure.AlertRow(3, "AAPL", 200.0, 150.0, true),
+            new Infrastructure.AlertRow(1, "MSFT", 340.0, null, true), // 350 >= 340 => above triggers
+            new Infrastructure.AlertRow(2, "MSFT", null, 360.0, true), // 350 <= 360 => below triggers
+            new Infrastructure.AlertRow(3, "AAPL", 200.0, 150.0, true) // 180 is between => no trigger
         };
 
-        var results = AlertEngine.Evaluate(rules, prices);
+        var results = AlertEngine.Evaluate(rules, prices).ToList();
 
         results.Should().Contain(r => r.Id == 1 && r.TriggeredAbove && !r.TriggeredBelow);
-        results.Should().Contain(r => r.Id == 2 && !r.TriggeredAbove && !r.TriggeredBelow);
+        results.Should().Contain(r => r.Id == 2 && !r.TriggeredAbove && r.TriggeredBelow);
         results.Should().Contain(r => r.Id == 3 && !r.TriggeredAbove && !r.TriggeredBelow);
     }
 }
