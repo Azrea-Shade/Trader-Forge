@@ -1,8 +1,8 @@
+using Services;
 using System;
 using System.IO;
 using FluentAssertions;
 using Xunit;
-using Services.Feeds;
 
 public class Phase3_ShellSmokeTests
 {
