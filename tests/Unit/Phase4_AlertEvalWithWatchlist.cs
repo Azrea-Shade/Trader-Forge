@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using FluentAssertions;
 using Services.Engines;
 using Services.Feeds;
@@ -10,7 +11,7 @@ using Xunit;
 public class Phase4_AlertEvalWithWatchlist
 {
     [Fact]
-    public void Evaluate_alerts_against_dummy_prices()
+    public async Task Evaluate_alerts_against_dummy_prices()
     {
         // Arrange: temp DB
         var tmp = Path.Combine(Path.GetTempPath(), "azrea_phase4", Guid.NewGuid().ToString("N"));
@@ -24,7 +25,7 @@ public class Phase4_AlertEvalWithWatchlist
 
         var feed = new DummyPriceFeed();
         var tickers = new[] { "AAPL", "MSFT" };
-        var prices = feed.GetPricesAsync(tickers).GetAwaiter().GetResult();
+        var prices = await feed.GetPricesAsync(tickers);
 
         // Choose thresholds around today's deterministic price
         var p1 = prices["AAPL"];
