@@ -49,6 +49,7 @@ CREATE TABLE IF NOT EXISTS portfolio_holdings(
 
         public long CreatePortfolio(string name, string? notes = null)
         {
+        connection.Execute("CREATE TABLE IF NOT EXISTS portfolios (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, notes TEXT)");
             using var cn = Open();
             return cn.ExecuteScalar<long>(
                 "INSERT INTO portfolios(name,notes) VALUES(@name,@notes); SELECT last_insert_rowid();",
