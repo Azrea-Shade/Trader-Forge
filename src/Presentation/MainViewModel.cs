@@ -1,7 +1,7 @@
+using System.Windows; // for Clipboard
 using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using System.Windows;
 
 namespace Presentation
 {
@@ -57,7 +57,10 @@ namespace Presentation
             {
                 Clipboard.SetText(DbPath ?? "");
             }
-            catch { /* ignore */ }
+            catch
+            {
+                // no-op; clipboard might be unavailable in test contexts
+            }
         }
     }
 }
