@@ -25,13 +25,13 @@
     <PackageReference Include="Microsoft.Toolkit.Uwp.Notifications" />
   </ItemGroup>
 
-  <!-- Copy all assets -->
   <ItemGroup>
     <Content Include="Assets/**/*">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
-</Project>
+
   <ItemGroup>
     <SplashScreen Include="Assets/Branding/splash/splash.png" />
   </ItemGroup>
+</Project>
