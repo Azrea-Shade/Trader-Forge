@@ -7,8 +7,7 @@ using Microsoft.Data.Sqlite;
 
 namespace Infrastructure
 {
-    // Matches SQLite 'alerts' table: id, ticker, above, below, enabled
-    public record AlertRow(long Id, string Ticker, double? Above, double? Below, bool Enabled);
+    // Use the canonical 'AlertRow' defined in AlertRow.cs (do NOT redeclare here)
 
     public class AlertsRepository
     {
@@ -16,7 +15,7 @@ namespace Infrastructure
 
         public AlertsRepository(SqliteDb db)
         {
-            _db = db; // Schema is created by SqliteDb.EnsureSchema()
+            _db = db; // SqliteDb ensures schema on construction
         }
 
         private IDbConnection Open() => new SqliteConnection($"Data Source={_db.DbPath}");
@@ -46,7 +45,6 @@ SELECT last_insert_rowid();";
 
         public IReadOnlyList<AlertRow> All()
         {
-            // Explicit aliases normalize casing for projection
             const string sql = @"
 SELECT
   id      AS Id,
@@ -55,10 +53,9 @@ SELECT
   below   AS Below,
   enabled AS Enabled
 FROM alerts;";
-
             using var con = Open();
 
-            // Manual projection avoids Dapper ctor-mapping quirks on records
+            // Manual projection to avoid ctor-mapping quirks on records
             var rows = con.Query(sql).ToList();
             var list = new List<AlertRow>(rows.Count);
 
