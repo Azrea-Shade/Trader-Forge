@@ -20,14 +20,32 @@ jobs:
       - name: .NET SDK info
         run: dotnet --info
 
+      - name: Optional: update workloads (best-effort)
+        run: dotnet workload update --ignore-failed-sources true
+        continue-on-error: true
+
       - name: Restore projects
         run: |
           dotnet restore tests/Unit/Unit.csproj
           dotnet restore src/Cli/Cli.csproj
           dotnet restore src/App/App.csproj
 
-      - name: Run unit tests (coverage)
-        run: dotnet test tests/Unit/Unit.csproj --collect:"XPlat Code Coverage" --logger "trx;LogFileName=test_results.trx"
+      - name: Run unit tests (coverage → artifacts/tests)
+        run: dotnet test tests/Unit/Unit.csproj --collect:"XPlat Code Coverage" --logger "trx;LogFileName=test_results.trx" --results-directory artifacts/tests
+
+      - name: Upload test results (.trx)
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results-trx
+          path: artifacts/tests/**/*.trx
+          if-no-files-found: warn
+
+      - name: Upload code coverage (cobertura)
+        uses: actions/upload-artifact@v4
+        with:
+          name: code-coverage
+          path: artifacts/tests/**/coverage.cobertura.xml
+          if-no-files-found: warn
 
       - name: CLI smoke (headless)
         run: dotnet run --project src/Cli/Cli.csproj -c Release
@@ -37,6 +55,7 @@ jobs:
         with:
           name: cli_out
           path: src/Cli/cli_out
+          if-no-files-found: warn
 
       - name: Build WPF
         run: dotnet build src/App/App.csproj -c Release --no-restore
@@ -49,3 +68,4 @@ jobs:
         with:
           name: Azrea-Companion-win-x64
           path: out/win-x64
+          if-no-files-found: error
