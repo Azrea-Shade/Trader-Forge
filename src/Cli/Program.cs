@@ -1,26 +1,50 @@
 using System;
 using System.IO;
 using System.Text.Json;
+using System.Threading.Tasks;
+using Services.Engines;
+using Services.Feeds;
 
-var outDir = Path.Combine(Directory.GetCurrentDirectory(), "cli_out");
-Directory.CreateDirectory(outDir);
+namespace Cli
+{
+    public class Program
+    {
+        public static async Task<int> Main(string[] args)
+        {
+            try
+            {
+                var tickers = args.Length > 0 ? args : new[] { "AAPL", "MSFT", "SPY" };
+                var feed = new DummyPriceFeed();
+                var prices = await feed.GetPricesAsync(tickers);
 
-var dbPath = Path.Combine(outDir, "cli.db");
-var db = new Infrastructure.SqliteDb(dbPath);
+                var briefLines = BriefingEngine.BuildBrief(tickers, prices, DateTime.UtcNow);
 
-var repo = new Infrastructure.WatchlistRepository(db);
-var svc  = new Services.WatchlistService(repo);
+                var outDir = Path.Combine(AppContext.BaseDirectory, "cli_out");
+                Directory.CreateDirectory(outDir);
+                var jsonPath = Path.Combine(outDir, "brief.json");
 
-var before = svc.GetCount();
-var after  = svc.AddSampleMsft();
+                var payload = new
+                {
+                    generatedUtc = DateTime.UtcNow,
+                    tickers,
+                    prices,
+                    lines = briefLines
+                };
 
-var result = new {
-    timestamp = DateTimeOffset.UtcNow,
-    db = db.DbPath,
-    before, after,
-    added = "MSFT"
-};
+                var opts = new JsonSerializerOptions { WriteIndented = true };
+                File.WriteAllText(jsonPath, JsonSerializer.Serialize(payload, opts));
 
-var json = JsonSerializer.Serialize(result, new JsonSerializerOptions { WriteIndented = true });
-File.WriteAllText(Path.Combine(outDir, "result.json"), json);
-Console.WriteLine(json);
+                Console.WriteLine($"CLI brief written: {jsonPath}");
+                foreach (var line in briefLines)
+                    Console.WriteLine(line);
+
+                return 0;
+            }
+            catch (Exception ex)
+            {
+                Console.Error.WriteLine(ex.ToString());
+                return 1;
+            }
+        }
+    }
+}
