@@ -1,3 +1,4 @@
+using System.Linq;
 using System;
 using System.Collections.Generic;
 
@@ -21,6 +22,6 @@ namespace Domain
     {
         public DateTime GeneratedAtLocal { get; set; }
         public string SummaryText { get; set; } = "";
-        public IReadOnlyList<string> Tickers { get; set; } = Array.Empty<string>();
+        public string[] Tickers { get; set; } = Array.Empty<string>();
     }
 }
