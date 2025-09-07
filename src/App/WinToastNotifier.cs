@@ -6,7 +6,6 @@ namespace AzreaCompanion
     {
         public void ShowInfo(string title, string message)
         {
-            // Uses Toolkit's builder (works from Win32/WPF)
             new ToastContentBuilder()
                 .AddText(title)
                 .AddText(message)

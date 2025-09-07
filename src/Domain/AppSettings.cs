@@ -2,8 +2,8 @@ namespace Domain
 {
     public class AppSettings
     {
-        public string PrimaryEmail { get; set; } = "shade.azrea@gmail.com";
-        public string SecondaryEmail { get; set; } = "roccilhowe@gmail.com";
+        public string PrimaryEmail { get; set; } = "shade.azrea@gmail.com";   // kept for future use
+        public string SecondaryEmail { get; set; } = "roccilhowe@gmail.com";  // kept for future use
         public string TimeZoneId { get; set; } = "America/Denver";
         public int CompileHour { get; set; } = 7;
         public int CompileMinute { get; set; } = 30;

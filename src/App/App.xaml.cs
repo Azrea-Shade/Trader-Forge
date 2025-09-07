@@ -39,9 +39,8 @@ namespace AzreaCompanion
                     services.AddSingleton<Services.BriefingService>();
                     services.AddSingleton<Services.SettingsService>();
 
-                    // Notifications & email
+                    // Notifications (toast only)
                     services.AddSingleton<Services.IToastNotifier, AzreaCompanion.WinToastNotifier>();
-                    services.AddSingleton<Services.IEmailSender, Services.SendGridEmailSender>();
 
                     // Scheduler
                     services.AddSingleton<Services.SchedulerService>();

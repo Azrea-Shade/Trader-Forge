@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -11,17 +12,15 @@ namespace Services
     {
         private readonly SettingsService _settings;
         private readonly BriefingService _brief;
-        private readonly IEmailSender _email;
         private readonly IToastNotifier _toast;
 
         private Timer? _compileTimer;
         private Timer? _deliverTimer;
 
-        public SchedulerService(SettingsService settings, BriefingService brief, IEmailSender email, IToastNotifier toast)
+        public SchedulerService(SettingsService settings, BriefingService brief, IToastNotifier toast)
         {
             _settings = settings;
             _brief = brief;
-            _email = email;
             _toast = toast;
         }
 
@@ -61,15 +60,16 @@ namespace Services
             return TimeZoneInfo.ConvertTime(targetLocal, TimeZoneInfo.Utc);
         }
 
-        private async Task CompileBriefAsync()
+        private Task CompileBriefAsync()
         {
             try
             {
                 Log.Information("Compiling daily brief...");
-                // For now, just log. Later, cache the compiled brief to disk.
                 var sb = new StringBuilder();
                 foreach (var line in _brief.GetMorningBriefStub())
                     sb.AppendLine($"• {line}");
+
+                // In future we could persist the compiled brief to disk.
                 Log.Information("Brief compiled:\n{Brief}", sb.ToString());
                 _toast.ShowInfo("Daily Brief", "Compiled. Will deliver at the scheduled time.");
             }
@@ -77,25 +77,23 @@ namespace Services
             {
                 Log.Error(ex, "Error compiling brief");
             }
+            return Task.CompletedTask;
         }
 
-        private async Task DeliverBriefAsync()
+        private Task DeliverBriefAsync()
         {
             try
             {
-                Log.Information("Delivering daily brief...");
-                var s = _settings.Load();
-                var recipients = new[] { s.PrimaryEmail, s.SecondaryEmail };
-                var html = "<h3>Daily Brief</h3><ul>" +
-                           string.Join("", _brief.GetMorningBriefStub().Select(x => $"<li>{System.Net.WebUtility.HtmlEncode(x)}</li>")) +
-                           "</ul>";
-                await _email.SendAsync("Your Daily Brief", html, recipients);
-                _toast.ShowInfo("Daily Brief", "Sent to your email recipients.");
+                Log.Information("Delivering daily brief (toast only)...");
+                var lines = _brief.GetMorningBriefStub().ToArray();
+                var first = lines.FirstOrDefault() ?? "Your brief is ready.";
+                _toast.ShowInfo("Daily Brief", first);
             }
             catch (Exception ex)
             {
                 Log.Error(ex, "Error delivering brief");
             }
+            return Task.CompletedTask;
         }
 
         public void Dispose()
