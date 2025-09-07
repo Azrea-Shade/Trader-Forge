@@ -1,15 +1,24 @@
+using System;
 using System.Diagnostics;
 using Services;
 
 namespace Presentation
 {
-    // Simple, CI-safe toast notifier. Real Windows toast wiring can come later.
+    /// <summary>
+    /// CI-safe notifier used by WPF layer. Implements the current INotifier contract
+    /// (Info/Warn/Error). Real Windows toast UX can be layered on later.
+    /// </summary>
     public sealed class WindowsToastNotifier : INotifier
     {
-        public void Notify(string title, string message)
+        private static void Log(string level, string text)
         {
-            // No dependencies: just log. UI popups can be added in-app on Windows.
-            Debug.WriteLine($"[Toast] {title}: {message}");
+            var line = $"[{level}] {text}";
+            Debug.WriteLine(line);
+            Console.WriteLine(line);
         }
+
+        public void Info(string text)  => Log("INFO",  text);
+        public void Warn(string text)  => Log("WARN",  text);
+        public void Error(string text) => Log("ERROR", text);
     }
 }
