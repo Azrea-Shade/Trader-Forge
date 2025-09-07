@@ -11,9 +11,4 @@ namespace Services
             yield return "Reminders & tasks for today (stub)";
         }
     }
-
-    public interface IQuoteProvider
-    {
-        decimal? TryGetPrice(string ticker);
-    }
 }

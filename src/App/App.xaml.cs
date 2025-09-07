@@ -4,6 +4,8 @@ using System.Windows;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
+using Domain;
+using Integrations;
 
 namespace App
 {
@@ -26,6 +28,8 @@ namespace App
                     services.AddSingleton<Infrastructure.SqliteDb>();
                     services.AddSingleton<Services.BriefingService>();
                     services.AddHttpClient();
+                    // Register quote provider implementation
+                    services.AddSingleton<IQuoteProvider, DummyQuoteProvider>();
                     services.AddSingleton<Presentation.MainViewModel>();
                     services.AddSingleton<MainWindow>();
                 })

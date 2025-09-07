@@ -1,5 +1,5 @@
 using System;
-using Services;
+using Domain;
 
 namespace Integrations
 {

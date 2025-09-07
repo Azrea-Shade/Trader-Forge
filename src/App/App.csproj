@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net8.0-windows</TargetFramework>
@@ -6,6 +6,7 @@
     <ApplicationIcon />
   </PropertyGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Integrations\Integrations.csproj" />
     <ProjectReference Include="..\Presentation\Presentation.csproj" />
     <ProjectReference Include="..\Services\Services.csproj" />
     <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
