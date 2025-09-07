@@ -1,24 +1,22 @@
 <Window x:Class="App.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Azrea — Daily Stock & Workflow Companion" Height="720" Width="1200" WindowStartupLocation="CenterScreen">
-  <Grid Margin="16">
+        Title="Azrea — Daily Stock &amp; Workflow Companion" Height="720" Width="1200" WindowStartupLocation="CenterScreen">
+  <Grid Margin="16" Background="#0b0f1a">
     <Grid.RowDefinitions>
       <RowDefinition Height="Auto"/>
       <RowDefinition Height="*"/>
     </Grid.RowDefinitions>
-    <TextBlock Text="{Binding Title}" FontSize="22" FontWeight="Bold" Margin="0,0,0,12"/>
+    <TextBlock Text="{Binding Title}" FontSize="22" FontWeight="Bold" Foreground="White" Margin="0,0,0,12"/>
     <Border Grid.Row="1" Padding="12" CornerRadius="16" BorderThickness="1" BorderBrush="#22FFFFFF" Background="#0b0f1a">
       <StackPanel>
-        <TextBlock Text="Morning Brief (stub)" FontSize="16" Margin="0,0,0,8"/>
+        <TextBlock Text="Morning Brief (stub)" FontSize="16" Foreground="White" Margin="0,0,0,8"/>
         <ItemsControl ItemsSource="{Binding BriefItems}">
           <ItemsControl.ItemTemplate>
             <DataTemplate>
-              <TextBlock Text="•  " Foreground="#00E1FF">
-                <TextBlock.Inlines>
-                  <Run Text="• "/>
-                  <Run Text="{Binding}" Foreground="White"/>
-                </TextBlock.Inlines>
+              <TextBlock>
+                <Run Text="• "/>
+                <Run Text="{Binding}" Foreground="White"/>
               </TextBlock>
             </DataTemplate>
           </ItemsControl.ItemTemplate>
