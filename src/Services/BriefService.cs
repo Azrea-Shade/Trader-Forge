@@ -73,7 +73,7 @@ namespace Services
             {
                 GeneratedAtLocal = _clock.Now,
                 SummaryText = sb.ToString(),
-                Tickers = tickers
+                Tickers = tickers.ToArray()
             };
         }
     }
