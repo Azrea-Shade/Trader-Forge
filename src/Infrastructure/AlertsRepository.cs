@@ -11,7 +11,22 @@ namespace Infrastructure
 
     public class AlertsRepository
     {
-        private readonly SqliteDb _db;
+        
+        
+    // TF: DB connection shim
+        
+    private static readonly string _cs =
+        
+        Environment.GetEnvironmentVariable("TF_CS")
+        
+        ?? "Data Source=traderforge.db";
+        
+
+        
+    private IDbConnection connection => new SqliteConnection(_cs);
+        
+
+      private readonly SqliteDb _db;
 
         public AlertsRepository(SqliteDb db)
         {

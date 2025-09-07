@@ -1,11 +1,27 @@
 using Dapper;
 using Microsoft.Data.Sqlite;
 
+using System.Data;
 namespace Infrastructure
 {
     public class SettingsRepository
     {
-        private readonly SqliteDb _db;
+        
+        
+    // TF: DB connection shim
+        
+    private static readonly string _cs =
+        
+        Environment.GetEnvironmentVariable("TF_CS")
+        
+        ?? "Data Source=traderforge.db";
+        
+
+        
+    private IDbConnection connection => new SqliteConnection(_cs);
+        
+
+      private readonly SqliteDb _db;
         public SettingsRepository(SqliteDb db) => _db = db;
 
         private SqliteConnection Open() { var cn = new SqliteConnection($"Data Source={_db.DbPath}"); cn.Open(); return cn; }
