@@ -18,86 +18,61 @@ namespace Presentation
         private string _generateAt = "07:30";
         private string _notifyAt = "08:00";
         private bool _autostart = true;
+        private bool _enableToasts = true;
 
         public string GenerateAt { get => _generateAt; set { _generateAt = value; OnPropertyChanged(); } }
         public string NotifyAt   { get => _notifyAt;   set { _notifyAt   = value; OnPropertyChanged(); } }
         public bool Autostart    { get => _autostart;  set { _autostart  = value; OnPropertyChanged(); } }
+        public bool EnableToasts { get => _enableToasts; set { _enableToasts = value; OnPropertyChanged(); } }
 
         public ICommand SaveCmd { get; }
 
-        // Preferred constructor (DI-friendly)
+        // Keep all overloads for back-compat with existing tests
         public SettingsViewModel(SqliteDb db, Scheduler scheduler, IClock clock)
         {
             _db = db; _scheduler = scheduler; _clock = clock;
             SaveCmd = new RelayCommand(_ => Save());
             Load();
         }
-
-        // Back-compat: db + clock
         public SettingsViewModel(SqliteDb db, IClock clock)
-            : this(
-                db,
-                new Scheduler(
-                    db,
-                    clock,
-                    new BriefService(
-                        new WatchlistReader(db),
+            : this(db,
+                new Scheduler(db, clock,
+                    new BriefService(new WatchlistReader(db),
                         new PortfolioService(new PortfoliosRepository(db), new DummyPriceFeed()),
                         clock),
                     new FileNotifier()),
-                clock)
-        { }
-
-        // Back-compat: db only
+                clock) { }
         public SettingsViewModel(SqliteDb db)
-            : this(
-                db,
-                new Scheduler(
-                    db,
-                    new SystemClock(),
-                    new BriefService(
-                        new WatchlistReader(db),
+            : this(db,
+                new Scheduler(db, new SystemClock(),
+                    new BriefService(new WatchlistReader(db),
                         new PortfolioService(new PortfoliosRepository(db), new DummyPriceFeed()),
                         new SystemClock()),
                     new FileNotifier()),
-                new SystemClock())
-        { }
-
-        // Back-compat: clock only (creates its own db)
+                new SystemClock()) { }
         public SettingsViewModel(IClock clock)
-            : this(
-                new SqliteDb(),
-                new Scheduler(
-                    new SqliteDb(),
-                    clock,
-                    new BriefService(
-                        new WatchlistReader(new SqliteDb()),
+            : this(new SqliteDb(),
+                new Scheduler(new SqliteDb(), clock,
+                    new BriefService(new WatchlistReader(new SqliteDb()),
                         new PortfolioService(new PortfoliosRepository(new SqliteDb()), new DummyPriceFeed()),
                         clock),
                     new FileNotifier()),
-                clock)
-        { }
-
-        // *** NEW *** Back-compat: SettingsService (older tests pass this)
+                clock) { }
         public SettingsViewModel(SettingsService _)
-            : this(
-                new SqliteDb(),
-                new Scheduler(
-                    new SqliteDb(),
-                    new SystemClock(),
-                    new BriefService(
-                        new WatchlistReader(new SqliteDb()),
+            : this(new SqliteDb(),
+                new Scheduler(new SqliteDb(), new SystemClock(),
+                    new BriefService(new WatchlistReader(new SqliteDb()),
                         new PortfolioService(new PortfoliosRepository(new SqliteDb()), new DummyPriceFeed()),
                         new SystemClock()),
                     new FileNotifier()),
-                new SystemClock())
-        { }
+                new SystemClock()) { }
 
         private void Load()
         {
             GenerateAt = Get("Brief.GenerateAt") ?? "07:30";
             NotifyAt   = Get("Brief.NotifyAt")   ?? "08:00";
             Autostart  = (Get("Autostart") ?? "On").Equals("On", StringComparison.OrdinalIgnoreCase);
+            EnableToasts = (Get("Notifications.Toasts") ?? "On").Equals("On", StringComparison.OrdinalIgnoreCase);
         }
 
         private void Save()
@@ -105,6 +80,7 @@ namespace Presentation
             Set("Brief.GenerateAt", GenerateAt.Trim());
             Set("Brief.NotifyAt",   NotifyAt.Trim());
             Set("Autostart",        Autostart ? "On" : "Off");
+            Set("Notifications.Toasts", EnableToasts ? "On" : "Off");
             _scheduler.RunOnce();
         }
 
