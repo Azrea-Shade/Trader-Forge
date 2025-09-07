@@ -1,5 +1,3 @@
-using System.Windows; // for Clipboard
-using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
@@ -7,43 +5,36 @@ namespace Presentation
 {
     public partial class MainViewModel : ObservableObject
     {
-        [ObservableProperty] private string title = "Dashboard — Phase 1 (Data Foundation)";
-        [ObservableProperty] private int watchCount;
-        [ObservableProperty] private int favoriteCount;
-        [ObservableProperty] private string dbPath = string.Empty;
+        [ObservableProperty] private string title = "Azrea — Companion";
+        [ObservableProperty] private object? currentViewModel;
 
-        public ObservableCollection<string> BriefItems { get; } = new();
+        // Keep singletons of page VMs for simple navigation
+        private readonly DashboardViewModel _dashboard;
+        private readonly WatchlistViewModel _watchlist;
+        private readonly FavoritesViewModel _favorites;
+        private readonly AlertsViewModel _alerts;
+        private readonly SettingsViewModel _settings;
 
-        private readonly Services.BriefingService _brief;
-        private readonly Services.WatchlistService _watch;
-        private readonly Services.FavoritesService _favs;
-        private readonly Services.AppPathsService _paths;
-
-        public MainViewModel(Services.BriefingService brief,
-                             Services.WatchlistService watch,
-                             Services.FavoritesService favs,
-                             Services.AppPathsService paths)
+        public MainViewModel(
+            DashboardViewModel dashboard,
+            WatchlistViewModel watchlist,
+            FavoritesViewModel favorites,
+            AlertsViewModel alerts,
+            SettingsViewModel settings)
         {
-            _brief = brief;
-            _watch = watch;
-            _favs = favs;
-            _paths = paths;
+            _dashboard = dashboard;
+            _watchlist = watchlist;
+            _favorites = favorites;
+            _alerts = alerts;
+            _settings = settings;
 
-            foreach (var s in _brief.GetMorningBriefStub())
-                BriefItems.Add(s);
-
-            WatchCount = _watch.GetCount();
-            FavoriteCount = _favs.Count();
-            DbPath = _paths.DbPath;
+            CurrentViewModel = _dashboard; // default
         }
 
-        [RelayCommand] private void AddMsft() => WatchCount = _watch.AddSampleMsft();
-
-        [RelayCommand]
-        private void CopyDbPath()
-        {
-            try { Clipboard.SetText(DbPath ?? ""); }
-            catch { /* ignore */ }
-        }
+        [RelayCommand] private void GoDashboard() => CurrentViewModel = _dashboard;
+        [RelayCommand] private void GoWatchlist() => CurrentViewModel = _watchlist;
+        [RelayCommand] private void GoFavorites() => CurrentViewModel = _favorites;
+        [RelayCommand] private void GoAlerts()    => CurrentViewModel = _alerts;
+        [RelayCommand] private void GoSettings()  => CurrentViewModel = _settings;
     }
 }

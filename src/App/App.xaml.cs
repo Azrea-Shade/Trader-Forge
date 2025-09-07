@@ -39,21 +39,26 @@ namespace AzreaCompanion
                     services.AddSingleton<Infrastructure.SettingsRepository>();
                     services.AddSingleton<Infrastructure.AlertsRepository>();
 
-                    // Phase 1 services
+                    // Services (Phase 1)
                     services.AddSingleton<Services.WatchlistService>();
                     services.AddSingleton<Services.FavoritesService>();
                     services.AddSingleton<Services.SettingsService>();
                     services.AddSingleton<Services.AlertsService>();
                     services.AddSingleton<Services.AppPathsService>();
 
-                    // Briefing stub + HTTP client
-                    services.AddSingleton<Services.BriefingService>();
+                    // Engines / HTTP (Phase 2 ready)
                     services.AddHttpClient();
-
-                    // Quotes (dummy for now)
+                    services.AddSingleton<Services.BriefingService>();
                     services.AddSingleton<IQuoteProvider, DummyQuoteProvider>();
 
-                    // Presentation
+                    // Page VMs (Phase 3)
+                    services.AddSingleton<Presentation.DashboardViewModel>();
+                    services.AddSingleton<Presentation.WatchlistViewModel>();
+                    services.AddSingleton<Presentation.FavoritesViewModel>();
+                    services.AddSingleton<Presentation.AlertsViewModel>();
+                    services.AddSingleton<Presentation.SettingsViewModel>();
+
+                    // Shell + About
                     services.AddSingleton<Presentation.MainViewModel>();
                     services.AddSingleton<Presentation.AboutViewModel>();
 
