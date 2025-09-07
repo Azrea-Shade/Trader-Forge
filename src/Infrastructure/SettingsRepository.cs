@@ -19,6 +19,14 @@ namespace Infrastructure
         public void Set(string key, string value)
         {
             using var cn = Open();
+            // Ensure schema exists for unit/integration runs
+            connection.Execute("""
+                CREATE TABLE IF NOT EXISTS settings (
+                    id     INTEGER PRIMARY KEY AUTOINCREMENT,
+                    name   TEXT NOT NULL,
+                    notes  TEXT
+                );
+            """);
             cn.Execute(@"INSERT INTO settings(k,v) VALUES(@k,@v)
                          ON CONFLICT(k) DO UPDATE SET v=excluded.v;", new { k = key, v = value });
         }

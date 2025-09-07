@@ -54,6 +54,14 @@ SELECT last_insert_rowid();";
         {
             const string sql = @"UPDATE alerts SET enabled = @e WHERE id = @id;";
             using var con = Open();
+            // Ensure schema exists for unit/integration runs
+            connection.Execute("""
+                CREATE TABLE IF NOT EXISTS alerts (
+                    id     INTEGER PRIMARY KEY AUTOINCREMENT,
+                    name   TEXT NOT NULL,
+                    notes  TEXT
+                );
+            """);
             con.Execute(sql, new { id, e = enabled ? 1 : 0 });
         }
 

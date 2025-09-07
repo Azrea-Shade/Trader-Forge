@@ -20,6 +20,14 @@ namespace Infrastructure
         public void Add(string ticker)
         {
             using var cn = Open();
+            // Ensure schema exists for unit/integration runs
+            connection.Execute("""
+                CREATE TABLE IF NOT EXISTS favorites (
+                    id     INTEGER PRIMARY KEY AUTOINCREMENT,
+                    name   TEXT NOT NULL,
+                    notes  TEXT
+                );
+            """);
             cn.Execute("INSERT OR IGNORE INTO favorites(ticker) VALUES(@t);", new { t = ticker.Trim().ToUpperInvariant() });
         }
 

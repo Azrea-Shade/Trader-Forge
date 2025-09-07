@@ -26,6 +26,14 @@ namespace Infrastructure
         {
             if (string.IsNullOrWhiteSpace(ticker)) throw new ArgumentException("ticker required");
             using var cn = Open();
+            // Ensure schema exists for unit/integration runs
+            connection.Execute("""
+                CREATE TABLE IF NOT EXISTS watchlist (
+                    id     INTEGER PRIMARY KEY AUTOINCREMENT,
+                    name   TEXT NOT NULL,
+                    notes  TEXT
+                );
+            """);
             cn.Execute("INSERT INTO watchlist (ticker, alert_above, alert_below) VALUES (@t,@a,@b);",
                 new { t = ticker.Trim().ToUpperInvariant(), a = (double?)above, b = (double?)below });
         }
