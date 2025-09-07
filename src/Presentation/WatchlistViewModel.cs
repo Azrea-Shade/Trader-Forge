@@ -10,7 +10,7 @@ namespace Presentation
 {
     public partial class WatchlistViewModel : ObservableObject
     {
-        public class Row : ObservableObject
+        public partial class Row : ObservableObject
         {
             public long Id { get; set; }
             [ObservableProperty] private string ticker = "";
