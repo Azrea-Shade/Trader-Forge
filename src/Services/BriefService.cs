@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Services;
 using System;
 using System.Linq;
@@ -73,7 +74,7 @@ namespace Services
             {
                 GeneratedAtLocal = _clock.Now,
                 SummaryText = sb.ToString(),
-                Tickers = tickers.ToArray()ToArray()
+                Tickers = tickersToArray()
             };
         }
     }

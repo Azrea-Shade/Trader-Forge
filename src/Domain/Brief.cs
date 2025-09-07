@@ -22,6 +22,6 @@ namespace Domain
     {
         public DateTime GeneratedAtLocal { get; set; }
         public string SummaryText { get; set; } = "";
-        public string[] Tickers { get; set; } = Array.Empty<string>();
+        public IReadOnlyList<string> Tickers { get; set; } = Array.Empty<string>();
     }
 }
