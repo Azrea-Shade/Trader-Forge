@@ -11,7 +11,6 @@ var db = new Infrastructure.SqliteDb(dbPath);
 var repo = new Infrastructure.WatchlistRepository(db);
 var svc  = new Services.WatchlistService(repo);
 
-// Run a tiny scenario: initial count, add MSFT, get count
 var before = svc.GetCount();
 var after  = svc.AddSampleMsft();
 

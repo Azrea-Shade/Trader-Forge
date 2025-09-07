@@ -11,4 +11,13 @@ namespace Services
             yield return "Reminders & tasks for today (stub)";
         }
     }
+
+    public class WatchlistService
+    {
+        private readonly Infrastructure.WatchlistRepository _repo;
+        public WatchlistService(Infrastructure.WatchlistRepository repo) => _repo = repo;
+
+        public int GetCount() => _repo.Count();
+        public int AddSampleMsft() { _repo.Add("MSFT"); return _repo.Count(); }
+    }
 }

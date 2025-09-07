@@ -2,7 +2,6 @@
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <IsPackable>false</IsPackable>
-    <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="xunit" Version="2.9.0" />
@@ -11,8 +10,8 @@
     <PackageReference Include="coverlet.collector" Version="6.0.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Domain\Domain.csproj" />
-    <ProjectReference Include="..\..\src\Infrastructure\Infrastructure.csproj" />
-    <ProjectReference Include="..\..\src\Services\Services.csproj" />
+    <ProjectReference Include="../../src/Domain/Domain.csproj" />
+    <ProjectReference Include="../../src/Infrastructure/Infrastructure.csproj" />
+    <ProjectReference Include="../../src/Services/Services.csproj" />
   </ItemGroup>
 </Project>

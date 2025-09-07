@@ -19,16 +19,19 @@ namespace AzreaCompanion
             base.OnStartup(e);
             var logs = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "AzreaCompanion", "logs");
             Directory.CreateDirectory(logs);
-            Log.Logger = new LoggerConfiguration().WriteTo.File(Path.Combine(logs, "app-.log"), rollingInterval: RollingInterval.Day).CreateLogger();
+            Log.Logger = new LoggerConfiguration()
+                .WriteTo.File(Path.Combine(logs, "app-.log"), rollingInterval: RollingInterval.Day)
+                .CreateLogger();
 
             _host = Host.CreateDefaultBuilder()
                 .UseSerilog()
                 .ConfigureServices((ctx, services) =>
                 {
                     services.AddSingleton<Infrastructure.SqliteDb>();
+                    services.AddSingleton<Infrastructure.WatchlistRepository>();
+                    services.AddSingleton<Services.WatchlistService>();
                     services.AddSingleton<Services.BriefingService>();
                     services.AddHttpClient();
-                    // Register quote provider implementation
                     services.AddSingleton<IQuoteProvider, DummyQuoteProvider>();
                     services.AddSingleton<Presentation.MainViewModel>();
                     services.AddSingleton<MainWindow>();
