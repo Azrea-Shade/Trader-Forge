@@ -1,5 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
+    <RootNamespace>AzreaCompanion</RootNamespace>
+    <AssemblyName>AzreaCompanion</AssemblyName>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net8.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
@@ -10,6 +12,9 @@
     <ProjectReference Include="..\Presentation\Presentation.csproj" />
     <ProjectReference Include="..\Services\Services.csproj" />
     <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Serilog.Extensions.Hosting" Version="8.0.0" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />

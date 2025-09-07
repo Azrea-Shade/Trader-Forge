@@ -1,4 +1,4 @@
-<Window x:Class="App.MainWindow"
+<Window x:Class="AzreaCompanion.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Azrea — Daily Stock &amp; Workflow Companion" Height="720" Width="1200" WindowStartupLocation="CenterScreen">

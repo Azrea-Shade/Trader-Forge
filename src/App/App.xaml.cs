@@ -7,7 +7,7 @@ using Serilog;
 using Domain;
 using Integrations;
 
-namespace App
+namespace AzreaCompanion
 {
     public partial class App : Application
     {

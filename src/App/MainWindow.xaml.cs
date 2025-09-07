@@ -1,7 +1,7 @@
 using System.Windows;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace App
+namespace AzreaCompanion
 {
     public partial class MainWindow : Window
     {
