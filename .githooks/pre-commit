@@ -1,24 +1,10 @@
 #!/usr/bin/env bash
 set -euo pipefail
-
 changed=$(git diff --cached --name-only --diff-filter=ACMRT | grep -E '^\.github/workflows/.*\.(yml|yaml)$' || true)
 [ -z "${changed}" ] && exit 0
-
 fail=0
 for f in $changed; do
-  # Require trigger/mention of the testing branch
-  if ! grep -Eq 'testing/v1\.0\.0' "$f"; then
-    echo "❌ $f: missing 'testing/v1.0.0' trigger/reference" >&2
-    fail=1
-  fi
-  # Require job-level guard for testing branch
-  if ! grep -Eq "github\.ref\s*==\s*'refs/heads/testing/v1\.0\.0'" "$f"; then
-    echo "❌ $f: missing job-level guard: if: \${{ github.ref == 'refs/heads/testing/v1.0.0' }}" >&2
-    fail=1
-  fi
+  grep -Eq 'testing/v1\.0\.0' "$f" || { echo "❌ $f: missing 'testing/v1.0.0' trigger/reference" >&2; fail=1; }
+  grep -Eq "github\.ref\s*==\s*'refs/heads/testing/v1\.0\.0'" "$f" || { echo "❌ $f: missing job-level guard for testing branch" >&2; fail=1; }
 done
-
-if [ "$fail" -ne 0 ]; then
-  echo "🚫 Pre-commit blocked: fix the workflow guard issues above (or bypass with --no-verify, not recommended)." >&2
-  exit 1
-fi
+[ "$fail" -eq 0 ] || { echo "🚫 Pre-commit blocked. Fix workflow guards."; exit 1; }
