@@ -1,6 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <TargetFramework>net8.0-windows</TargetFramework>
     <IsPackable>false</IsPackable>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
   </PropertyGroup>
@@ -20,5 +21,8 @@
     <ProjectReference Include="../../src/Domain/Domain.csproj" />
     <ProjectReference Include="../../src/Infrastructure/Infrastructure.csproj" />
     <ProjectReference Include="../../src/Services/Services.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="../../src/Presentation/Presentation.csproj" />
   </ItemGroup>
 </Project>
