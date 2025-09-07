@@ -27,15 +27,21 @@ public class Phase4_AlertEvalWithWatchlist
         var tickers = new[] { "AAPL", "MSFT" };
         var prices = await feed.GetPricesAsync(tickers);
 
-        // Choose thresholds around today's deterministic price
         var p1 = prices["AAPL"];
         var p2 = prices["MSFT"];
-        facade.SetThresholds(id1, p1 - 1, p1 + 1); // price is between: no trigger
-        facade.SetThresholds(id2, p2 - 10, null);  // above triggers (price >= above)
+
+        // IMPORTANT: AlertEngine uses inclusive comparisons:
+        //  - TriggeredAbove when price >= Above
+        //  - TriggeredBelow when price <= Below
+        // For "no trigger", set Above ABOVE the price and Below BELOW the price.
+        facade.SetThresholds(id1, p1 + 1, p1 - 1); // no trigger expected
+
+        // For a positive "above" trigger, keep Above below/equal to price, Below null.
+        facade.SetThresholds(id2, p2 - 10, null);  // expect TriggeredAbove == true
 
         var rules = new[]
         {
-            new Infrastructure.AlertRow(id1, "AAPL", p1 - 1, p1 + 1, true),
+            new Infrastructure.AlertRow(id1, "AAPL", p1 + 1, p1 - 1, true),
             new Infrastructure.AlertRow(id2, "MSFT", p2 - 10, null, true),
         };
 
