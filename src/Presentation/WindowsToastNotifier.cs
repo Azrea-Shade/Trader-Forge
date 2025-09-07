@@ -1,44 +1,31 @@
 using System;
 using System.IO;
-using Services;
+using Services; // INotifier
 
 namespace Presentation
 {
     /// <summary>
-    /// Minimal notifier with zero external dependencies.
-    /// Writes notifications to a log file so CI/tests compile & run clean.
-    /// Runtime Windows toast integration will be added in a later phase.
+    /// CI-safe notifier used by the WPF app. Implements INotifier (Info/Warn/Error).
+    /// On CI (no toast channel), we just log to console + a local file.
+    /// You can later swap the body for real Windows toast calls.
     /// </summary>
     public sealed class WindowsToastNotifier : INotifier
     {
-        private readonly string _appId;
-        private readonly string _title;
-        private readonly string _shortcutName;
-        private readonly string _logPath;
+        public void Info(string message)  => Log("INFO",  message);
+        public void Warn(string message)  => Log("WARN",  message);
+        public void Error(string message) => Log("ERROR", message);
 
-        public WindowsToastNotifier(string appId, string title, string? shortcutName = null)
+        private static void Log(string level, string message)
         {
-            _appId = appId;
-            _title = title;
-            _shortcutName = shortcutName ?? "Trader Forge.lnk";
-
-            var local = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-            var dir = Path.Combine(local, "TraderForge");
-            Directory.CreateDirectory(dir);
-            _logPath = Path.Combine(dir, "toasts.log");
-        }
-
-        public void Notify(string title, string message)
-        {
+            var line = $"[{DateTimeOffset.Now:O}] {level}: {message}{Environment.NewLine}";
             try
             {
-                var line = $"{DateTimeOffset.Now:yyyy-MM-dd HH:mm:ss} [{_appId}] {(string.IsNullOrWhiteSpace(title)?_title:title)} :: {message}";
-                File.AppendAllText(_logPath, line + Environment.NewLine);
+                // Write beside the binaries to avoid permission issues on CI
+                var path = Path.Combine(AppContext.BaseDirectory, "notify.log");
+                File.AppendAllText(path, line);
             }
-            catch
-            {
-                // Swallow to keep scheduler resilient
-            }
+            catch { /* swallow for CI */ }
+            try { Console.WriteLine($"[Toast/{level}] {message}"); } catch { /* ignore */ }
         }
     }
 }
