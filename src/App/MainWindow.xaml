@@ -1,46 +1,69 @@
 <Window x:Class="AzreaCompanion.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Azrea — Daily Stock &amp; Workflow Companion" Height="720" Width="1200" WindowStartupLocation="CenterScreen">
-  <Grid Margin="16" Background="#0b0f1a">
-    <Grid.RowDefinitions>
-      <RowDefinition Height="Auto"/>
-      <RowDefinition Height="*"/>
-      <RowDefinition Height="Auto"/>
-    </Grid.RowDefinitions>
+        Title="Azrea — Daily Stock &amp; Workflow Companion"
+        Height="720" Width="1200" WindowStartupLocation="CenterScreen"
+        Icon="Assets/Branding/icons/app.ico">
+  <DockPanel Background="#0b0f1a">
+    <!-- Menu bar -->
+    <Menu DockPanel.Dock="Top">
+      <MenuItem Header="_File">
+        <MenuItem Header="E_xit" Click="Exit_Click"/>
+      </MenuItem>
+      <MenuItem Header="_Help">
+        <MenuItem Header="_About..." Click="About_Click"/>
+      </MenuItem>
+    </Menu>
 
-    <TextBlock Text="{Binding Title}" FontSize="22" FontWeight="Bold" Foreground="White" Margin="0,0,0,12"/>
+    <!-- Body -->
+    <Grid Margin="16">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="*"/>
+        <RowDefinition Height="Auto"/>
+      </Grid.RowDefinitions>
 
-    <Border Grid.Row="1" Padding="12" CornerRadius="16" BorderThickness="1" BorderBrush="#22FFFFFF" Background="#0b0f1a">
-      <StackPanel>
-        <TextBlock Text="Morning Brief (stub)" FontSize="16" Foreground="White" Margin="0,0,0,8"/>
-        <ItemsControl ItemsSource="{Binding BriefItems}">
-          <ItemsControl.ItemTemplate>
-            <DataTemplate>
-              <TextBlock Foreground="White">
-                <Run Text="• "/>
-                <Run Text="{Binding}"/>
-              </TextBlock>
-            </DataTemplate>
-          </ItemsControl.ItemTemplate>
-        </ItemsControl>
-        <Separator Margin="0,12,0,12"/>
-        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-          <TextBlock Text="Watchlist count:" Foreground="White" Margin="0,0,8,0"/>
-          <TextBlock Text="{Binding WatchCount}" Foreground="White" FontWeight="Bold"/>
-          <Button Content="Add MSFT" Margin="16,0,0,0" Padding="12,6" Command="{Binding AddMsftCommand}"/>
-          <TextBlock Text="   Favorites:" Foreground="White" Margin="24,0,8,0"/>
-          <TextBlock Text="{Binding FavoriteCount}" Foreground="White" FontWeight="Bold"/>
+      <!-- Title row with About button -->
+      <Grid Margin="0,0,0,12">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition />
+          <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <TextBlock Text="{Binding Title}" FontSize="22" FontWeight="Bold" Foreground="White" />
+        <Button Grid.Column="1" Content="About" Padding="12,6" Margin="12,0,0,0" Click="About_Click"/>
+      </Grid>
+
+      <Border Grid.Row="1" Padding="12" CornerRadius="16" BorderThickness="1" BorderBrush="#22FFFFFF" Background="#0b0f1a">
+        <StackPanel>
+          <TextBlock Text="Morning Brief (stub)" FontSize="16" Foreground="White" Margin="0,0,0,8"/>
+          <ItemsControl ItemsSource="{Binding BriefItems}">
+            <ItemsControl.ItemTemplate>
+              <DataTemplate>
+                <TextBlock Foreground="White">
+                  <Run Text="• "/>
+                  <Run Text="{Binding}"/>
+                </TextBlock>
+              </DataTemplate>
+            </ItemsControl.ItemTemplate>
+          </ItemsControl>
+          <Separator Margin="0,12,0,12"/>
+          <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+            <TextBlock Text="Watchlist count:" Foreground="White" Margin="0,0,8,0"/>
+            <TextBlock Text="{Binding WatchCount}" Foreground="White" FontWeight="Bold"/>
+            <Button Content="Add MSFT" Margin="16,0,0,0" Padding="12,6" Command="{Binding AddMsftCommand}"/>
+            <TextBlock Text="   Favorites:" Foreground="White" Margin="24,0,8,0"/>
+            <TextBlock Text="{Binding FavoriteCount}" Foreground="White" FontWeight="Bold"/>
+          </StackPanel>
         </StackPanel>
-      </StackPanel>
-    </Border>
+      </Border>
 
-    <DockPanel Grid.Row="2" Margin="0,12,0,0">
-      <StackPanel Orientation="Horizontal" DockPanel.Dock="Left">
-        <TextBlock Text="DB Path:" Foreground="White" VerticalAlignment="Center"/>
-        <TextBox Text="{Binding DbPath}" IsReadOnly="True" Margin="8,0,0,0" Width="600"/>
-        <Button Content="Copy Path" Margin="8,0,0,0" Padding="10,6" Command="{Binding CopyDbPathCommand}"/>
-      </StackPanel>
-    </DockPanel>
-  </Grid>
+      <DockPanel Grid.Row="2" Margin="0,12,0,0">
+        <StackPanel Orientation="Horizontal" DockPanel.Dock="Left">
+          <TextBlock Text="DB Path:" Foreground="White" VerticalAlignment="Center"/>
+          <TextBox Text="{Binding DbPath}" IsReadOnly="True" Margin="8,0,0,0" Width="600"/>
+          <Button Content="Copy Path" Margin="8,0,0,0" Padding="10,6" Command="{Binding CopyDbPathCommand}"/>
+        </StackPanel>
+      </DockPanel>
+    </Grid>
+  </DockPanel>
 </Window>

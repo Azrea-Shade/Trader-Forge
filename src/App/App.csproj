@@ -3,15 +3,18 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>net8.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
+    <ApplicationIcon>Assets/Branding/icons/app.ico</ApplicationIcon>
     <RootNamespace>AzreaCompanion</RootNamespace>
     <AssemblyName>AzreaCompanion</AssemblyName>
   </PropertyGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\Presentation\Presentation.csproj" />
     <ProjectReference Include="..\Services\Services.csproj" />
     <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
     <ProjectReference Include="..\Integrations\Integrations.csproj" />
   </ItemGroup>
+
   <ItemGroup>
     <PackageReference Include="CommunityToolkit.Mvvm" />
     <PackageReference Include="Microsoft.Extensions.Hosting" />
@@ -21,4 +24,14 @@
     <PackageReference Include="Serilog.Extensions.Hosting" />
     <PackageReference Include="Microsoft.Toolkit.Uwp.Notifications" />
   </ItemGroup>
+
+  <!-- Copy all assets -->
+  <ItemGroup>
+    <Content Include="Assets/**/*">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
 </Project>
+  <ItemGroup>
+    <SplashScreen Include="Assets/Branding/splash/splash.png" />
+  </ItemGroup>

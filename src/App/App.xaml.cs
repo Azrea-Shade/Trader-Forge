@@ -50,12 +50,16 @@ namespace AzreaCompanion
                     services.AddSingleton<Services.BriefingService>();
                     services.AddHttpClient();
 
-                    // Quotes (dummy provider for now)
-                    services.AddSingleton<IQuoteProvider, Integrations.DummyQuoteProvider>();
+                    // Quotes (dummy for now)
+                    services.AddSingleton<IQuoteProvider, DummyQuoteProvider>();
 
                     // Presentation
                     services.AddSingleton<Presentation.MainViewModel>();
+                    services.AddSingleton<Presentation.AboutViewModel>();
+
+                    // Windows
                     services.AddSingleton<MainWindow>();
+                    services.AddTransient<AboutWindow>();
                 })
                 .Build();
 
