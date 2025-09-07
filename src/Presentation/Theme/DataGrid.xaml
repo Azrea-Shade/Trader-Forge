@@ -12,7 +12,6 @@
     <Setter Property="VerticalGridLinesBrush" Value="{StaticResource Border.Brush}"/>
     <Setter Property="RowBackground" Value="#101622"/>
     <Setter Property="AlternatingRowBackground" Value="#0E1522"/>
-    <Setter Property="SelectionBrush" Value="{StaticResource Accent.Brush}"/>
     <Setter Property="SelectionMode" Value="Extended"/>
   </Style>
 
