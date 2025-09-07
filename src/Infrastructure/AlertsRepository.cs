@@ -7,7 +7,7 @@ using Microsoft.Data.Sqlite;
 
 namespace Infrastructure
 {
-    // Use the canonical 'AlertRow' defined in AlertRow.cs (do NOT redeclare here)
+    // Use the canonical AlertRow model from AlertRow.cs
 
     public class AlertsRepository
     {
@@ -15,7 +15,7 @@ namespace Infrastructure
 
         public AlertsRepository(SqliteDb db)
         {
-            _db = db; // SqliteDb ensures schema on construction
+            _db = db; // SqliteDb ensures schema & defaults in its ctor
         }
 
         private IDbConnection Open() => new SqliteConnection($"Data Source={_db.DbPath}");
@@ -41,6 +41,13 @@ SELECT last_insert_rowid();";
             const string sql = @"UPDATE alerts SET enabled = @e WHERE id = @id;";
             using var con = Open();
             con.Execute(sql, new { id, e = enabled ? 1 : 0 });
+        }
+
+        public int Count()
+        {
+            const string sql = @"SELECT COUNT(*) FROM alerts;";
+            using var con = Open();
+            return con.ExecuteScalar<int>(sql);
         }
 
         public IReadOnlyList<AlertRow> All()
