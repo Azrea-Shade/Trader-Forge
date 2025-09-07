@@ -45,7 +45,7 @@ namespace Services
             _clock = clock;
         }
 
-        public DailyBrief Generate()
+        public DailyBrief Generate(DateOnly date, string[] tickers)
         {
             var tickers = _watch.AllTickers();
             var sb = new StringBuilder();
