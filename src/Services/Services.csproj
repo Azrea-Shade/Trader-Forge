@@ -12,6 +12,6 @@
     <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\/Integrations\/Integrations.csproj" \/>
-  <\/ItemGroup>
+    <ProjectReference Include="../Integrations/Integrations.csproj" />
+  </ItemGroup>
 </Project>
