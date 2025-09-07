@@ -1,5 +1,4 @@
 using System.Windows;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace AzreaCompanion
 {

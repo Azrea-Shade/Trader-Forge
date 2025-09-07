@@ -1,0 +1,21 @@
+# Compiled binaries
+bin/
+obj/
+out/
+artifacts/
+# VS and Rider
+.vs/
+.idea/
+# User-specific
+*.user
+*.suo
+*.userprefs
+# Logs & transient
+*.log
+logs/
+# Coverage
+TestResults/
+*.trx
+coverage*.xml
+# CLI outputs
+src/Cli/cli_out/
