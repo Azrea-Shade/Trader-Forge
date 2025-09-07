@@ -1,38 +1,15 @@
-using System;
-using System.IO;
-using Services; // INotifier
+using System.Diagnostics;
+using Services;
 
 namespace Presentation
 {
-    /// <summary>
-    /// CI-safe notifier that satisfies INotifier's Notify(level,message) contract.
-    /// Also exposes Info/Warn/Error for convenience. Writes to console + local file.
-    /// </summary>
+    // Simple, CI-safe toast notifier. Real Windows toast wiring can come later.
     public sealed class WindowsToastNotifier : INotifier
     {
-        // Interface member required by CI: Notify(string level, string message)
-        public void Notify(string level, string message)
+        public void Notify(string title, string message)
         {
-            if (string.IsNullOrWhiteSpace(level)) level = "INFO";
-            Log(level.ToUpperInvariant(), message ?? string.Empty);
-        }
-
-        // Convenience helpers (in case app uses them)
-        public void Info(string message)  => Notify("INFO",  message);
-        public void Warn(string message)  => Notify("WARN",  message);
-        public void Error(string message) => Notify("ERROR", message);
-
-        private static void Log(string level, string message)
-        {
-            var line = $"[{DateTimeOffset.Now:O}] {level}: {message}{Environment.NewLine}";
-            try
-            {
-                var path = Path.Combine(AppContext.BaseDirectory, "notify.log");
-                File.AppendAllText(path, line);
-            }
-            catch { /* ignore on CI */ }
-
-            try { Console.WriteLine($"[Toast/{level}] {message}"); } catch { /* ignore */ }
+            // No dependencies: just log. UI popups can be added in-app on Windows.
+            Debug.WriteLine($"[Toast] {title}: {message}");
         }
     }
 }

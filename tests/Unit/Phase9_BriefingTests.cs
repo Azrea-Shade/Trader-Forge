@@ -3,7 +3,7 @@ using System.IO;
 using System.Threading.Tasks;
 using Infrastructure;
 using Services;
-using Services.Feeds;
+using Services;
 using Xunit;
 
 public class Phase9_BriefingTests

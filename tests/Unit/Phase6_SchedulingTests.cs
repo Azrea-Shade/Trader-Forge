@@ -8,7 +8,7 @@ using FluentAssertions;
 
 public class Phase6_SchedulingTests
 {
-    private sealed class ManualClock : IClock
+    private sealed private sealed class ManualClock : IClock {: IClock
     {
         private DateTime _now;
         public ManualClock(DateTime start) { _now = start; }
