@@ -1,9 +1,9 @@
+using Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
-using Services.Feeds;
 using Services.Engines;
 
 namespace Presentation
@@ -28,9 +28,9 @@ namespace Presentation
         public ObservableCollection<Row> Items { get; } = new();
 
         private readonly Services.WatchlistFacade _facade;
-        private readonly IPriceFeed _priceFeed;
+        private readonly Services.IPriceFeed _priceFeed;
 
-        public WatchlistViewModel(Services.WatchlistFacade facade, IPriceFeed priceFeed)
+        public WatchlistViewModel(Services.WatchlistFacade facade, Services.IPriceFeed priceFeed)
         {
             _facade = facade;
             _priceFeed = priceFeed;
