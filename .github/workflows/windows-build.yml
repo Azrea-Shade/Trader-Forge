@@ -5,34 +5,10 @@ on:
   workflow_dispatch:
 
 jobs:
-  test_cli:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: 8.0.x
-
-      - name: Restore
-        run: dotnet restore
-
-      - name: Run unit tests
-        run: dotnet test tests/Unit/Unit.csproj --collect:"XPlat Code Coverage" --logger "trx;LogFileName=test_results.trx"
-
-      - name: CLI smoke (headless)
-        run: dotnet run --project src/Cli/Cli.csproj -c Release
-
-      - name: Upload CLI output
-        uses: actions/upload-artifact@v4
-        with:
-          name: cli_out
-          path: src/Cli/cli_out
-
-  build_windows_wpf:
+  windows_all:
     runs-on: windows-latest
-    needs: test_cli
+    env:
+      DOTNET_NOLOGO: 1
     steps:
       - uses: actions/checkout@v4
 
@@ -44,13 +20,28 @@ jobs:
       - name: .NET SDK info
         run: dotnet --info
 
-      - name: Restore
-        run: dotnet restore src/App/App.csproj
+      - name: Restore projects
+        run: |
+          dotnet restore tests/Unit/Unit.csproj
+          dotnet restore src/Cli/Cli.csproj
+          dotnet restore src/App/App.csproj
+
+      - name: Run unit tests (coverage)
+        run: dotnet test tests/Unit/Unit.csproj --collect:"XPlat Code Coverage" --logger "trx;LogFileName=test_results.trx"
+
+      - name: CLI smoke (headless)
+        run: dotnet run --project src/Cli/Cli.csproj -c Release
+
+      - name: Upload CLI output
+        uses: actions/upload-artifact@v4
+        with:
+          name: cli_out
+          path: src/Cli/cli_out
 
       - name: Build WPF
         run: dotnet build src/App/App.csproj -c Release --no-restore
 
-      - name: Publish (artifact only; NOT a GitHub release)
+      - name: Publish WPF (artifact only; NOT a GitHub release)
         run: dotnet publish src/App/App.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -o out/win-x64
 
       - name: Upload app artifact
