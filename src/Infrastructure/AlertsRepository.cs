@@ -5,7 +5,6 @@ using Dapper;
 
 namespace Infrastructure
 {
-    // NOTE: AlertRow record is defined elsewhere in Infrastructure. Do not duplicate here.
     // public record AlertRow(long Id, string Ticker, double? Above, double? Below, bool Enabled);
 
     public class AlertsRepository
@@ -28,14 +27,14 @@ CREATE TABLE IF NOT EXISTS alerts(
   Below   REAL    NULL,
   Enabled INTEGER NOT NULL DEFAULT 1
 );";
-            _db.Connection.Execute(sql);
+            _db.Conn.Execute(sql);
         }
 
         public long Add(string ticker, double? above, double? below, bool enabled)
         {
             const string sql = @"INSERT INTO alerts(Ticker,Above,Below,Enabled) VALUES (@t,@a,@b,@e);
                                  SELECT last_insert_rowid();";
-            var id = _db.Connection.ExecuteScalar<long>(sql, new
+            var id = _db.Conn.ExecuteScalar<long>(sql, new
             {
                 t = ticker,
                 a = (object?)above,
@@ -48,14 +47,14 @@ CREATE TABLE IF NOT EXISTS alerts(
         public void SetEnabled(long id, bool enabled)
         {
             const string sql = @"UPDATE alerts SET Enabled=@e WHERE Id=@id;";
-            _db.Connection.Execute(sql, new { id, e = enabled ? 1 : 0 });
+            _db.Conn.Execute(sql, new { id, e = enabled ? 1 : 0 });
         }
 
         public IReadOnlyList<AlertRow> All()
         {
             const string sql = @"SELECT Id, Ticker, Above, Below, Enabled FROM alerts;";
-            // Use dynamic + manual projection to avoid Dapper constructor mapping on records
-            var rows = _db.Connection.Query(sql).ToList();
+            // Use dynamic + manual projection to avoid Dapper ctor mapping on records
+            var rows = _db.Conn.Query(sql).ToList();
             var list = new List<AlertRow>(rows.Count);
 
             foreach (var r in rows)
