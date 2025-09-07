@@ -7,13 +7,18 @@ namespace Infrastructure
     public class SqliteDb
     {
         public string DbPath { get; }
-        public SqliteDb()
+        public string DbPath { get; }
+        public SqliteDb(string? dbPathOverride = null)
+        {
+            var baseDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "AzreaCompanion");
+            Directory.CreateDirectory(baseDir);
+            DbPath = dbPathOverride ?? Path.Combine(baseDir, "app.db");
+            EnsureSchema();
+        }
         {
             var baseDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "AzreaCompanion");
             Directory.CreateDirectory(baseDir);
             DbPath = Path.Combine(baseDir, "app.db");
-            EnsureSchema();
-        }
 
         private void EnsureSchema()
         {

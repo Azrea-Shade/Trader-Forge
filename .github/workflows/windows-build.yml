@@ -1,10 +1,38 @@
-name: windows-build
+name: ci
 on:
   push:
     branches: [ "testing/v1.0.0" ]
+  workflow_dispatch:
+
 jobs:
-  build:
+  test_cli:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Restore
+        run: dotnet restore
+
+      - name: Run unit tests
+        run: dotnet test tests/Unit/Unit.csproj --collect:"XPlat Code Coverage" --logger "trx;LogFileName=test_results.trx"
+
+      - name: CLI smoke (headless)
+        run: dotnet run --project src/Cli/Cli.csproj -c Release
+
+      - name: Upload CLI output
+        uses: actions/upload-artifact@v4
+        with:
+          name: cli_out
+          path: src/Cli/cli_out
+
+  build_windows_wpf:
     runs-on: windows-latest
+    needs: test_cli
     steps:
       - uses: actions/checkout@v4
 
@@ -16,20 +44,16 @@ jobs:
       - name: .NET SDK info
         run: dotnet --info
 
-      - name: List workloads (non-fatal)
-        run: dotnet workload list
-        continue-on-error: true
-
       - name: Restore
         run: dotnet restore src/App/App.csproj
 
-      - name: Build
+      - name: Build WPF
         run: dotnet build src/App/App.csproj -c Release --no-restore
 
-      - name: Publish (self-contained win-x64)
+      - name: Publish (artifact only; NOT a GitHub release)
         run: dotnet publish src/App/App.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -o out/win-x64
 
-      - name: Upload artifact
+      - name: Upload app artifact
         uses: actions/upload-artifact@v4
         with:
           name: Azrea-Companion-win-x64
