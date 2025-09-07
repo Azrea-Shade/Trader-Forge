@@ -7,23 +7,28 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
+
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
-      # BEGIN ci-diagnostics
+        with:
+          dotnet-version: 8.0.x
+
       - name: .NET SDK info
         run: dotnet --info
+
       - name: List workloads (non-fatal)
         run: dotnet workload list
         continue-on-error: true
-      # END ci-diagnostics
-        with:
-          dotnet-version: 8.0.x
+
       - name: Restore
         run: dotnet restore src/App/App.csproj
+
       - name: Build
         run: dotnet build src/App/App.csproj -c Release --no-restore
+
       - name: Publish (self-contained win-x64)
         run: dotnet publish src/App/App.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -o out/win-x64
+
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:

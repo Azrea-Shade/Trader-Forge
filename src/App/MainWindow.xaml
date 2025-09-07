@@ -14,9 +14,9 @@
         <ItemsControl ItemsSource="{Binding BriefItems}">
           <ItemsControl.ItemTemplate>
             <DataTemplate>
-              <TextBlock>
+              <TextBlock Foreground="White">
                 <Run Text="• "/>
-                <Run Text="{Binding}" Foreground="White"/>
+                <Run Text="{Binding}"/>
               </TextBlock>
             </DataTemplate>
           </ItemsControl.ItemTemplate>
