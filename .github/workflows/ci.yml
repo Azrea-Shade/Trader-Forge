@@ -1,12 +1,47 @@
 name: ci
+
 on:
   push:
     branches: [ "testing/v1.0.0" ]
   workflow_dispatch:
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
-  windows_all:
+  lint:
+    if: ${{ github.ref == 'refs/heads/testing/v1.0.0' }}
     runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate workflow branch guards (testing-only)
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $files = Get-ChildItem ".github/workflows" -Recurse -Include *.yml,*.yaml
+          if (-not $files) { Write-Host "No workflow files found."; exit 0 }
+          $failed = $false
+          foreach ($f in $files) {
+            $t = Get-Content $f.FullName -Raw
+            if ($t -notmatch "testing/v1\.0\.0") {
+              Write-Error "Missing 'testing/v1.0.0' trigger/reference in $($f.FullName)"
+              $failed = $true
+            }
+            if ($t -notmatch "github\.ref\s*==\s*'refs/heads/testing/v1\.0\.0'") {
+              Write-Error "Missing job-level guard in $($f.FullName): if: ${{ github.ref == 'refs/heads/testing/v1.0.0' }}"
+              $failed = $true
+            }
+          }
+          if ($failed) { throw "Workflow guard check failed." }
+          Write-Host "✅ Workflow guards are present."
+
+  tests:
+    if: ${{ github.ref == 'refs/heads/testing/v1.0.0' }}
+    runs-on: windows-latest
+    needs: lint
     env:
       DOTNET_NOLOGO: 1
     steps:
@@ -53,6 +88,27 @@ jobs:
           name: cli_out
           path: src/Cli/cli_out
           if-no-files-found: warn
+
+  build:
+    if: ${{ github.ref == 'refs/heads/testing/v1.0.0' }}
+    runs-on: windows-latest
+    needs: tests
+    env:
+      DOTNET_NOLOGO: 1
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET 8
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+
+      - name: .NET SDK info
+        run: dotnet --info
+
+      - name: Restore App
+        run: dotnet restore src/App/App.csproj
 
       - name: Build WPF
         run: dotnet build src/App/App.csproj -c Release --no-restore
