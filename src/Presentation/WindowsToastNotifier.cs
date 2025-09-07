@@ -1,8 +1,7 @@
 using System;
 using System.IO;
 using System.Runtime.InteropServices;
-using CommunityToolkit.WinUI.Notifications; // ToastContentBuilder, ToastNotificationManagerCompat
-using Windows.UI.Notifications;             // ToastNotification
+using Microsoft.Toolkit.Uwp.Notifications; // v7.1.2: ToastContentBuilder + .Show()
 using Services;
 
 namespace Presentation
@@ -29,23 +28,14 @@ namespace Presentation
         {
             try
             {
-                // Build toast content (builder.Show(...) isn't available in 7.1.2)
-                var content = new ToastContentBuilder()
+                new ToastContentBuilder()
                     .AddText(string.IsNullOrWhiteSpace(title) ? _title : title)
                     .AddText(message ?? string.Empty)
-                    .GetToastContent();
-
-                var xml   = content.GetXml();
-                var toast = new ToastNotification(xml)
-                {
-                    ExpirationTime = DateTimeOffset.Now.AddMinutes(5)
-                };
-
-                ToastNotificationManagerCompat.CreateToastNotifier(_appId).Show(toast);
+                    .Show(); // uses DesktopNotificationManagerCompat internally in this package
             }
             catch
             {
-                // Swallow so notifications can't crash the app/scheduler
+                // Keep scheduler/app resilient
             }
         }
 
@@ -81,7 +71,7 @@ namespace Presentation
             }
             catch
             {
-                // Best effort; if this fails, toasts may not appear but app keeps running.
+                // Best effort; if it fails, toasts may still show when app started via shortcut later.
             }
         }
 
