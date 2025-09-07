@@ -5,20 +5,22 @@ using Services;
 namespace Presentation
 {
     /// <summary>
-    /// CI-safe notifier used by WPF layer. Implements the current INotifier contract
-    /// (Info/Warn/Error). Real Windows toast UX can be layered on later.
+    /// CI-safe notifier. Implements Services.INotifier.Notify(level,message).
+    /// Also exposes Info/Warn/Error helpers for older call sites.
     /// </summary>
     public sealed class WindowsToastNotifier : INotifier
     {
-        private static void Log(string level, string text)
+        public void Notify(string level, string message)
         {
-            var line = $"[{level}] {text}";
+            string safeLevel = string.IsNullOrWhiteSpace(level) ? "INFO" : level.ToUpperInvariant();
+            var line = $"[{DateTimeOffset.Now:HH:mm:ss}] [{safeLevel}] {message}";
             Debug.WriteLine(line);
             Console.WriteLine(line);
         }
 
-        public void Info(string text)  => Log("INFO",  text);
-        public void Warn(string text)  => Log("WARN",  text);
-        public void Error(string text) => Log("ERROR", text);
+        // Back-compat helpers (fine even if not in the interface)
+        public void Info(string text)  => Notify("INFO",  text);
+        public void Warn(string text)  => Notify("WARN",  text);
+        public void Error(string text) => Notify("ERROR", text);
     }
 }
