@@ -5,26 +5,33 @@ using Services; // INotifier
 namespace Presentation
 {
     /// <summary>
-    /// CI-safe notifier used by the WPF app. Implements INotifier (Info/Warn/Error).
-    /// On CI (no toast channel), we just log to console + a local file.
-    /// You can later swap the body for real Windows toast calls.
+    /// CI-safe notifier that satisfies INotifier's Notify(level,message) contract.
+    /// Also exposes Info/Warn/Error for convenience. Writes to console + local file.
     /// </summary>
     public sealed class WindowsToastNotifier : INotifier
     {
-        public void Info(string message)  => Log("INFO",  message);
-        public void Warn(string message)  => Log("WARN",  message);
-        public void Error(string message) => Log("ERROR", message);
+        // Interface member required by CI: Notify(string level, string message)
+        public void Notify(string level, string message)
+        {
+            if (string.IsNullOrWhiteSpace(level)) level = "INFO";
+            Log(level.ToUpperInvariant(), message ?? string.Empty);
+        }
+
+        // Convenience helpers (in case app uses them)
+        public void Info(string message)  => Notify("INFO",  message);
+        public void Warn(string message)  => Notify("WARN",  message);
+        public void Error(string message) => Notify("ERROR", message);
 
         private static void Log(string level, string message)
         {
             var line = $"[{DateTimeOffset.Now:O}] {level}: {message}{Environment.NewLine}";
             try
             {
-                // Write beside the binaries to avoid permission issues on CI
                 var path = Path.Combine(AppContext.BaseDirectory, "notify.log");
                 File.AppendAllText(path, line);
             }
-            catch { /* swallow for CI */ }
+            catch { /* ignore on CI */ }
+
             try { Console.WriteLine($"[Toast/{level}] {message}"); } catch { /* ignore */ }
         }
     }
