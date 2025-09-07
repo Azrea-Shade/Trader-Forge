@@ -4,7 +4,6 @@
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
   </PropertyGroup>
   <ItemGroup>
-    <PackageVersion Include="Microsoft.Toolkit.Uwp.Notifications" Version="7.1.2" />
     <PackageVersion Include="Microsoft.Data.Sqlite" Version="8.0.7" />
     <PackageVersion Include="Dapper" Version="2.1.35" />
     <PackageVersion Include="Serilog" Version="3.1.1" />
