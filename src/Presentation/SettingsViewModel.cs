@@ -36,32 +36,31 @@ namespace Presentation
         }
         public SettingsViewModel(SqliteDb db, IClock clock)
             : this(db,
-                new Scheduler(db, clock,
-                    new BriefService(new WatchlistReader(db),
+                new Scheduler(new FileNotifier("artifacts/brief.log"), new SystemClock())),
                         new PortfolioService(new PortfoliosRepository(db), new DummyPriceFeed()),
                         clock),
                     new FileNotifier()),
                 clock) { }
         public SettingsViewModel(SqliteDb db)
             : this(db,
-                new Scheduler(db, new SystemClock(),
-                    new BriefService(new WatchlistReader(db),
+                new Scheduler(new FileNotifier("artifacts/brief.log"), new SystemClock()),
+                    new BriefService(new SystemClock()),
                         new PortfolioService(new PortfoliosRepository(db), new DummyPriceFeed()),
                         new SystemClock()),
                     new FileNotifier()),
                 new SystemClock()) { }
         public SettingsViewModel(IClock clock)
             : this(new SqliteDb(),
-                new Scheduler(new SqliteDb(), clock,
-                    new BriefService(new WatchlistReader(new SqliteDb()),
+                new Scheduler(new FileNotifier("artifacts/brief.log"), new SystemClock()), clock,
+                    new BriefService(new SystemClock())),
                         new PortfolioService(new PortfoliosRepository(new SqliteDb()), new DummyPriceFeed()),
                         clock),
                     new FileNotifier()),
                 clock) { }
         public SettingsViewModel(SettingsService _)
             : this(new SqliteDb(),
-                new Scheduler(new SqliteDb(), new SystemClock(),
-                    new BriefService(new WatchlistReader(new SqliteDb()),
+                new Scheduler(new FileNotifier("artifacts/brief.log"), new SystemClock()), new SystemClock(),
+                    new BriefService(new SystemClock())),
                         new PortfolioService(new PortfoliosRepository(new SqliteDb()), new DummyPriceFeed()),
                         new SystemClock()),
                     new FileNotifier()),
