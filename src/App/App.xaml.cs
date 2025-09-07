@@ -2,8 +2,7 @@ using System;
 using System.IO;
 using System.Windows;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosti
-ng;
+using Microsoft.Extensions.Hosting;
 using Serilog;
 using Domain;
 using Integrations;
@@ -18,6 +17,7 @@ namespace AzreaCompanion
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
+
             var logs = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "AzreaCompanion", "logs");
             Directory.CreateDirectory(logs);
             Log.Logger = new LoggerConfiguration()
@@ -33,7 +33,9 @@ namespace AzreaCompanion
                     services.AddSingleton<Services.WatchlistService>();
                     services.AddSingleton<Services.BriefingService>();
                     services.AddHttpClient();
+
                     services.AddSingleton<IQuoteProvider, DummyQuoteProvider>();
+
                     services.AddSingleton<Presentation.MainViewModel>();
                     services.AddSingleton<MainWindow>();
                 })
@@ -41,6 +43,7 @@ namespace AzreaCompanion
 
             _host.Start();
             Services = _host.Services;
+
             var window = Services.GetRequiredService<MainWindow>();
             window.Show();
         }
