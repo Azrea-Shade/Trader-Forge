@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Domain;
-using Services;
 
 namespace Presentation
 {
     public static class ServiceAdapters
     {
-        private static object? GetRepo(PortfolioService svc)
+        // --- helpers ---
+        private static object? GetRepo(object svc)
         {
             var t = svc.GetType();
             var f = t.GetField("_repo", BindingFlags.Instance|BindingFlags.NonPublic)
@@ -17,8 +17,55 @@ namespace Presentation
             return f?.GetValue(svc);
         }
 
-        public static IEnumerable<Portfolio> AllPortfolios(this PortfolioService svc)
+        private static List<AllocationRow> MapAllocation(object? value)
         {
+            var list = new List<AllocationRow>();
+            if (value is IEnumerable<AllocationRow> rows)
+                return rows.ToList();
+
+            if (value is IDictionary<string, decimal> mapD)
+            {
+                foreach (var kv in mapD)
+                {
+                    var row = new AllocationRow();
+                    var rt = row.GetType();
+                    (rt.GetProperty("Symbol") ?? rt.GetProperty("Ticker") ?? rt.GetProperty("Name"))?.SetValue(row, kv.Key);
+                    var wp = rt.GetProperty("Weight") ?? rt.GetProperty("Percent") ?? rt.GetProperty("Allocation");
+                    if (wp != null)
+                    {
+                        var tp = Nullable.GetUnderlyingType(wp.PropertyType) ?? wp.PropertyType;
+                        wp.SetValue(row, Convert.ChangeType(kv.Value, tp));
+                    }
+                    list.Add(row);
+                }
+                return list;
+            }
+
+            if (value is IDictionary<string, double> mapF)
+            {
+                foreach (var kv in mapF)
+                {
+                    var row = new AllocationRow();
+                    var rt = row.GetType();
+                    (rt.GetProperty("Symbol") ?? rt.GetProperty("Ticker") ?? rt.GetProperty("Name"))?.SetValue(row, kv.Key);
+                    var wp = rt.GetProperty("Weight") ?? rt.GetProperty("Percent") ?? rt.GetProperty("Allocation");
+                    if (wp != null)
+                    {
+                        var tp = Nullable.GetUnderlyingType(wp.PropertyType) ?? wp.PropertyType;
+                        wp.SetValue(row, Convert.ChangeType((decimal)kv.Value, tp));
+                    }
+                    list.Add(row);
+                }
+                return list;
+            }
+
+            return list; // empty if nothing recognized
+        }
+
+        // --- public adapters (typed) ---
+        public static IEnumerable<Portfolio> AllPortfolios(this Services.PortfolioService svc)
+        {
+            // prefer any native typed method if present
             var m = svc.GetType().GetMethod("AllPortfolios", BindingFlags.Instance|BindingFlags.Public|BindingFlags.NonPublic, new Type[0]);
             if (m != null && m.ReturnType != typeof(void))
             {
@@ -27,6 +74,7 @@ namespace Presentation
                 if (r is IEnumerable<object> objs) return objs.OfType<Portfolio>();
             }
 
+            // fallback to repository dynamic rows -> typed
             dynamic repo = GetRepo(svc) ?? throw new InvalidOperationException("Portfolio repository not available.");
             IEnumerable<dynamic> rows = repo.AllPortfolios();
             var list = new List<Portfolio>();
@@ -42,35 +90,33 @@ namespace Presentation
             return list;
         }
 
-        public static PortfolioSummary BuildSummaryTyped(this PortfolioService svc, int portfolioId)
+        public static PortfolioSummary BuildSummaryTyped(this Services.PortfolioService svc, int portfolioId)
         {
+            // if the service already has a strongly-typed method, prefer it
             var m = svc.GetType().GetMethod("BuildSummary", BindingFlags.Instance|BindingFlags.Public|BindingFlags.NonPublic, new Type[] { typeof(int) });
-            if (m != null)
+            if (m != null && m.ReturnType != typeof(void))
             {
                 var r = m.Invoke(svc, new object[] { portfolioId });
                 if (r is PortfolioSummary ps) return ps;
-                if (r is object o)
-                {
-                    var ps2 = new PortfolioSummary();
-                    var allocProp = o.GetType().GetProperty("Allocation");
-                    if (allocProp != null)
-                    {
-                        var v = allocProp.GetValue(o);
-                        if (v is IDictionary<string, decimal> d) ps2.Allocation = new Dictionary<string, decimal>(d);
-                        else if (v is IDictionary<string, double> d2)
-                        {
-                            var map = new Dictionary<string, decimal>();
-                            foreach (var kv in d2) map[kv.Key] = (decimal)kv.Value;
-                            ps2.Allocation = map;
-                        }
-                    }
-                    return ps2;
-                }
             }
 
+            // fallback through the repo
             dynamic repo = GetRepo(svc) ?? throw new InvalidOperationException("Portfolio repository not available.");
             var res = repo.BuildSummary(portfolioId);
-            return res is PortfolioSummary ok ? ok : new PortfolioSummary();
+            if (res is PortfolioSummary ok) return ok;
+
+            var ps2 = new PortfolioSummary();
+            if (res != null)
+            {
+                var rt = res.GetType();
+                var allocProp = rt.GetProperty("Allocation") ?? rt.GetProperty("Allocations");
+                if (allocProp != null)
+                {
+                    var val = allocProp.GetValue(res);
+                    ps2.Allocation = MapAllocation(val);
+                }
+            }
+            return ps2;
         }
     }
 }
