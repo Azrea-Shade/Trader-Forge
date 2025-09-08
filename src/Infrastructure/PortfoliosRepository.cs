@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Data;
 using Dapper;
 using Microsoft.Data.Sqlite;
@@ -15,7 +14,6 @@ namespace Infrastructure
             _connectionString = connectionString;
         }
 
-        // Open connection, ensure schema, run work
         private T WithConnection<T>(Func<IDbConnection, T> work)
         {
             using var c = new SqliteConnection(_connectionString);
@@ -52,7 +50,7 @@ CREATE TABLE IF NOT EXISTS holdings (
 ");
         }
 
-        // --- portfolio CRUD (notes nullable to avoid nullability warnings) ---
+        // Portfolio CRUD (notes optional)
         public int CreatePortfolio(string name, string? notes)
             => WithConnection(conn =>
                 conn.ExecuteScalar<int>(
@@ -65,7 +63,6 @@ CREATE TABLE IF NOT EXISTS holdings (
                     new { id, name, notes }));
 
         public void DeletePortfolio(int id)
-            => WithConnection(conn =>
-                conn.Execute("DELETE FROM portfolios WHERE id=@id;", new { id }));
+            => WithConnection(conn => conn.Execute("DELETE FROM portfolios WHERE id=@id;", new { id }));
     }
 }
