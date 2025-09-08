@@ -12,7 +12,6 @@ namespace Infrastructure
 partial class PortfoliosRepository
     {
 
-    private bool _schemaEnsured;
 
 
   
