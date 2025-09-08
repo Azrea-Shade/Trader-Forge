@@ -1,27 +1,18 @@
 using System.Data;
-using Microsoft.Data.Sqlite;
+using Dapper;
 
-namespace Infrastructure
+namespace Infrastructure;
+
+public partial class PortfoliosRepository
 {
-    public partial class PortfoliosRepository
+    // Ensures the 'portfolios' table exists using the *existing* open connection.
+    private static void EnsureSchema(IDbConnection connection)
     {
-        // Backing field used by both the property and any legacy direct references.
-        private SqliteConnection? _connection;
-
-        // Provide the IDbConnection expected by existing repository methods.
-        private IDbConnection connection
-        {
-            get
-            {
-                if (_connection == null)
-                {
-                    // Assumes _connectionString already exists in the main class (as in prior phases).
-                    var c = new SqliteConnection(_connectionString);
-                    c.Open();
-                    _connection = c;
-                }
-                return _connection;
-            }
-        }
+        connection.Execute(@"
+CREATE TABLE IF NOT EXISTS portfolios (
+    id     INTEGER PRIMARY KEY AUTOINCREMENT,
+    name   TEXT    NOT NULL,
+    notes  TEXT    NULL
+);");
     }
 }
