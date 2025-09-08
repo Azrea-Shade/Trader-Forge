@@ -14,27 +14,6 @@ partial class PortfoliosRepository
 
     private bool _schemaEnsured;
 
-    private void EnsureSchema(IDbConnection db)
-    {
-        if (_schemaEnsured) return;
-        db.Execute("PRAGMA foreign_keys=ON;");
-        db.Execute(@"
-CREATE TABLE IF NOT EXISTS portfolios(
-  id     INTEGER PRIMARY KEY AUTOINCREMENT,
-  name   TEXT NOT NULL,
-  notes  TEXT
-);
-CREATE TABLE IF NOT EXISTS portfolio_holdings(
-  id           INTEGER PRIMARY KEY AUTOINCREMENT,
-  portfolio_id INTEGER NOT NULL REFERENCES portfolios(id) ON DELETE CASCADE,
-  ticker       TEXT NOT NULL,
-  weight       REAL NOT NULL DEFAULT 0,
-  shares       REAL NULL,
-  UNIQUE(portfolio_id, ticker)
-);
-");
-        _schemaEnsured = true;
-    }
 
   
         private readonly SqliteDb _db;
