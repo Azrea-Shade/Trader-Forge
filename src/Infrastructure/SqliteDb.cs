@@ -24,6 +24,9 @@ namespace Infrastructure
             cmd.CommandText = @"
 PRAGMA journal_mode=WAL;
 
+PRAGMA foreign_keys=ON;
+
+
 CREATE TABLE IF NOT EXISTS settings (
   k TEXT PRIMARY KEY,
   v TEXT NOT NULL
@@ -54,6 +57,20 @@ CREATE TABLE IF NOT EXISTS briefs (
   generated_at TEXT NULL,
   delivered_at TEXT NULL,
   content TEXT NOT NULL
+CREATE TABLE IF NOT EXISTS portfolios (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  name TEXT NOT NULL UNIQUE,
+  notes TEXT NULL
+);
+
+CREATE TABLE IF NOT EXISTS positions (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  portfolio_id INTEGER NOT NULL REFERENCES portfolios(id) ON DELETE CASCADE,
+  ticker TEXT NOT NULL,
+  qty REAL NOT NULL,
+  avg_cost REAL NOT NULL,
+  target_weight REAL NULL
+);
 );";
             cmd.ExecuteNonQuery();
         }
