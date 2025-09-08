@@ -5,7 +5,7 @@ namespace Infrastructure;
 
 public partial class PortfoliosRepository
 {
-    // Ensures the 'portfolios' table exists using the *existing* open connection.
+    // Ensure the 'portfolios' table exists using the provided connection.
     private static void EnsureSchema(IDbConnection connection)
     {
         connection.Execute(@"
