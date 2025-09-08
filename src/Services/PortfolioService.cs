@@ -1,55 +1,55 @@
-using Services;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using Domain;
 using Infrastructure;
+using Domain;
 
 namespace Services
 {
-    public interface IPriceFeed
-    {
-        // Returns latest price; implementations: dummy, api-backed, etc.
-        double LastPrice(string ticker);
-    }
-
-    public class DummyPriceFeed : IPriceFeed
-    {
-        private readonly Dictionary<string,double> _map = new(StringComparer.OrdinalIgnoreCase)
-        {
-            ["AAPL"] = 315.19,
-            ["MSFT"] = 169.24,
-            ["SPY"]  = 500.00
-        };
-        public double LastPrice(string ticker) => _map.TryGetValue(ticker, out var p) ? p : 100.00;
-    }
-
     public class PortfolioService
     {
         private readonly PortfoliosRepository _repo;
-        private readonly IPriceFeed _prices;
 
-        public PortfolioService(PortfoliosRepository repo, IPriceFeed prices)
+        public PortfolioService(PortfoliosRepository repo)
         {
             _repo = repo;
-            _prices = prices;
         }
 
-        public long CreatePortfolio(string name, string? notes = null) => _repo.CreatePortfolio(name, notes);
-        public IEnumerable<Portfolio> AllPortfolios() => _repo.AllPortfolios();
-        public IEnumerable<Holding> Holdings(long portfolioId) => _repo.Holdings(portfolioId);
-        public long AddHolding(long portfolioId, string ticker, double shares, double costBasis) =>
-            _repo.AddHolding(portfolioId, ticker, shares, costBasis);
-        public void UpdateHolding(long holdingId, double shares, double costBasis) =>
-            _repo.UpdateHolding(holdingId, shares, costBasis);
-        public void RemoveHolding(long holdingId) => _repo.RemoveHolding(holdingId);
-
-        public PortfolioSummary Summary(long portfolioId)
+        // Create a portfolio and return its id
+        public long CreatePortfolio(string name, string? notes)
         {
-            var p = _repo.GetPortfolio(portfolioId) ?? throw new InvalidOperationException("Portfolio not found");
-            var hs = _repo.Holdings(portfolioId);
-            double PriceFor(string t) => _prices.LastPrice(t);
-            return _repo.BuildSummary(p, hs, PriceFor);
+            var id = _repo.CreatePortfolio(name, notes);
+            return id;
         }
+
+        // List all portfolios
+        public IEnumerable<Portfolio> All()
+            => _repo.AllPortfolios();
+
+        // Holdings for a portfolio
+        public IEnumerable<Holding> Holdings(long portfolioId)
+            => _repo.Holdings(portfolioId);
+
+        // Add / update / remove holdings (repo methods return void)
+        public void AddHolding(long portfolioId, string symbol, double shares, double cost)
+            => _repo.AddHolding(portfolioId, symbol, shares, cost);
+
+        public void UpdateHolding(long holdingId, double shares, double cost)
+            => _repo.UpdateHolding(holdingId, shares, cost);
+
+        public void RemoveHolding(long holdingId)
+            => _repo.RemoveHolding(holdingId);
+
+        // Build allocation/summary using repo's single-arg overload
+        public object Summary(long portfolioId)
+            => _repo.BuildSummary(portfolioId);
+
+        // Convenience helpers
+        public Portfolio Get(long portfolioId)
+            => _repo.GetPortfolio(portfolioId);
+
+        public void Rename(long portfolioId, string name, string? notes)
+            => _repo.UpdatePortfolio(portfolioId, name, notes);
+
+        public void Delete(long portfolioId)
+            => _repo.DeletePortfolio(portfolioId);
     }
 }
