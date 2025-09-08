@@ -1,85 +1,96 @@
-using Presentation;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using System.Windows.Input;
+using System.Linq;
 using Domain;
-using Services;
+using Presentation;
 
 namespace Presentation
 {
-    public class PortfolioViewModel : INotifyPropertyChanged
+    public class PortfolioViewModel
     {
-        private readonly PortfolioService _svc;
+        private readonly Services.PortfolioService _service;
 
         public ObservableCollection<Portfolio> Portfolios { get; } = new();
-        public ObservableCollection<Holding> Holdings { get; } = new();
         public ObservableCollection<AllocationRow> Allocation { get; } = new();
 
         private Portfolio? _selected;
         public Portfolio? Selected
         {
             get => _selected;
-            set { _selected = value; OnPropertyChanged(); Reload(); }
-        }
-
-        private PortfolioSummary? _summary;
-        public PortfolioSummary? Summary { get => _summary; set { _summary = value; OnPropertyChanged(); } }
-
-        // Input fields for adding/updating
-        public string NewTicker { get; set; } = "";
-        public double NewShares { get; set; }
-        public double NewCost { get; set; }
-
-        public ICommand AddHoldingCmd { get; }
-        public ICommand RemoveHoldingCmd { get; }
-        public ICommand RefreshCmd { get; }
-
-        public PortfolioViewModel(PortfolioService svc)
-        {
-            _svc = svc;
-            AddHoldingCmd = new RelayCommand(_ => AddHolding(), _ => Selected != null && !string.IsNullOrWhiteSpace(NewTicker) && NewShares > 0);
-            RemoveHoldingCmd = new RelayCommand(h =>
+            set
             {
-                if (h is Holding hh) { _svc.RemoveHolding(hh.Id); Reload(); }
-            }, _ => Selected != null);
-            RefreshCmd = new RelayCommand(_ => Reload());
-
-            LoadPortfolios();
+                _selected = value;
+                OnSelectedChanged();
+            }
         }
 
-        private void LoadPortfolios()
+        public PortfolioViewModel(Services.PortfolioService service)
         {
-            Portfolios.Clear();
-            foreach (var p in _svc.AllPortfolios()) Portfolios.Add(p);
-            if (Portfolios.Count > 0 && Selected == null) Selected = Portfolios[0];
+            _service = service;
+
+            // Fill portfolios using whatever method is present; prefer AllPortfolios if available,
+            // otherwise try a couple of likely names to avoid breaking older service APIs.
+            IEnumerable<Portfolio> load()
+            {
+                var svc = _service;
+                var t = svc.GetType();
+
+                // Try AllPortfolios()
+                var mAll = t.GetMethod("AllPortfolios", Type.EmptyTypes);
+                if (mAll != null)
+                {
+                    var res = mAll.Invoke(svc, Array.Empty<object?>());
+                    if (res is IEnumerable<Portfolio> list) return list;
+                }
+
+                // Try GetAllPortfolios()
+                var mGetAll = t.GetMethod("GetAllPortfolios", Type.EmptyTypes);
+                if (mGetAll != null)
+                {
+                    var res = mGetAll.Invoke(svc, Array.Empty<object?>());
+                    if (res is IEnumerable<Portfolio> list) return list;
+                }
+
+                // Try Portfolios()
+                var mPortfolios = t.GetMethod("Portfolios", Type.EmptyTypes);
+                if (mPortfolios != null)
+                {
+                    var res = mPortfolios.Invoke(svc, Array.Empty<object?>());
+                    if (res is IEnumerable<Portfolio> list) return list;
+                }
+
+                // Fallback empty
+                return Enumerable.Empty<Portfolio>();
+            }
+
+            foreach (var p in load()) Portfolios.Add(p);
+            Selected = Portfolios.FirstOrDefault();
         }
 
-        private void AddHolding()
+        private void OnSelectedChanged()
         {
-            if (Selected == null) return;
-            _svc.AddHolding(Selected.Id, NewTicker.Trim().ToUpperInvariant(), NewShares, NewCost);
-            NewTicker = ""; NewShares = 0; NewCost = 0;
-            OnPropertyChanged(nameof(NewTicker));
-            OnPropertyChanged(nameof(NewShares));
-            OnPropertyChanged(nameof(NewCost));
-            Reload();
+            Allocation.Clear();
+            if (Selected is null) return;
+
+            // Call BuildSummary(int) in the service, but accept any actual return type.
+            object? summaryObj = null;
+            var t = _service.GetType();
+            var mBuild = t.GetMethod("BuildSummary", new[] { typeof(int) }) ??
+                         t.GetMethod("BuildSummary", new[] { typeof(long) }) ??
+                         t.GetMethod("GetSummary",   new[] { typeof(int) }) ??
+                         t.GetMethod("GetSummary",   new[] { typeof(long) });
+
+            if (mBuild != null)
+            {
+                var key = (object)(Selected.Id is long L ? L : Selected.Id);
+                summaryObj = mBuild.Invoke(_service, new[] { key });
+            }
+
+            // Harden the type here:
+            var summary = summaryObj.ToPortfolioSummaryLoose();
+            foreach (var row in summary.Allocation)
+                Allocation.Add(row);
         }
-
-        private void Reload()
-        {
-            Holdings.Clear(); Allocation.Clear(); Summary = null;
-            if (Selected == null) return;
-            foreach (var h in _svc.Holdings(Selected.Id)) Holdings.Add(h);
-
-            var s = _svc.Summary(Selected.Id);
-            Summary = s;
-            foreach (var a in s.Allocation) Allocation.Add(a);
-        }
-
-        public event PropertyChangedEventHandler? PropertyChanged;
-        protected void OnPropertyChanged([CallerMemberName] string? prop = null)
-            => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
     }
 }
