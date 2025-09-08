@@ -2,7 +2,7 @@ using System;
 using System.Threading.Tasks;
 using Infrastructure;
 using Services;
-using Services.Feeds;
+using Services;
 
 // Simple CLI: default "OK" for smoke; `brief generate|notify` for daily brief.
 if (args.Length >= 1 && args[0].Equals("brief", StringComparison.OrdinalIgnoreCase))
