@@ -1,36 +1,58 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
+using Domain;
+using Services.Feeds;
 
 namespace Services
 {
     /// <summary>
-    /// Minimal adapter that satisfies IPriceFeed. It returns null prices by default
-    /// (safe for offline/demo). Wire a real source later by changing the body.
+    /// Lightweight LivePriceAdapter placeholder that provides a typed helper to build PortfolioSummary.
+    /// This keeps the merge/resolution simple; replace/extend logic later if you need live feed behaviour.
     /// </summary>
-    public sealed class LivePriceAdapter : IPriceFeed
+    public class LivePriceAdapter
     {
-        public Task<IDictionary<string, double?>> GetPricesAsync(IEnumerable<string> tickers, CancellationToken ct = default)
-        {
-            // Normalize and return a dictionary of nulls (caller can handle null = unknown)
-            var map = (tickers ?? Array.Empty<string>())
-                .Where(t => !string.IsNullOrWhiteSpace(t))
-                .Select(t => t.Trim().ToUpperInvariant())
-                .Distinct(StringComparer.OrdinalIgnoreCase)
-                .ToDictionary(t => t, _ => (double?)null, StringComparer.OrdinalIgnoreCase);
+        public LivePriceAdapter() { }
 
-            return Task.FromResult<IDictionary<string, double?>>(map);
+        /// <summary>
+        /// Build a PortfolioSummary from an allocation map (ticker -> weight).
+        /// Use id/name when available.
+        /// </summary>
+        public PortfolioSummary BuildSummaryTyped(int id = 0, string? name = null, IDictionary<string, decimal>? allocationMap = null)
+        {
+            var rows = allocationMap?
+                .Select(kv => new AllocationRow(kv.Key, kv.Value))
+                .ToList() ?? new List<AllocationRow>();
+
+            return new PortfolioSummary(id, name ?? string.Empty, rows);
         }
 
-        public async Task<double?> LastPrice(string ticker, CancellationToken ct = default)
+        // A permissive converter that accepts a dynamic-ish object and tries to produce a PortfolioSummary.
+        // This mirrors the "loose" adapter idea used in Presentation so callers that pass dictionaries or typed
+        // Domain objects will still get a PortfolioSummary back.
+        public PortfolioSummary BuildSummaryLoose(object? any)
         {
-            if (string.IsNullOrWhiteSpace(ticker))
-                return null;
+            if (any is PortfolioSummary ps) return ps;
+            if (any is IDictionary<string, decimal> dict) return BuildSummaryTyped(0, string.Empty, dict);
+            if (any is System.Collections.IDictionary genericDict)
+            {
+                var rows = new List<AllocationRow>();
+                foreach (System.Collections.DictionaryEntry de in genericDict)
+                {
+                    if (de.Key is string ticker)
+                    {
+                        try
+                        {
+                            var weight = Convert.ToDecimal(de.Value);
+                            rows.Add(new AllocationRow(ticker, weight));
+                        }
+                        catch { /* skip unconvertible */ }
+                    }
+                }
+                return new PortfolioSummary(0, string.Empty, rows);
+            }
 
-            var dict = await GetPricesAsync(new[] { ticker }, ct).ConfigureAwait(false);
-            return dict.TryGetValue(ticker.Trim().ToUpperInvariant(), out var price) ? price : null;
+            return new PortfolioSummary(0, string.Empty, new List<AllocationRow>());
         }
     }
 }
