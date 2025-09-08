@@ -29,7 +29,7 @@ namespace Infrastructure
             work(c);
         }
 
-        // Idempotent schema for portfolios + holdings
+        // Idempotent schema
         private static void EnsureSchema(IDbConnection conn)
         {
             conn.Execute(@"
@@ -50,19 +50,18 @@ CREATE TABLE IF NOT EXISTS holdings (
 ");
         }
 
-        // Portfolio CRUD (notes optional)
         public int CreatePortfolio(string name, string? notes)
             => WithConnection(conn =>
                 conn.ExecuteScalar<int>(
                     "INSERT INTO portfolios(name,notes) VALUES (@name,@notes); SELECT last_insert_rowid();",
                     new { name, notes }));
 
-        public void UpdatePortfolio(int id, string name, string? notes)
+        public void UpdatePortfolio(long id, string name, string? notes)
             => WithConnection(conn =>
                 conn.Execute("UPDATE portfolios SET name=@name, notes=@notes WHERE id=@id;",
-                    new { id, name, notes }));
+                    new { id = checked((int)id), name, notes }));
 
-        public void DeletePortfolio(int id)
-            => WithConnection(conn => conn.Execute("DELETE FROM portfolios WHERE id=@id;", new { id }));
+        public void DeletePortfolio(long id)
+            => WithConnection(conn => conn.Execute("DELETE FROM portfolios WHERE id=@id;", new { id = checked((int)id) }));
     }
 }
