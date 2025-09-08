@@ -1,6 +1,6 @@
-using Services;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -9,23 +9,36 @@ namespace Services
     public static class PriceFeedExtensions
     {
         /// <summary>
-        /// Compatibility helper: provide an async bulk-price API even if IPriceFeed only has LastPrice(string).
+        /// Get prices, but never throw. Missing/failed tickers map to null.
         /// </summary>
-        public static Task<IDictionary<string, double>> GetPricesAsync(this IPriceFeed feed, IEnumerable<string> tickers, CancellationToken ct = default)
+        public static async Task<IDictionary<string, double?>> SafeGetPricesAsync(
+            this IPriceFeed feed,
+            IEnumerable<string> tickers,
+            CancellationToken ct = default)
         {
-            var result = new Dictionary<string, double>(StringComparer.OrdinalIgnoreCase);
-            if (feed is null) return Task.FromResult<IDictionary<string, double>>(result);
-            if (tickers is null) return Task.FromResult<IDictionary<string, double>>(result);
-
-            foreach (var raw in tickers)
+            try
             {
-                if (ct.IsCancellationRequested) break;
-                if (string.IsNullOrWhiteSpace(raw)) continue;
-                var t = raw.Trim();
-                if (result.ContainsKey(t)) continue;
-                result[t] = feed.LastPrice(t);
+                return await feed.GetPricesAsync(tickers, ct).ConfigureAwait(false);
             }
-            return Task.FromResult<IDictionary<string, double>>(result);
+            catch
+            {
+                var list = (tickers ?? Array.Empty<string>()).Distinct(StringComparer.OrdinalIgnoreCase);
+                return list.ToDictionary(t => t, _ => (double?)null, StringComparer.OrdinalIgnoreCase);
+            }
+        }
+
+        /// <summary>
+        /// Convenience: return decimal? instead of double? for callers that prefer decimal.
+        /// </summary>
+        public static async Task<IDictionary<string, decimal?>> SafeGetPricesDecimalAsync(
+            this IPriceFeed feed,
+            IEnumerable<string> tickers,
+            CancellationToken ct = default)
+        {
+            var d = await feed.SafeGetPricesAsync(tickers, ct).ConfigureAwait(false);
+            return d.ToDictionary(kv => kv.Key,
+                                  kv => kv.Value.HasValue ? (decimal?)Convert.ToDecimal(kv.Value.Value) : null,
+                                  StringComparer.OrdinalIgnoreCase);
         }
     }
 }

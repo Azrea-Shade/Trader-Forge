@@ -1,5 +1,3 @@
-using Services;
-using Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,35 +7,30 @@ using System.Threading.Tasks;
 namespace Services
 {
     /// <summary>
-    /// Adapts LivePriceRouter to the existing IPriceFeed contract used by the project.
+    /// Minimal adapter that satisfies IPriceFeed. It returns null prices by default
+    /// (safe for offline/demo). Wire a real source later by changing the body.
     /// </summary>
     public sealed class LivePriceAdapter : IPriceFeed
     {
-        private readonly LivePriceRouter _router = new LivePriceRouter();
-
-        public double LastPrice(string ticker)
+        public Task<IDictionary<string, double?>> GetPricesAsync(IEnumerable<string> tickers, CancellationToken ct = default)
         {
-            // Convert router's decimal to double for interface compatibility
-            var p = _router.LastPrice(ticker);
-            return (double)p;
+            // Normalize and return a dictionary of nulls (caller can handle null = unknown)
+            var map = (tickers ?? Array.Empty<string>())
+                .Where(t => !string.IsNullOrWhiteSpace(t))
+                .Select(t => t.Trim().ToUpperInvariant())
+                .Distinct(StringComparer.OrdinalIgnoreCase)
+                .ToDictionary(t => t, _ => (double?)null, StringComparer.OrdinalIgnoreCase);
+
+            return Task.FromResult<IDictionary<string, double?>>(map);
         }
 
-        public Task<IDictionary<string, double>> GetPricesAsync(IEnumerable<string> tickers, CancellationToken ct = default)
+        public async Task<double?> LastPrice(string ticker, CancellationToken ct = default)
         {
-            var set = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-            foreach (var t in tickers ?? Array.Empty<string>())
-            {
-                if (!string.IsNullOrWhiteSpace(t)) set.Add(t.Trim());
-            }
+            if (string.IsNullOrWhiteSpace(ticker))
+                return null;
 
-            var dict = new Dictionary<string, double>(StringComparer.OrdinalIgnoreCase);
-            foreach (var s in set)
-            {
-                if (ct.IsCancellationRequested) break;
-                dict[s] = LastPrice(s);
-            }
-
-            return Task.FromResult<IDictionary<string, double>>(dict);
+            var dict = await GetPricesAsync(new[] { ticker }, ct).ConfigureAwait(false);
+            return dict.TryGetValue(ticker.Trim().ToUpperInvariant(), out var price) ? price : null;
         }
     }
 }
