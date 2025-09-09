@@ -4,7 +4,8 @@ using System.Reflection;
 using Infrastructure;
 using Services;
 using Services.Feeds;
-using FeedAbstraction = Services.Feeds.IPriceFeed;
+using IPriceFeed = Services.Feeds.IPriceFeed;
+using IPriceFeed = Services.Feeds.IPriceFeed;
 
 namespace Unit.TestHelpers
 {
@@ -30,7 +31,7 @@ namespace Unit.TestHelpers
                 var p = x.GetParameters();
                 return p.Length == 2 &&
                        p[0].ParameterType == typeof(PortfoliosRepository) &&
-                       typeof(FeedAbstraction).IsAssignableFrom(p[1].ParameterType);
+                       typeof(IPriceFeed).IsAssignableFrom(p[1].ParameterType);
             });
             if (c != null) return (PortfolioService)c.Invoke(new object[] { repo, price });
 
@@ -40,7 +41,7 @@ namespace Unit.TestHelpers
                 var p = x.GetParameters();
                 return p.Length == 2 &&
                        p[0].ParameterType == typeof(string) &&
-                       typeof(FeedAbstraction).IsAssignableFrom(p[1].ParameterType);
+                       typeof(IPriceFeed).IsAssignableFrom(p[1].ParameterType);
             });
             if (c != null) return (PortfolioService)c.Invoke(new object[] { connString, price });
 
@@ -66,7 +67,7 @@ namespace Unit.TestHelpers
             {
                 if (p.ParameterType == typeof(string)) return (object)connString;
                 if (p.ParameterType == typeof(PortfoliosRepository)) return (object)repo;
-                if (typeof(FeedAbstraction).IsAssignableFrom(p.ParameterType)) return (object)price;
+                if (typeof(IPriceFeed).IsAssignableFrom(p.ParameterType)) return (object)price;
                 if (p.HasDefaultValue) return p.DefaultValue!;
                 return p.ParameterType.IsValueType ? Activator.CreateInstance(p.ParameterType)! : null!;
             }).ToArray();
