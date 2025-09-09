@@ -1,3 +1,4 @@
+using Domain.Entities;
 using System.Collections.Generic;
 using Infrastructure;
 using Domain;
