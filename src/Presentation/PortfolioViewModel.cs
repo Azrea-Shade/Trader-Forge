@@ -83,7 +83,7 @@ namespace Presentation
 
             if (mBuild != null)
             {
-                var key = (object)(Selected.Id is long L ? L : Selected.Id);
+                var key = (object)(Selected.Id is int L ? L : Selected.Id);
                 summaryObj = mBuild.Invoke(_service, new[] { key });
             }
 
