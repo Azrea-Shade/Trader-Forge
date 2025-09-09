@@ -2,9 +2,9 @@ name: CI - Single (Windows build + unit tests)
 on:
   workflow_dispatch:
   push:
-    branches: [ testing/v1.0.0 ]
+    branches: [ testing/1.0.0 ]
   pull_request:
-    branches: [ testing/v1.0.0 ]
+    branches: [ testing/1.0.0 ]
 jobs:
   build_test:
     runs-on: windows-latest
