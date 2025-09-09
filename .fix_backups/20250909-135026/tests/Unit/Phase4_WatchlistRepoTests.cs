@@ -1,4 +1,3 @@
-using Xunit;
 public class Phase4_WatchlistRepoTests
 {
     [Fact]
