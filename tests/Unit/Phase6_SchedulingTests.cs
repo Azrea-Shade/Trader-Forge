@@ -1,8 +1,3 @@
-using System;
-using System.Threading;
-using Services;
-using Xunit;
-
 namespace Unit
 {
     /// <summary>

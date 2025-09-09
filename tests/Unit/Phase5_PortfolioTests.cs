@@ -1,14 +1,3 @@
-using System.Collections.Generic;
-using System.Linq;
-using Unit.TestHelpers;
-using System;
-using System.IO;
-using Domain;
-using Infrastructure;
-using Services;
-using Xunit;
-using FluentAssertions;
-
 public class Phase5_PortfolioTests
 {
     private static string TempDb()
