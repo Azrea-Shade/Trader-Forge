@@ -4,12 +4,6 @@ namespace Domain
 {
     public class PortfolioSummary
     {
-        // Added by CI fix: accepts any three args via params
-        public PortfolioSummary(params object[] _)
-        {
-            // TODO: map values if needed
-        }
-
         public List<AllocationRow> Allocation { get; }
 
         public PortfolioSummary(List<AllocationRow> allocation)

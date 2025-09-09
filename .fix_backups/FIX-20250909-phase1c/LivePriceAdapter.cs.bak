@@ -10,7 +10,8 @@ namespace Services
     /// Lightweight LivePriceAdapter placeholder that provides a typed helper to build PortfolioSummary.
     /// This keeps the merge/resolution simple; replace/extend logic later if you need live feed behaviour.
     /// </summary>
-    public class LivePriceAdapter : IPriceFeed {
+    public class LivePriceAdapter
+    {
         public LivePriceAdapter() { }
 
         /// <summary>
@@ -53,8 +54,5 @@ namespace Services
 
             return new PortfolioSummary(0, string.Empty, new List<AllocationRow>());
         }
-    
-        public Task<double?> LastPrice(string ticker, CancellationToken ct = default) => throw new System.NotImplementedException();
-        public Task<IDictionary<string, double?>> GetPricesAsync(IEnumerable<string> tickers, CancellationToken ct = default) => throw new System.NotImplementedException();
-}
+    }
 }
