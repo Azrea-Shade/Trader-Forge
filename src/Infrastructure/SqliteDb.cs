@@ -12,11 +12,11 @@ namespace Infrastructure
             var baseDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "AzreaCompanion");
             Directory.CreateDirectory(baseDir);
             DbPath = dbPathOverride ?? Path.Combine(baseDir, "app.db");
-            EnsureSchema();
+            EnsureSqliteDbSchema();
             SeedDefaults();
         }
 
-        private void EnsureSchema()
+        private void EnsureSqliteDbSchema()
         {
             using var cn = new SqliteConnection($"Data Source={DbPath}");
             cn.Open();

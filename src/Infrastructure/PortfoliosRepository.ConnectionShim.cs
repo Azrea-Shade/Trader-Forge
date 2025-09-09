@@ -5,7 +5,7 @@ namespace Infrastructure;
 
 public partial class PortfoliosRepository
 {
-    private static void EnsureSchema(IDbConnection connection)
+    private static void EnsureConnectionShimSchema(IDbConnection connection)
     {
         connection.Execute(@"
 CREATE TABLE IF NOT EXISTS portfolios (
