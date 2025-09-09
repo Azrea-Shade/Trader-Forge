@@ -72,7 +72,7 @@ namespace Unit.TestHelpers
 
         private static Services.Feeds.IPriceFeed TryCreatePriceFeed()
         {
-            try { return new DummyPriceFeed(); }
+            try { return new Services.Feeds.DummyPriceFeed(); }
             catch { throw new InvalidOperationException("Cannot create DummyPriceFeed; ensure Services.Feeds exists."); }
         }
     }

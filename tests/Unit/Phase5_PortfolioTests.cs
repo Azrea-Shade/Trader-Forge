@@ -30,12 +30,12 @@ public class Phase5_PortfolioTests
         svc.AddHolding(pid, "MSFT", 5, 700);   // price 169.24 -> 846.20 MV
 
         var s = svc.Summary(pid);
-        s.TotalMarketValue.Should().BeApproximately(3998.10, 0.5);
-        s.TotalCost.Should().Be(3200);
-        s.GainLoss.Should().BeApproximately(798.10, 1.0);
-        s.Allocation.Should().HaveCount(2);
-        var aapl = s.Allocation.Find(a => a.Ticker == "AAPL")!;
-        var msft = s.Allocation.Find(a => a.Ticker == "MSFT")!;
+        ((dynamic)s).TotalMarketValue.Should().BeApproximately(3998.10, 0.5);
+        ((dynamic)s).TotalCost.Should().Be(3200);
+        ((dynamic)s).GainLoss.Should().BeApproximately(798.10, 1.0);
+        ((dynamic)s).Allocation.Should().HaveCount(2);
+        var aapl = ((dynamic)s).Allocation.Find(a => a.Ticker == "AAPL")!;
+        var msft = ((dynamic)s).Allocation.Find(a => a.Ticker == "MSFT")!;
         (aapl.WeightPct + msft.WeightPct).Should().BeApproximately(100.0, 0.1);
         aapl.MarketValue.Should().BeGreaterThan(msft.MarketValue);
     }
