@@ -15,8 +15,6 @@ namespace Services.Engines
                 double price = 0;
                 if (latestPrices != null && latestPrices.TryGetValue(rule.Ticker, out var p))
                     price = p;
-                else if (_priceFeed != null)
-                    price = _priceFeed.GetPriceAsync(rule.Ticker, null).GetAwaiter().GetResult();
 
                 var e = new AlertEvaluation
                 {
