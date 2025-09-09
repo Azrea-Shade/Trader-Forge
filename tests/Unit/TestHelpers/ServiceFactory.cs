@@ -3,10 +3,9 @@ using Services.Feeds;
 using System;using System.Linq;using Infrastructure;using Services;using Services.Feeds;
 
 using System;
-
-
-
-
+using Infrastructure;
+using Services;
+using Services.Feeds;
 
 namespace Unit.TestHelpers
 {
@@ -18,7 +17,7 @@ namespace Unit.TestHelpers
     {
         public static PortfolioService CreatePortfolioService(string connString = "Data Source=:memory:")
         {
-            var repo = new PortfoliosRepository(connString);
+            var repo = new Infrastructure.PortfoliosRepository(connString);
             var price = TryCreatePriceFeed(); // Services.Feeds.Services::Feeds::Services.Feeds.IPriceFeed
 
             var t = typeof(PortfolioService);
