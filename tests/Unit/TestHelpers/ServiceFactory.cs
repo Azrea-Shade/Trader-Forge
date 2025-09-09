@@ -4,8 +4,6 @@ using System.Reflection;
 using Infrastructure;
 using Services;
 using Services.Feeds;
-using IPriceFeed = Services.Feeds.IPriceFeed;
-using IPriceFeed = Services.Feeds.IPriceFeed;
 
 namespace Unit.TestHelpers
 {
