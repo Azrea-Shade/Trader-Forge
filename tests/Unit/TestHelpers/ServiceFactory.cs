@@ -1,8 +1,10 @@
+using System;using System.Linq;using Infrastructure;using Services;using Services.Feeds;
+
 using System;
-using System.Linq;
-using Infrastructure;
-using Services;
-using Services.Feeds;
+
+
+
+
 
 namespace Unit.TestHelpers
 {
@@ -15,28 +17,28 @@ namespace Unit.TestHelpers
         public static PortfolioService CreatePortfolioService(string connString = "Data Source=:memory:")
         {
             var repo = new PortfoliosRepository(connString);
-            var price = TryCreatePriceFeed(); // Services.Feeds.IPriceFeed
+            var price = TryCreatePriceFeed(); // Services.Feeds.Services::Feeds::IPriceFeed
 
             var t = typeof(PortfolioService);
             var ctors = t.GetConstructors();
 
-            // Prefer (PortfoliosRepository, IPriceFeed)
+            // Prefer (PortfoliosRepository, Services::Feeds::IPriceFeed)
             var c = ctors.FirstOrDefault(x =>
             {
                 var p = x.GetParameters();
                 return p.Length == 2 &&
                        p[0].ParameterType == typeof(PortfoliosRepository) &&
-                       typeof(Services.Feeds.IPriceFeed).IsAssignableFrom(p[1].ParameterType);
+                       typeof(Services.Feeds.Services::Feeds::IPriceFeed).IsAssignableFrom(p[1].ParameterType);
             });
             if (c != null) return (PortfolioService)c.Invoke(new object[] { repo, price });
 
-            // Try (string, IPriceFeed)
+            // Try (string, Services::Feeds::IPriceFeed)
             c = ctors.FirstOrDefault(x =>
             {
                 var p = x.GetParameters();
                 return p.Length == 2 &&
                        p[0].ParameterType == typeof(string) &&
-                       typeof(Services.Feeds.IPriceFeed).IsAssignableFrom(p[1].ParameterType);
+                       typeof(Services.Feeds.Services::Feeds::IPriceFeed).IsAssignableFrom(p[1].ParameterType);
             });
             if (c != null) return (PortfolioService)c.Invoke(new object[] { connString, price });
 
@@ -62,7 +64,7 @@ namespace Unit.TestHelpers
             {
                 if (p.ParameterType == typeof(string)) return (object)connString;
                 if (p.ParameterType == typeof(PortfoliosRepository)) return (object)repo;
-                if (typeof(Services.Feeds.IPriceFeed).IsAssignableFrom(p.ParameterType)) return (object)price;
+                if (typeof(Services.Feeds.Services::Feeds::IPriceFeed).IsAssignableFrom(p.ParameterType)) return (object)price;
                 if (p.HasDefaultValue) return p.DefaultValue!;
                 return p.ParameterType.IsValueType ? Activator.CreateInstance(p.ParameterType)! : null!;
             }).ToArray();
@@ -70,7 +72,7 @@ namespace Unit.TestHelpers
             return (PortfolioService)c.Invoke(args);
         }
 
-        private static Services.Feeds.IPriceFeed TryCreatePriceFeed()
+        private static Services.Feeds.Services::Feeds::IPriceFeed TryCreatePriceFeed()
         {
             try { return new Services.Feeds.DummyPriceFeed(); }
             catch { throw new InvalidOperationException("Cannot create DummyPriceFeed; ensure Services.Feeds exists."); }
@@ -78,10 +80,8 @@ namespace Unit.TestHelpers
     }
 }
 
-using System;
-using Infrastructure;
-using Services;
-using Services.Feeds;
+
+
 
 namespace Unit.TestHelpers
 {
