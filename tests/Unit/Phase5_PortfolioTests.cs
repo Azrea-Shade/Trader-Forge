@@ -1,3 +1,4 @@
+using System.Linq;
 using Unit.TestHelpers;
 using System;
 using System.IO;
