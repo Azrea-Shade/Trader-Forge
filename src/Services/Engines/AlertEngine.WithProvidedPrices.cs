@@ -1,34 +1,30 @@
+using System;
 using System.Collections.Generic;
 
 namespace Services.Engines
 {
-    public static partial class AlertEngine
+    public partial class AlertEngine
     {
-        public static IEnumerable<AlertEvaluation> EvaluateWithPrices(
-            IEnumerable<dynamic> rules,
-            IDictionary<string, double> latestPrices)
+        public IEnumerable<AlertEvaluation> Evaluate(IEnumerable<AlertRow> rules, IDictionary<string, double> latestPrices)
         {
             var evals = new List<AlertEvaluation>();
             foreach (var rule in rules)
             {
-                string ticker = (string)rule.Ticker;
-                long id = (long)rule.Id;
-                double? above = (double?)rule.Above;
-                double? below = (double?)rule.Below;
-
                 double price = 0;
-                if (latestPrices != null && latestPrices.TryGetValue(ticker, out var p))
+                if (latestPrices != null && latestPrices.TryGetValue(rule.Ticker, out var p))
                     price = p;
+                else if (_priceFeed != null)
+                    price = _priceFeed.GetPriceAsync(rule.Ticker, null).GetAwaiter().GetResult();
 
                 var e = new AlertEvaluation
                 {
-                    Id = id,
-                    Ticker = ticker,
+                    Id = rule.Id,
+                    Ticker = rule.Ticker,
                     Price = price,
-                    Above = above,
-                    Below = below,
-                    TriggeredAbove = above.HasValue && price >= above.Value,
-                    TriggeredBelow = below.HasValue && price <= below.Value
+                    Above = rule.Above,
+                    Below = rule.Below,
+                    TriggeredAbove = rule.Above.HasValue && price >= rule.Above.Value,
+                    TriggeredBelow = rule.Below.HasValue && price <= rule.Below.Value
                 };
                 evals.Add(e);
             }
