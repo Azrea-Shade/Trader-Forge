@@ -4,6 +4,7 @@
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
   </PropertyGroup>
   <ItemGroup>
+    <!-- test infra -->
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.10.0" />
     <PackageVersion Include="xunit" Version="2.4.1" />
     <PackageVersion Include="xunit.runner.visualstudio" Version="2.4.3" />
@@ -11,7 +12,13 @@
     <PackageVersion Include="NodaTime" Version="3.1.0" />
     <PackageVersion Include="coverlet.collector" Version="6.0.0" />
     <PackageVersion Include="Newtonsoft.Json" Version="13.0.3" />
+
+    <!-- runtime / infra packages referenced by projects -->
     <PackageVersion Include="Dapper" Version="2.1.35" />
     <PackageVersion Include="Microsoft.Data.Sqlite" Version="8.0.7" />
+    <PackageVersion Include="Serilog" Version="3.1.1" />
+    <PackageVersion Include="CommunityToolkit.Mvvm" Version="8.2.2" />
+    <PackageVersion Include="Microsoft.Extensions.Http" Version="8.0.0" />
+    <PackageVersion Include="Microsoft.Extensions.Http.Polly" Version="8.0.7" />
   </ItemGroup>
 </Project>
