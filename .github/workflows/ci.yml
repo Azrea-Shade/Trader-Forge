@@ -1,116 +1,124 @@
-name: ci
+name: CI
 
 on:
   push:
-    branches: [ "testing/v1.0.0" ]
-  workflow_dispatch:
-
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+    branches:
+      - 'testing/**'
+  pull_request:
+    branches:
+      - 'testing/**'
 
 jobs:
-  lint:
-    if: ${{ github.ref == 'refs/heads/testing/v1.0.0' }}
+  build:
+    name: Build, Test & Format (Windows)
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v4
-      - name: Validate workflow branch guards (testing-only)
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Restore all projects
         shell: pwsh
         run: |
-          $ErrorActionPreference = 'Stop'
-          $files = Get-ChildItem ".github/workflows" -Recurse -Include *.yml,*.yaml
-          if (-not $files) { Write-Host "No workflow files found."; exit 0 }
-          $failed = $false
-          foreach ($f in $files) {
-            $t = Get-Content $f.FullName -Raw
-            if ($t -notmatch "testing/v1\.0\.0") { Write-Error "Missing 'testing/v1.0.0' in $($f.FullName)"; $failed = $true }
-            if ($t -notmatch "github\.ref\s*==\s*'refs/heads/testing/v1\.0\.0'") { Write-Error "Missing job guard in $($f.FullName)"; $failed = $true }
+          $csprojs = Get-ChildItem -Path . -Filter *.csproj -Recurse -ErrorAction SilentlyContinue
+          if ($csprojs.Count -eq 0) {
+            Write-Error "No .csproj files found in repo; aborting restore."
+            exit 1
           }
-          if ($failed) { throw "Workflow guard check failed." }
-          Write-Host "✅ Workflow guards OK."
+          foreach ($p in $csprojs) {
+            Write-Output "Restoring $($p.FullName)"
+            dotnet restore $p.FullName
+          }
 
-  tests:
-    if: ${{ github.ref == 'refs/heads/testing/v1.0.0' }}
-    runs-on: windows-latest
-    needs: lint
-    env:
-      DOTNET_NOLOGO: 1
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup .NET 8
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: 8.0.x
-
-      - name: .NET SDK info
-        run: dotnet --info
-
-      - name: Restore projects
+      - name: Install dotnet-format (local tool)
+        shell: pwsh
         run: |
-          dotnet restore tests/Unit/Unit.csproj
-          dotnet restore src/Cli/Cli.csproj
-          dotnet restore src/App/App.csproj
+          dotnet tool install --tool-path ./.dotnet-tools dotnet-format --version 8.0.0 || true
+          $fmtExe = Join-Path $PWD '.dotnet-tools/dotnet-format.exe'
+          if (-not (Test-Path $fmtExe)) { $fmtExe = Join-Path $PWD '.dotnet-tools/dotnet-format' }
+          Write-Output "dotnet-format = $fmtExe"
+          if (-not (Test-Path $fmtExe)) { Write-Warning "dotnet-format not found at $fmtExe; formatting steps may fail." }
 
-      - name: Run unit tests (coverage → artifacts/tests)
-        run: echo "Skipping unit tests for v1.0 fast-track"
+      - name: Verify formatting (fail if repo not formatted)
+        shell: pwsh
+        run: |
+          $fmtExe = Join-Path $PWD '.dotnet-tools/dotnet-format.exe'
+          if (-not (Test-Path $fmtExe)) { $fmtExe = Join-Path $PWD '.dotnet-tools/dotnet-format' }
+          if (Test-Path $fmtExe) {
+            & $fmtExe --verify-no-changes --severity info
+          } else {
+            Write-Output "Skipping dotnet-format verify because tool wasn't installed."
+          }
 
-      - name: Upload test results (.trx)
-        uses: actions/upload-artifact@v4
-        with:
-          name: test-results-trx
-          path: artifacts/tests/**/*.trx
-          if-no-files-found: warn
+      - name: Build (all solutions or projects)
+        shell: pwsh
+        run: |
+          $slns = Get-ChildItem -Path . -Filter *.sln -Recurse -ErrorAction SilentlyContinue
+          if ($slns.Count -gt 0) {
+            foreach ($s in $slns) {
+              Write-Output "Building solution $($s.FullName)"
+              dotnet build $s.FullName -c Release
+            }
+          } else {
+            $cs = Get-ChildItem -Path . -Filter *.csproj -Recurse
+            foreach ($c in $cs) {
+              Write-Output "Building project $($c.FullName)"
+              dotnet build $c.FullName -c Release
+            }
+          }
 
-      - name: Upload code coverage (cobertura)
-        uses: actions/upload-artifact@v4
-        with:
-          name: code-coverage
-          path: artifacts/tests/**/coverage.cobertura.xml
-          if-no-files-found: warn
+      - name: Run tests (detect test projects)
+        shell: pwsh
+        run: |
+          $tests = Get-ChildItem -Path . -Recurse -Filter '*Tests.csproj' -ErrorAction SilentlyContinue
+          if ($tests.Count -eq 0) { $tests = Get-ChildItem -Path . -Recurse -Filter '*.Tests.csproj' -ErrorAction SilentlyContinue }
+          if ($tests.Count -eq 0) {
+            Write-Output "No explicit test project matches found. Running 'dotnet test' for all projects."
+            dotnet test --verbosity normal
+          } else {
+            foreach ($t in $tests) {
+              Write-Output "Testing $($t.FullName)"
+              dotnet test $t.FullName -c Release --no-build --verbosity normal
+            }
+          }
 
-      - name: CLI smoke (headless)
-        run: echo "CLI smoke test temporarily disabled by Termux patch"
-
-      - name: Upload CLI output
-        uses: actions/upload-artifact@v4
-        with:
-          name: cli_out
-          path: src/Cli/cli_out
-          if-no-files-found: warn
-
-  build:
-    if: ${{ github.ref == 'refs/heads/testing/v1.0.0' }}
+  format-diff:
+    name: Create format diff (when format fails)
     runs-on: windows-latest
-    needs: tests
-    env:
-      DOTNET_NOLOGO: 1
+    needs: build
+    if: failure()
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup .NET 8
-        uses: actions/setup-dotnet@v4
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: 8.0.x
+          dotnet-version: '8.0.x'
 
-      - name: .NET SDK info
-        run: dotnet --info
+      - name: Install dotnet-format (local)
+        shell: pwsh
+        run: |
+          dotnet tool install --tool-path ./.dotnet-tools dotnet-format --version 8.0.0 || true
 
-      - name: Restore App
-        run: dotnet restore src/App/App.csproj
+      - name: Run dotnet format and create diff
+        shell: pwsh
+        run: |
+          $fmtExe = Join-Path $PWD '.dotnet-tools/dotnet-format.exe'
+          if (-not (Test-Path $fmtExe)) { $fmtExe = Join-Path $PWD '.dotnet-tools/dotnet-format' }
+          if (Test-Path $fmtExe) {
+            & $fmtExe --verbosity diagnostic || true
+          } else {
+            Write-Output "dotnet-format not found; skipping auto-format."
+          }
+          git --no-pager diff > format-diff.patch || true
 
-      - name: Build WPF
-        run: dotnet build src/App/App.csproj -c Release --no-restore
-
-      - name: Publish WPF (artifact only; NOT a GitHub release)
-        run: dotnet publish src/App/App.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -o out/win-x64
-
-      - name: Upload app artifact
+      - name: Upload format-diff
         uses: actions/upload-artifact@v4
         with:
-          name: Azrea-Companion-win-x64
-          path: out/win-x64
-          if-no-files-found: error
+          name: format-diff
+          path: format-diff.patch
