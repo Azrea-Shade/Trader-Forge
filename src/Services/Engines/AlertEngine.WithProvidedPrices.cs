@@ -13,7 +13,7 @@ namespace Services.Engines
             var mapped = new List<AlertRow>();
             if (rules != null)
                 foreach (var r in rules)
-                    mapped.Add(new AlertRow { Id = r.Id, Ticker = r.Ticker, Above = r.Above, Below = r.Below });
+                    mapped.Add(new AlertRow(r.Id, r.Ticker, r.Above, r.Below));
             return Evaluate(mapped, latestPrices);
         }
 
