@@ -25,7 +25,6 @@ namespace Infrastructure
         {
             using var c = new SqliteConnection(_connectionString);
             c.Open();
-#if false // duplicate EnsureSchema (auto-disabled)
             EnsureSchema(c);
             work(c);
         }
@@ -50,7 +49,6 @@ CREATE TABLE IF NOT EXISTS holdings (
 );
 ");
         }
-#endif // duplicate EnsureSchema
 
         public int CreatePortfolio(string name, string? notes)
             => WithConnection(conn =>
