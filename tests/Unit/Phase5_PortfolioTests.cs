@@ -21,12 +21,10 @@ public class Phase5_PortfolioTests
     [Fact]
     public void Portfolio_crud_and_allocation_computes_weights()
     {
-        var dbfile = TempDb();
+    var dbfile = TempDb();
         var db = new SqliteDb(dbfile);
-        var repo = new PortfoliosRepository(db);
         var prices = new DummyPriceFeed();
-        var svc = Unit.TestHelpers.ServiceFactory.CreatePortfolioService();
-
+    var svc = Unit.TestHelpers.ServiceFactory.CreatePortfolioService(dbfile);
         var pid = svc.CreatePortfolio("TestPort", null);
         svc.AddHolding(pid, "AAPL", 10, 2500); // price 315.19 -> 3151.90 MV
         svc.AddHolding(pid, "MSFT", 5, 700);   // price 169.24 -> 846.20 MV
