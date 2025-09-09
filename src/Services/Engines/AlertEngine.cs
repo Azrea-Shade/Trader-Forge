@@ -7,7 +7,7 @@ namespace Services.Engines
 {
     public record AlertEvaluation(long Id, string Ticker, double Price, double? Above, double? Below, bool TriggeredAbove, bool TriggeredBelow);
 
-    public static class AlertEngine
+    public static partial partial class AlertEngine
     {
         /// <summary>
         /// Evaluate threshold alerts given latest prices.
