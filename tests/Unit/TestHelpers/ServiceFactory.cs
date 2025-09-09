@@ -1,6 +1,5 @@
 using System;
 using System.Linq;
-using System.Reflection;
 using Infrastructure;
 using Services;
 using Services.Feeds;
@@ -8,18 +7,16 @@ using Services.Feeds;
 namespace Unit.TestHelpers
 {
     /// <summary>
-    /// Creates PortfolioService using whatever ctor the Services assembly currently exposes.
-    /// Tries common patterns and falls back to reflection with sensible defaults.
+    /// Creates PortfolioService using whatever ctor the assembly currently exposes.
+    /// Tries common signatures, falls back to shortest public ctor with best-guess args.
     /// </summary>
     public static class ServiceFactory
     {
         public static PortfolioService CreatePortfolioService(string connString = "Data Source=:memory:")
         {
-            // Common “real” dependencies we may need to pass
             var repo = new PortfoliosRepository(connString);
-            var price = TryCreatePriceFeed();
+            var price = TryCreatePriceFeed(); // Services.Feeds.IPriceFeed
 
-            // Try typical matches first, in a predictable order
             var t = typeof(PortfolioService);
             var ctors = t.GetConstructors();
 
@@ -29,21 +26,21 @@ namespace Unit.TestHelpers
                 var p = x.GetParameters();
                 return p.Length == 2 &&
                        p[0].ParameterType == typeof(PortfoliosRepository) &&
-                       typeof(IPriceFeed).IsAssignableFrom(p[1].ParameterType);
+                       typeof(Services.Feeds.IPriceFeed).IsAssignableFrom(p[1].ParameterType);
             });
             if (c != null) return (PortfolioService)c.Invoke(new object[] { repo, price });
 
-            // Try (string connectionString, IPriceFeed)
+            // Try (string, IPriceFeed)
             c = ctors.FirstOrDefault(x =>
             {
                 var p = x.GetParameters();
                 return p.Length == 2 &&
                        p[0].ParameterType == typeof(string) &&
-                       typeof(IPriceFeed).IsAssignableFrom(p[1].ParameterType);
+                       typeof(Services.Feeds.IPriceFeed).IsAssignableFrom(p[1].ParameterType);
             });
             if (c != null) return (PortfolioService)c.Invoke(new object[] { connString, price });
 
-            // Try (PortfoliosRepository) only
+            // Try (PortfoliosRepository)
             c = ctors.FirstOrDefault(x =>
             {
                 var p = x.GetParameters();
@@ -51,7 +48,7 @@ namespace Unit.TestHelpers
             });
             if (c != null) return (PortfolioService)c.Invoke(new object[] { repo });
 
-            // Try (string connectionString) only
+            // Try (string)
             c = ctors.FirstOrDefault(x =>
             {
                 var p = x.GetParameters();
@@ -59,13 +56,13 @@ namespace Unit.TestHelpers
             });
             if (c != null) return (PortfolioService)c.Invoke(new object[] { connString });
 
-            // Fallback: pick the shortest public ctor and build best-effort args
+            // Fallback: shortest ctor, best-effort arg mapping
             c = ctors.OrderBy(x => x.GetParameters().Length).First();
             var args = c.GetParameters().Select(p =>
             {
                 if (p.ParameterType == typeof(string)) return (object)connString;
                 if (p.ParameterType == typeof(PortfoliosRepository)) return (object)repo;
-                if (typeof(IPriceFeed).IsAssignableFrom(p.ParameterType)) return (object)price;
+                if (typeof(Services.Feeds.IPriceFeed).IsAssignableFrom(p.ParameterType)) return (object)price;
                 if (p.HasDefaultValue) return p.DefaultValue!;
                 return p.ParameterType.IsValueType ? Activator.CreateInstance(p.ParameterType)! : null!;
             }).ToArray();
@@ -73,7 +70,7 @@ namespace Unit.TestHelpers
             return (PortfolioService)c.Invoke(args);
         }
 
-        private static IPriceFeed TryCreatePriceFeed()
+        private static Services.Feeds.IPriceFeed TryCreatePriceFeed()
         {
             try { return new DummyPriceFeed(); }
             catch { throw new InvalidOperationException("Cannot create DummyPriceFeed; ensure Services.Feeds exists."); }
