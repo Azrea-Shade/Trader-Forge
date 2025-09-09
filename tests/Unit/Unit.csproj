@@ -1,3 +1,4 @@
+<?xml version='1.0' encoding='utf-8'?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <UseWPF>true</UseWPF>
@@ -26,6 +27,6 @@
     <ProjectReference Include="../../src/Presentation/Presentation.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="NodaTime" Version="3.1.9" />
+    <PackageReference Include="NodaTime" />
   </ItemGroup>
 </Project>
