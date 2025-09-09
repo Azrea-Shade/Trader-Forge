@@ -10,7 +10,9 @@ namespace Presentation
 {
     public partial class WatchlistViewModel : ObservableObject
     {
-        public partial class Row : ObservableObject
+            private readonly AlertEngine _alertEngine = new AlertEngine(null);
+
+public partial class Row : ObservableObject
         {
             public long Id { get; set; }
             [ObservableProperty] private string ticker = "";
@@ -97,7 +99,7 @@ namespace Presentation
             var rules = Items.Select(i =>
                 new Infrastructure.AlertRow(i.Id, i.Ticker, i.Above, i.Below, true)).ToArray();
 
-            var evals = AlertEngine.Evaluate(rules, latest)
+            var evals = _alertEngine.Evaluate(rules, latest)
                                    .ToDictionary(e => e.Id);
 
             foreach (var row in Items)
