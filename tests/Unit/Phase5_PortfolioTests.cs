@@ -1,3 +1,4 @@
+using Unit.TestHelpers;
 using System;
 using System.IO;
 using Domain;
@@ -22,9 +23,9 @@ public class Phase5_PortfolioTests
         var db = new SqliteDb(dbfile);
         var repo = new PortfoliosRepository(db);
         var prices = new DummyPriceFeed();
-        var svc = new PortfolioService(repo, prices);
+        var svc = Unit.TestHelpers.ServiceFactory.CreatePortfolioService();
 
-        var pid = svc.CreatePortfolio("TestPort");
+        var pid = svc.CreatePortfolio("TestPort", null);
         svc.AddHolding(pid, "AAPL", 10, 2500); // price 315.19 -> 3151.90 MV
         svc.AddHolding(pid, "MSFT", 5, 700);   // price 169.24 -> 846.20 MV
 

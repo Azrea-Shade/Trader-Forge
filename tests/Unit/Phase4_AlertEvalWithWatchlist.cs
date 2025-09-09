@@ -46,7 +46,7 @@ public class Phase4_AlertEvalWithWatchlist
         };
 
         // Act
-        var evals = AlertEngine.Evaluate(rules, prices).ToList();
+        var evals = AlertEngine.Evaluate(rules, prices?.ToDictionary(kv => kv.Key, kv => kv.Value ?? 0d) ).ToList();
 
         // Assert
         evals.Should().Contain(e => e.Id == id1 && !e.TriggeredAbove && !e.TriggeredBelow);
