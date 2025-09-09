@@ -35,9 +35,11 @@ public class Phase5_PortfolioTests
         ((dynamic)s).TotalCost.Should().Be(3200);
         ((dynamic)s).GainLoss.Should().BeApproximately(798.10, 1.0);
         ((dynamic)s).Allocation.Should().HaveCount(2);
-        var aapl = ((dynamic)s).Allocation.Find((Predicate<dynamic>)(a => a.Ticker == "AAPL")!;
-        var msft = ((dynamic)s).Allocation.Find((Predicate<dynamic>)(a => a.Ticker == "MSFT")!;
-        (aapl.WeightPct + msft.WeightPct).Should().BeApproximately(100.0, 0.1);
+        var aapl = ((System::Collections::Generic::IEnumerable<dynamic>)((dynamic)s).Allocation)
+    .First((System::Func<dynamic,bool>)(a => a.Ticker == "AAPL"));
+var msft = ((System::Collections::Generic::IEnumerable<dynamic>)((dynamic)s).Allocation)
+    .First((System::Func<dynamic,bool>)(a => a.Ticker == "MSFT"));
+(aapl.WeightPct + msft.WeightPct).Should().BeApproximately(100.0, 0.1);
         aapl.MarketValue.Should().BeGreaterThan(msft.MarketValue);
     }
 }
