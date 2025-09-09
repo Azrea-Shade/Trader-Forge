@@ -25,20 +25,17 @@ jobs:
       - name: Restore, Build and Test (explicit)
         shell: pwsh
         run: |
-          # find a solution file (search repo) and fail clearly if none found
-          $sln = (Get-ChildItem -Path . -Recurse -Filter *.sln -ErrorAction SilentlyContinue | Select-Object -First 1).FullName
-          if (-not $sln) { Write-Error "No .sln found in repo; please locate your solution file."; exit 1 }
-          Write-Host "Using solution: $sln"
+          $sln = (Get-ChildItem -Path . -Recurse -Filter *.sln -ErrorAction SilentlyContinue | Select-Object -First 1)
+          if (-not $sln) { Write-Error "No .sln found in repo; please add your solution file."; exit 1 }
+          Write-Host "Using solution: $($sln.FullName)"
+          dotnet restore $sln.FullName
+          dotnet build $sln.FullName -c Release --no-restore
 
-          dotnet restore $sln
-          dotnet build $sln -c Release --no-restore
-
-          # find the Unit test project explicitly (prefer tests/Unit/Unit.csproj)
-          $testproj = (Get-ChildItem -Path . -Recurse -Filter 'Unit.csproj' -ErrorAction SilentlyContinue | Select-Object -First 1).FullName
+          # prefer tests/Unit/Unit.csproj, else first *Tests.csproj
+          $testproj = (Get-ChildItem -Path . -Recurse -Filter 'Unit.csproj' -ErrorAction SilentlyContinue | Select-Object -First 1)
           if (-not $testproj) {
-            $testproj = (Get-ChildItem -Path . -Recurse -Filter '*Tests.csproj' -ErrorAction SilentlyContinue | Select-Object -First 1).FullName
+            $testproj = (Get-ChildItem -Path . -Recurse -Filter '*Tests.csproj' -ErrorAction SilentlyContinue | Select-Object -First 1)
           }
           if (-not $testproj) { Write-Error "No test project (Unit.csproj or *Tests.csproj) found."; exit 1 }
-          Write-Host "Testing project: $testproj"
-
-          dotnet test $testproj -c Release --no-build --verbosity normal
+          Write-Host "Running tests in: $($testproj.FullName)"
+          dotnet test $testproj.FullName -c Release --no-build --verbosity normal
