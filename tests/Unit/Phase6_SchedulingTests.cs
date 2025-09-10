@@ -32,9 +32,6 @@ namespace Unit
         }
 
         [Fact]
-        public void Placeholder_Passes()
-        {
-            Assert.True(true);
-        }
+        public void Placeholder_Passes() { Assert.True(true); }
     }
 }
