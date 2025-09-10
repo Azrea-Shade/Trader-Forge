@@ -1,6 +1,5 @@
 using System;
 using NodaTime;
-using Services;
 using Xunit;
 
 namespace Unit
@@ -8,13 +7,14 @@ namespace Unit
     /// <summary>
     /// Minimal manual clock for tests. Implements NodaTime.IClock.
     /// </summary>
-    public sealed class ManualClock : IClock
+    public sealed class ManualClock : NodaTime.IClock
     {
         private DateTimeOffset _now;
         public ManualClock(DateTimeOffset now) => _now = now;
         public DateTimeOffset Now => _now;
         public void Set(DateTimeOffset now) => _now = now;
         public void Advance(TimeSpan delta) => _now = _now + delta;
+
         // NodaTime IClock implementation required by CI
         public Instant GetCurrentInstant() => Instant.FromDateTimeOffset(_now);
     }
@@ -31,7 +31,6 @@ namespace Unit
             Assert.Equal(t0 + TimeSpan.FromMinutes(5), clock.Now);
         }
 
-        // Add more scheduler tests later; this keeps CI compiling.
         [Fact]
         public void Placeholder_Passes()
         {
