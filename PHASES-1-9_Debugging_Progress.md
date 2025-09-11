@@ -10,68 +10,71 @@
 ## Overall progress
 **Completed:** 0 / 9 phases
 
-Visual progress (emoji):  
-🟩 = completed • ⬜ = pending
+**Legend:** 🟩 = complete • ⬜ = pending
 
-⬜ ⬜ ⬜ ⬜ ⬜ ⬜ ⬜ ⬜ ⬜
+🟩⬜⬜⬜⬜⬜⬜⬜⬜
 
-ASCII progress bar:
-
+ASCII progress bar:  
 [----------] 0% Complete
 
 ---
 
-## Phase checklist with tasks & checkboxes
+## Phase checklist (descriptions + task boxes)
 
-> We’ll tick items ✅ as we land fixes. When **all tasks in a phase are checked**, the phase will be marked complete and counted in the bar/percent.
+> Check off items as we land fixes. When a whole phase is done, run
+> `./update_phase.sh <n> "<short>" "<details>"` to tick the big bars.
 
-### Phase 1 — Repo & CI cleanup (consolidate workflows; keep one canonical CI)
-- [x] Create `docs` branch and seed with progress tracker.
-- [x] Gate unit tests temporarily by excluding `Phase2_*`, `Phase4_*`, `Phase5_*` in `tests/Unit/Unit.csproj` to keep CI green while we backfill code.
-- [ ] Reduce GitHub Actions to a **single** workflow file that runs Windows build + unit tests.
-- [ ] Verify the Actions UI shows **only the single** workflow (others disabled/removed).
-- [ ] Ensure the single workflow passes on branch `testing/1.0.0`.
+### 1) Repo & CI cleanup
+- [ ] Collapse CI to a single canonical workflow (Windows build + unit tests)
+- [ ] Disable/remove legacy/duplicate workflows
+- [ ] Keep only `main`, `testing/1.0.0`, and `docs` branches
+- [ ] Verify CI green on testing branch
 
-### Phase 2 — Reintroduce core engines (Briefing, Alert, Scheduler) to compile tests
-- [ ] Add minimal interfaces/impls for `BriefingEngine`, `AlertEngine`, `SchedulerCore`.
-- [ ] Fix deconstruction/typing in tests (e.g., `gen`, `noti` variables).
-- [ ] Remove test excludes for Phase2 and get green compile.
+### 2) Core engines re-intro (Briefing, Alert, Scheduler) to compile tests
+- [ ] Recreate minimal interfaces/impls so tests build
+- [ ] Restore unit test includes (remove temporary excludes)
 
-### Phase 3 — Shell smoke tests & artifacts
-- [ ] Stabilize “Shell smoke tests”.
-- [ ] Enable artifact publishing in CI (Windows build outputs).
+### 3) Shell smoke tests + artifact publishing
+- [ ] Stabilize shell runner tests
+- [ ] Publish build artifacts from CI run
 
-### Phase 4 — Alert evaluation + watchlist
-- [ ] Restore/repair `AlertEngine` usage in tests.
-- [ ] Replace `double.HasValue` misuse with nullable/option handling.
-- [ ] Re-enable `Phase4_*` tests and go green.
+### 4) Alert evaluation + watchlist wiring
+- [ ] Implement/repair `AlertEngine`
+- [ ] Fix types/usings for test compile & pass
 
-### Phase 5 — Portfolio service wiring
-- [ ] Fix `ServiceFactory` → `PortfolioService` constructor signature mismatch.
-- [ ] Re-enable `Phase5_*` tests and go green.
+### 5) Portfolio
+- [ ] Fix `ServiceFactory` and `PortfolioService` constructor mismatch
+- [ ] Re-enable Phase5 tests and make them pass
 
-### Phase 6 — Integration services & DI
-- [ ] Wire DI for integration services; ensure compile + basic tests.
+### 6) Integrations & DI wiring
+- [ ] Wire services cleanly via DI
+- [ ] Add missing contracts/mocks for tests
 
-### Phase 7 — Presentation layer
-- [ ] Presentation smoke tests; unblock any Windows-specific paths.
+### 7) Presentation layer
+- [ ] Smoke build of `Presentation` (net8.0-windows)
+- [ ] UI glue & basic test harnesses
 
-### Phase 8 — CI end-to-end & release prep
-- [ ] Full CI pass, artifacts retained; tag & packaging workflow verified.
+### 8) CI finalization
+- [ ] Full end-to-end test pass on testing branch
+- [ ] Artifact publishing + release prep checklist
 
-### Phase 9 — Final regression & coverage
-- [ ] Sweep remaining issues; raise/record coverage; document release notes.
-
----
-
-## Running notes (what/why/how)
-
-- **Temporary test gating**: We excluded Phase2/4/5 unit files to unblock CI while we restore missing types (engines) and fix constructor/typing issues seen in logs (`BriefingEngine`, `AlertEngine`, `SchedulerCore`, `ServiceFactory` → `PortfolioService`).  
-- **CI consolidation**: Target state is **one** GitHub Actions workflow that builds on Windows and runs unit tests. Historical workflows may still appear in the UI until old YAMLs are removed and the branch is force-pushed.
+### 9) Final regression & wrap-up
+- [ ] Expand/green test coverage
+- [ ] Final docs, ready to merge testing → main
 
 ---
 
 ## Change Log (most recent first)
 
-- *(TBD — will populate as each fix lands; entries include the phase, summary, why, and what changed.)*
+*(No phases completed yet — use `./update_phase.sh` to mark a phase complete.)*
+
+---
+
+## How to update when a phase is finished
+
+Run from repo root (any branch):
+
+- `./update_phase.sh 1 "Consolidated CI into single workflow" "Removed legacy YAMLs; kept CI-Single that runs Windows build+tests."`
+
+This updates the emoji row, ASCII bar, “Completed: X / 9” count, and appends a Change Log entry to this document (on `docs`).
 
