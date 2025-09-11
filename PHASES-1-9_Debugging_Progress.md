@@ -12,7 +12,7 @@
 
 **Legend:** 🟩 = complete • ⬜ = pending
 
-🟩 ⚠ ️ ⚠️ ⬜ ⬜ ⬜ ⬜ ⬜ ⬜
+🟩 ⚠ ️ ⚠ ️ ⚠️ ⬜ ⬜ ⬜ ⬜ ⬜
 
 ASCII progress bar:  
 [----------] 0% Complete
@@ -69,6 +69,14 @@ ASCII progress bar:
 ## Change Log (most recent first)
 
 
+
+
+### Phase 2 — Create Services.PortfolioService (2-arg ctor) so Presentation compiles — FAILURE
+**Time (UTC):** 2025-09-11 20:51 UTC
+**Conclusion:** failure
+**Details:** Added src/Services/PortfolioService.cs in namespace Services with a two-argument constructor to satisfy Presentation and tests' ServiceFactory.
+
+---
 
 ### Phase 2 — Add Phase2 method signatures + PortfolioService ctor — FAILURE
 **Time (UTC):** 2025-09-11 20:48 UTC
