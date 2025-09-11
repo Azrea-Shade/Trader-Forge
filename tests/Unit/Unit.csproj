@@ -34,7 +34,7 @@
   <PropertyGroup Label="CI_TEMP_EXCLUDES">
     <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
   </PropertyGroup>
-  <ItemGroup Label="CI_TEMP_EXCLUDES">
-    <Compile Include="**\\*.cs" Exclude="**\\Phase2_*.cs;**\\Phase4_*.cs;**\\TestHelpers\\ServiceFactory.cs" />
+    <ItemGroup Label="CI_TEMP_EXCLUDES">
+    <Compile Include="**\\*.cs" Exclude="**\\Phase2_*.cs;**\\Phase4_*.cs;**\\Phase5_*.cs;**\\TestHelpers\\ServiceFactory.cs" />
   </ItemGroup>
 </Project>
