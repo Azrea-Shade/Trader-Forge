@@ -27,8 +27,7 @@
     <ProjectReference Include="../../src/Presentation/Presentation.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="NodaTime" />
-  </ItemGroup>
+    </ItemGroup>
   <ItemGroup>
     <PackageReference Include="NodaTime" Version="3.0.11" />
   </ItemGroup>
