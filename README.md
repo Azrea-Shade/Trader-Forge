@@ -30,40 +30,6 @@ Note: Desktop toast notifications ship after v1 stabilization; CI currently uses
 • GitHub Actions: tests must pass before build runs  
 • Branch model: main (backups), testing/v1.0.0 (active dev), docs (documentation)
 
-— Getting Started (Developer)
-
-1) Clone  
-   git clone git@github.com:Azrea-Shade/Trader-Forge.git  
-   cd Trader-Forge  
-   git checkout testing/v1.0.0
-
-2) Restore & Build  
-   dotnet restore tests/Unit/Unit.csproj  
-   dotnet restore src/Cli/Cli.csproj  
-   dotnet restore src/App/App.csproj  
-   dotnet build src/App/App.csproj -c Release --no-restore
-
-3) Run Tests  
-   dotnet test tests/Unit/Unit.csproj --collect:"XPlat Code Coverage" --logger "trx;LogFileName=test_results.trx" --results-directory artifacts/tests
-
-Artifacts are published on successful runs of the testing branch.
-
-— Configuration  
-• Daily Brief defaults: Generate 07:30, Deliver 08:00  
-• Autostart: enabled post-install (toggle in Settings)  
-• Currency inputs: “$” prefix supported in Alerts & Portfolio
-
-— Screenshots  
-Place images under docs/screenshots/ and reference:  
-dashboard.png • watchlist.png • alerts.png • settings.png
-
-— Repo Hygiene  
-• Backups: periodically copy testing/v1.0.0 → main when CI is green.  
-• Devlogs: docs/devlog/ named YYYY-MM-DD_phase-<range>.md
-
-— Roadmap  
-• v1.0: core watchlist, alerts, daily brief, installer, theme polish  
-• v1.1+: desktop toasts, richer portfolio dashboards, improved feeds
 
 — Contributing  
 PRs welcome against testing/v1.0.0. Keep changes small; keep CI green. Open issues for bugs/features.
