@@ -12,7 +12,7 @@
 
 **Legend:** 🟩 = complete • ⬜ = pending
 
-🟩 ⚠️ ️ ️ ⚠ ️ ⚠ ️ ⬜ ⬜ ⬜ ⬜ ⬜
+🟩 ⚠️ ️ ️ ️ ⚠ ️ ⚠ ️ ⬜ ⬜ ⬜ ⬜ ⬜
 
 ASCII progress bar:  
 [----------] 0% Complete
@@ -72,6 +72,14 @@ ASCII progress bar:
 
 
 
+
+
+### Phase 2 — Phase2: BuildBrief returns string[]; NextTimes accepts cron string & returns (DateTime, DateTime) — FAILURE
+**Time (UTC):** 2025-09-11 21:44 UTC
+**Conclusion:** failure
+**Details:** Adjust BriefingEngine to return array of strings (supports indexing and string.Contains). Change SchedulerCore.NextTimes to overloads with first arg string cron and return a tuple of DateTime values so FluentAssertions .Be(...) compiles. Keep AlertEngine.Evaluate enumerable return from earlier.
+
+---
 
 ### Phase 2 — Phase2: adjust stub signatures (Evaluate IEnumerable, BuildBrief IEnumerable<char>, NextTimes 4-arg overload) — FAILURE
 **Time (UTC):** 2025-09-11 21:38 UTC
