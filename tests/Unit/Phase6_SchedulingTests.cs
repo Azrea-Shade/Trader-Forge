@@ -5,9 +5,9 @@ using Xunit;
 namespace Unit
 {
     /// <summary>
-    /// Minimal manual clock for tests. Implements NodaTime.NodaTime.IClock.
+    /// Minimal manual clock for tests. Implements NodaTime.IClock.
     /// </summary>
-    public sealed class ManualClock : NodaTime.NodaTime.IClock
+    public sealed class ManualClock : NodaTime.IClock
     {
         private DateTimeOffset _now;
         public ManualClock(DateTimeOffset now) => _now = now;
