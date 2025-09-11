@@ -1,19 +1,15 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Domain
 {
     public static class SchedulerCore
     {
-        // Minimal existing signature (keep)
-        public static (IEnumerable<DateTime> gen, IEnumerable<DateTime> noti)
-            NextTimes(DateTime from, object schedule)
-            => (Enumerable.Empty<DateTime>(), Enumerable.Empty<DateTime>());
+        public static (DateTime gen, DateTime noti)
+            NextTimes(string cron, DateTime from)
+            => (from, from);
 
-        // Added overload: tests call with four arguments; types are intentionally broad.
-        public static (IEnumerable<DateTime> gen, IEnumerable<DateTime> noti)
-            NextTimes(DateTime from, object schedule, object arg3, object arg4)
-            => (Enumerable.Empty<DateTime>(), Enumerable.Empty<DateTime>());
+        public static (DateTime gen, DateTime noti)
+            NextTimes(string cron, DateTime from, object arg3, object arg4)
+            => (from, from);
     }
 }
