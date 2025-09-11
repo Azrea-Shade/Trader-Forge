@@ -12,7 +12,7 @@
 
 **Legend:** 🟩 = complete • ⬜ = pending
 
-🟩 ⚠ ️ ⚠ ️ ⚠️ ⬜ ⬜ ⬜ ⬜ ⬜
+🟩 ⚠️ ️ ⚠ ️ ⚠ ️ ⬜ ⬜ ⬜ ⬜ ⬜
 
 ASCII progress bar:  
 [----------] 0% Complete
@@ -70,6 +70,14 @@ ASCII progress bar:
 
 
 
+
+
+### Phase 2 — Add Phase2 stubs (Evaluate/BuildBrief/NextTimes) to satisfy test signatures — FAILURE
+**Time (UTC):** 2025-09-11 21:31 UTC
+**Conclusion:** failure
+**Details:** Introduced minimal stubs in Domain: AlertEngine.Evaluate(a,b), BriefingEngine.BuildBrief(a,b,c) returning string, and SchedulerCore.NextTimes(...) returning two empty sequences. Intended to restore compilation while we implement real behavior.
+
+---
 
 ### Phase 2 — Create Services.PortfolioService (2-arg ctor) so Presentation compiles — FAILURE
 **Time (UTC):** 2025-09-11 20:51 UTC
