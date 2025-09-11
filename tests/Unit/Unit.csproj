@@ -36,6 +36,5 @@
   </PropertyGroup>
   <ItemGroup Label="CI_TEMP_EXCLUDES">
     <Compile Include="**/*.cs" />
-    <Compile Remove="**/Phase2_*.cs;**/Phase4_*.cs;**/Phase5_*.cs;**/TestHelpers/ServiceFactory.cs" />
   </ItemGroup>
 </Project>

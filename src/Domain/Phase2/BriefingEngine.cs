@@ -1,8 +1,9 @@
-namespace Domain.Phase2
+namespace Domain
 {
-    // Minimal compile-time stub for tests.
+    // Minimal stub so tests/consumers compile.
     public class BriefingEngine
     {
         public BriefingEngine() { }
+        public string BuildBrief(string id) => $"brief:{id}";
     }
 }
