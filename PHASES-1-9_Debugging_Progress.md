@@ -12,7 +12,7 @@
 
 **Legend:** 🟩 = complete • ⬜ = pending
 
-🟩 ⚠️ ⬜ ⬜ ⬜ ⬜ ⬜ ⬜ ⬜
+🟩 ⚠ ️ ⚠️ ⬜ ⬜ ⬜ ⬜ ⬜ ⬜
 
 ASCII progress bar:  
 [----------] 0% Complete
@@ -68,6 +68,14 @@ ASCII progress bar:
 
 ## Change Log (most recent first)
 
+
+
+### Phase 2 — Add Phase2 method signatures + PortfolioService ctor — FAILURE
+**Time (UTC):** 2025-09-11 20:48 UTC
+**Conclusion:** failure
+**Details:** Added SchedulerCore.NextTimes(tuple), AlertEngine.Evaluate(a,b), BriefingEngine.BuildBrief(a,b,c), and PortfolioService(object,object) constructor so Phase2 tests compile.
+
+---
 
 ### Phase 2 — Reintroduced Phase2 stubs — FAILURE
 **Time (UTC):** 2025-09-11 20:40 UTC
