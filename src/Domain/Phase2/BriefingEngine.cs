@@ -1,6 +1,6 @@
 namespace Domain
 {
-    // Minimal stub so tests/consumers compile.
+    // Minimal stub for tests
     public class BriefingEngine
     {
         public BriefingEngine() { }

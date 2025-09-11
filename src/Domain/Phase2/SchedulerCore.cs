@@ -1,10 +1,9 @@
-using System;
 namespace Domain
 {
-    // Minimal stub so tests/consumers compile.
+    // Minimal stub for tests
     public class SchedulerCore
     {
         public SchedulerCore() { }
-        public (int, string) Next() => (0, "none");
+        public (int,string) Next() => (0,"none");
     }
 }
