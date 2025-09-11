@@ -12,7 +12,7 @@
 
 **Legend:** 🟩 = complete • ⬜ = pending
 
-🟩 ⚠️ ️ ⚠ ️ ⚠ ️ ⬜ ⬜ ⬜ ⬜ ⬜
+🟩 ⚠️ ️ ️ ⚠ ️ ⚠ ️ ⬜ ⬜ ⬜ ⬜ ⬜
 
 ASCII progress bar:  
 [----------] 0% Complete
@@ -71,6 +71,14 @@ ASCII progress bar:
 
 
 
+
+
+### Phase 2 — Phase2: adjust stub signatures (Evaluate IEnumerable, BuildBrief IEnumerable<char>, NextTimes 4-arg overload) — FAILURE
+**Time (UTC):** 2025-09-11 21:38 UTC
+**Conclusion:** failure
+**Details:** Return IEnumerable from AlertEngine.Evaluate; make BriefingEngine.BuildBrief return IEnumerable<char>; add SchedulerCore.NextTimes overload with 4 args. Keeps behavior stubbed but unblocks compile expectations in tests.
+
+---
 
 ### Phase 2 — Add Phase2 stubs (Evaluate/BuildBrief/NextTimes) to satisfy test signatures — FAILURE
 **Time (UTC):** 2025-09-11 21:31 UTC
