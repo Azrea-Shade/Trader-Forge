@@ -12,7 +12,7 @@
 
 **Legend:** 🟩 = complete • ⬜ = pending
 
-🟩⬜⬜⬜⬜⬜⬜⬜⬜
+🟩 ⚠️ ⬜ ⬜ ⬜ ⬜ ⬜ ⬜ ⬜
 
 ASCII progress bar:  
 [----------] 0% Complete
@@ -67,6 +67,14 @@ ASCII progress bar:
 ---
 
 ## Change Log (most recent first)
+
+
+### Phase 2 — Reintroduced Phase2 stubs — FAILURE
+**Time (UTC):** 2025-09-11 20:40 UTC
+**Conclusion:** failure
+**Details:** Adjusted BriefingEngine/AlertEngine/SchedulerCore signatures so Phase2 tests compile.
+
+---
 
 - 2025-09-11 20:10 UTC — Phase 1: Canonical workflow kept on testing & main; legacy YAMLs removed; docs branch has none.
 
