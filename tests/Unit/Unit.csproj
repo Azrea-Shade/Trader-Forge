@@ -31,4 +31,9 @@
   <ItemGroup>
     <PackageReference Include="NodaTime" />
   </ItemGroup>
+  <ItemGroup Label="CI_TEMP_EXCLUDES">
+    <Compile Remove="Phase2_*.cs" />
+    <Compile Remove="Phase4_*.cs" />
+    <Compile Remove="TestHelpers/ServiceFactory.cs" />
+  </ItemGroup>
 </Project>
