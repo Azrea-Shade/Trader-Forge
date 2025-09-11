@@ -25,7 +25,7 @@ ASCII progress bar:
 > `./update_phase.sh <n> "<short>" "<details>"` to tick the big bars.
 
 ### 1) Repo & CI cleanup
-*Sub-progress:* [========--] 80%
+*Sub-progress:* [==========] 100%
 - [ ] Collapse CI to a single canonical workflow (Windows build + unit tests)
 - [ ] Disable/remove legacy/duplicate workflows
 - [x] Keep only `main`, `testing/1.0.0`, and `docs` branches
@@ -67,6 +67,9 @@ ASCII progress bar:
 ---
 
 ## Change Log (most recent first)
+
+- 2025-09-11 20:10 UTC — Phase 1: Canonical workflow kept on testing & main; legacy YAMLs removed; docs branch has none.
+
 
 - 2025-09-11 20:06 UTC — Phase 1 progress: created canonical CI (Windows build + unit tests), kept only main/testing/docs, made docs branch docs-only, CI run green on testing. Pending: hide/disable remaining legacy workflows in GitHub UI.
 
