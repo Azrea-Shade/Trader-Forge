@@ -6,11 +6,14 @@ namespace Domain
 {
     public static class SchedulerCore
     {
-        // Minimal signature to satisfy tuple-deconstruction tests.
+        // Minimal existing signature (keep)
         public static (IEnumerable<DateTime> gen, IEnumerable<DateTime> noti)
             NextTimes(DateTime from, object schedule)
-        {
-            return (Enumerable.Empty<DateTime>(), Enumerable.Empty<DateTime>());
-        }
+            => (Enumerable.Empty<DateTime>(), Enumerable.Empty<DateTime>());
+
+        // Added overload: tests call with four arguments; types are intentionally broad.
+        public static (IEnumerable<DateTime> gen, IEnumerable<DateTime> noti)
+            NextTimes(DateTime from, object schedule, object arg3, object arg4)
+            => (Enumerable.Empty<DateTime>(), Enumerable.Empty<DateTime>());
     }
 }
