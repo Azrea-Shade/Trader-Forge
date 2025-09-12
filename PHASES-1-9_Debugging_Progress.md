@@ -1,24 +1,26 @@
-# Trader-Forge — Debugging Progress (simplified)
+# Trader-Forge Debug Dashboard
 
-**Updated:** 2025-09-12 20:47:17 UTC  
-**Run:** [CI - Single (Windows build + unit tests) #17682862149](https://github.com/Azrea-Shade/Trader-Forge/actions/runs/17682862149) — attempt 1  
-**Status:** failure  
-
-**Progress:** `70%`  `#####################---------`
-
-**Phase:** Unknown  
-**What we're doing:** docs(dashboard): simplified update for run 17684050146 (70%)
+**Phase:** 2 — Core shapes compile  
+**Status:** ❌ Failure  
+**Progress:** `70%`  `███████░░░`  
+**Run:** <https://github.com/Azrea-Shade/Trader-Forge/actions/runs/17685992752>  
+**Updated:** 2025-09-12 21:08:20 UTC
 
 ---
 
-## Latest result
-- **Run started:** 2025-09-12T18:26:49Z
-- **Steps:** ✅ 7  |  ❌ 1  |  Total: 10
+## History
 
-### Short compiler errors (if any)
-- (no top compiler errors found)
+- 2025-09-12 21:08:20 UTC — **❌ Failure** at `70%` — CI - Single (Windows build + unit tests)
+  - Top errors:
+    - error CS1061: 'GenericCollectionAssertions<DateTime>' does not contain a definition for 'Be' and no accessible extension method 'Be' accepting a first argument of type 'GenericCollectionAssertions<DateTime>' could be found (are you missing a using directive or an assembly reference?) [D:\a\Trader-Forge\Trader-Forge\tests\Unit\Unit.csproj]
+    - error CS1061: 'GenericCollectionAssertions<DateTime>' does not contain a definition for 'Be' and no accessible extension method 'Be' accepting a first argument of type 'GenericCollectionAssertions<DateTime>' could be found (are you missing a using directive or an assembly reference?) [D:\a\Trader-Forge\Trader-Forge\tests\Unit\Unit.csproj]
+    - error CS1061: 'GenericCollectionAssertions<DateTime>' does not contain a definition for 'Be' and no accessible extension method 'Be' accepting a first argument of type 'GenericCollectionAssertions<DateTime>' could be found (are you missing a using directive or an assembly reference?) [D:\a\Trader-Forge\Trader-Forge\tests\Unit\Unit.csproj]
+    - error CS1061: 'GenericCollectionAssertions<DateTime>' does not contain a definition for 'Be' and no accessible extension method 'Be' accepting a first argument of type 'GenericCollectionAssertions<DateTime>' could be found (are you missing a using directive or an assembly reference?) [D:\a\Trader-Forge\Trader-Forge\tests\Unit\Unit.csproj]
+    - error CS1061: 'double' does not contain a definition for 'HasValue' and no accessible extension method 'HasValue' accepting a first argument of type 'double' could be found (are you missing a using directive or an assembly reference?) [D:\a\Trader-Forge\Trader-Forge\tests\Unit\Unit.csproj]
+    - error CS1061: 'GenericCollectionAssertions<DateTime>' does not contain a definition for 'Be' and no accessible extension method 'Be' accepting a first argument of type 'GenericCollectionAssertions<DateTime>' could be found (are you missing a using directive or an assembly reference?) [D:\a\Trader-Forge\Trader-Forge\tests\Unit\Unit.csproj]
+  - Warnings:
+    - warning NU1603: Unit depends on FluentAssertions (>= 6.14.0) but FluentAssertions 6.14.0 was not found. FluentAssertions 7.0.0 was resolved instead.
+    - warning SYSLIB0050: 'FormatterServices' is obsolete: 'Formatter-based serialization is obsolete and should not be used.' (https://aka.ms/dotnet-warnings/SYSLIB0050) [D:\a\Trader-Forge\Trader-Forge\tests\Unit\Unit.csproj]
+    - warning CS8625: Cannot convert null literal to non-nullable reference type. [D:\a\Trader-Forge\Trader-Forge\tests\Unit\Unit.csproj]
+    - warning NU1603: Unit depends on FluentAssertions (>= 6.14.0) but FluentAssertions 6.14.0 was not found. FluentAssertions 7.0.0 was resolved instead.
 
----
-
-## Changelog (latest commit)
-- 936ea5e docs(dashboard): simplified update for run 17684050146 (70%)
