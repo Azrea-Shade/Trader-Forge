@@ -1,40 +1,31 @@
 # Trader-Forge Debug Dashboard
 
-**Phase (overall):** ❌ Failure  
-**Overall Progress:** `70%`  `███████░░░`  
-**Run:** <https://github.com/Azrea-Shade/Trader-Forge/actions/runs/17687273903>  
-**Updated:** 2025-09-12 22:19:53 UTC
+**Overall:** ❌ Failure  |  **Progress:** `70%`  `███████░░░`  
+**Run:** <https://github.com/Azrea-Shade/Trader-Forge/actions/runs/17687400584>  
+**Updated:** 2025-09-12 22:27:35 UTC
 
----
+## Phase Progress (1–9)
+P1 100%  `█░░░░░░░░░░`  ✅/⚠️  
+P2 100%  `█░░░░░░░░░░`  ✅/⚠️  
+P3 100%  `█░░░░░░░░░░`  ✅/⚠️  
+P4 100%  `█░░░░░░░░░░`  ✅/⚠️  
+P5 100%  `█░░░░░░░░░░`  ✅/⚠️  
+P6 100%  `█░░░░░░░░░░`  ✅/⚠️  
+P7 100%  `█░░░░░░░░░░`  ✅/⚠️  
+P8 100%  `█░░░░░░░░░░`  ✅/⚠️  
+P9 100%  `█░░░░░░░░░░`  ✅/⚠️
 
-## Phase Overview (1–9)
-- **P1 — Foundations:** `100%`  `██████████░`  ✅
-- **P2 — Core Shapes:** `100%`  `██████████░`  ✅
-- **P3 — Shell & Smoke:** `100%`  `██████████░`  ✅
-- **P4 — Alerts & Watchlist:** `60%`  `██████░░░░`  ⚠️
-- **P5 — Portfolio:** `100%`  `██████████░`  ✅
-- **P6 — Scheduling:** `100%`  `██████████░`  ✅
-- **P7 — Integrations:** `100%`  `██████████░`  ✅
-- **P8 — UI/Presentation:** `60%`  `██████░░░░`  ⚠️
-- **P9 — Briefing:** `100%`  `██████████░`  ✅
+### Progress Pie (quadrants)
 
-### Progress Pie
-```mermaid
-pie showData
-  "P1" : 100
-  "P2" : 100
-  "P3" : 100
-  "P4" : 60
-  "P5" : 100
-  "P6" : 100
-  "P7" : 100
-  "P8" : 60
-  "P9" : 100
-```
 
 ---
 
 ## History
+- 2025-09-12 22:27:35 UTC — **❌ Failure** at `70%` — CI - Single (Windows build + unit tests)
+  - Top errors:
+    - error CS0722: 'AlertEngine': static types cannot be used as return types [D:\a\Trader-Forge\Trader-Forge\tests\Unit\Unit.csproj]
+    - error CS0722: 'AlertEngine': static types cannot be used as return types [D:\a\Trader-Forge\Trader-Forge\tests\Unit\Unit.csproj]
+
 
 - 2025-09-12 22:19:53 UTC — **❌ Failure** at `70%` — CI - Single (Windows build + unit tests)
   - Top errors:
