@@ -6,8 +6,8 @@ namespace Domain
     public record AlertResult
     {
         public int Id { get; init; }
-        public bool TriggeredAbove { get; init; }
-        public bool TriggeredBelow { get; init; }
+        public double? TriggeredAbove { get; init; }
+        public double? TriggeredBelow { get; init; }
     }
 
     public static class AlertEngine
