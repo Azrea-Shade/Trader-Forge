@@ -12,7 +12,7 @@
 
 **Legend:** 🟩 = complete • ⬜ = pending
 
-🟩 ⚠️ ️ ️ ️ ⚠ ️ ⚠ ️ ⬜ ⬜ ⬜ ⬜ ⬜
+🟩 ⚠️ ️ ️ ️ ️ ⚠ ️ ⚠ ️ ⬜ ⬜ ⬜ ⬜ ⬜
 
 ASCII progress bar:  
 [----------] 0% Complete
@@ -73,6 +73,14 @@ ASCII progress bar:
 
 
 
+
+
+### Phase 2 — Phase2: BuildBrief->List<string>; NextTimes string overloads; AlertResult type — FAILURE
+**Time (UTC):** 2025-09-12 17:35 UTC
+**Conclusion:** failure
+**Details:** Adjust BriefingEngine to return List<string>; add SchedulerCore.NextTimes overloads accepting string or DateTime and returning (DateTime gen, DateTime noti); make AlertEngine.Evaluate return IEnumerable<AlertResult> with Id/TriggeredAbove/TriggeredBelow.
+
+---
 
 ### Phase 2 — Phase2: BuildBrief returns string[]; NextTimes accepts cron string & returns (DateTime, DateTime) — FAILURE
 **Time (UTC):** 2025-09-11 21:44 UTC
