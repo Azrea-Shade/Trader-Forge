@@ -2,40 +2,57 @@
 
 **Phase (overall):** ❌ Failure  
 **Overall Progress:** `70%`  `███████░░░`  
-**Run:** <https://github.com/Azrea-Shade/Trader-Forge/actions/runs/17687069313>  
-**Updated:** 2025-09-12 22:08:09 UTC
+**Run:** <https://github.com/Azrea-Shade/Trader-Forge/actions/runs/17687143236>  
+**Updated:** 2025-09-12 22:14:59 UTC
 
 ---
 
 ## Phase Overview (1–9)
 
-- **Phase 1 — Foundations:** `70%`  `███████░░░`  ⚠️
-- **Phase 2 — Core Shapes:** `5%`  `█░░░░░░░░░`  ❌
-- **Phase 3 — Shell & Smoke:** `70%`  `███████░░░`  ⚠️
-- **Phase 4 — Alerts & Watchlist:** `70%`  `███████░░░`  ⚠️
-- **Phase 5 — Portfolio:** `70%`  `███████░░░`  ⚠️
-- **Phase 6 — Scheduling:** `70%`  `███████░░░`  ⚠️
-- **Phase 7 — Integrations:** `70%`  `███████░░░`  ⚠️
+- **Phase 1 — Foundations:** `100%`  `██████████░`  ✅
+- **Phase 2 — Core Shapes:** `100%`  `██████████░`  ✅
+- **Phase 3 — Shell & Smoke:** `100%`  `██████████░`  ✅
+- **Phase 4 — Alerts & Watchlist:** `5%`  `█░░░░░░░░░`  ❌
+- **Phase 5 — Portfolio:** `100%`  `██████████░`  ✅
+- **Phase 6 — Scheduling:** `100%`  `██████████░`  ✅
+- **Phase 7 — Integrations:** `100%`  `██████████░`  ✅
 - **Phase 8 — UI/Presentation:** `5%`  `█░░░░░░░░░`  ❌
-- **Phase 9 — Briefing:** `70%`  `███████░░░`  ⚠️
+- **Phase 9 — Briefing:** `100%`  `██████████░`  ✅
 
 ### Progress Pie
 ```mermaid
 pie showData
-  "P1" : 70
-  "P2" : 5
-  "P3" : 70
-  "P4" : 70
-  "P5" : 70
-  "P6" : 70
-  "P7" : 70
+  "P1" : 100
+  "P2" : 100
+  "P3" : 100
+  "P4" : 5
+  "P5" : 100
+  "P6" : 100
+  "P7" : 100
   "P8" : 5
-  "P9" : 70
+  "P9" : 100
 ```
 
 ---
 
 ## History
+
+- 2025-09-12 22:14:59 UTC — **❌ Failure** at `70%` — CI - Single (Windows build + unit tests)
+  - Top errors:
+    - error CS1061: 'double' does not contain a definition for 'HasValue' and no accessible extension method 'HasValue' accepting a first argument of type 'double' could be found (are you missing a using directive or an assembly reference?) [D:\a\Trader-Forge\Trader-Forge\tests\Unit\Unit.csproj]
+    - error CS1061: '(AlertResult alert, double? price)' does not contain a definition for 'Id' and no accessible extension method 'Id' accepting a first argument of type '(AlertResult alert, double? price)' could be found (are you missing a using directive or an assembly reference?) [D:\a\Trader-Forge\Trader-Forge\tests\Unit\Unit.csproj]
+    - error CS1061: '(AlertResult alert, double? price)' does not contain a definition for 'TriggeredAbove' and no accessible extension method 'TriggeredAbove' accepting a first argument of type '(AlertResult alert, double? price)' could be found (are you missing a using directive or an assembly reference?) [D:\a\Trader-Forge\Trader-Forge\tests\Unit\Unit.csproj]
+    - error CS1061: '(AlertResult alert, double? price)' does not contain a definition for 'TriggeredBelow' and no accessible extension method 'TriggeredBelow' accepting a first argument of type '(AlertResult alert, double? price)' could be found (are you missing a using directive or an assembly reference?) [D:\a\Trader-Forge\Trader-Forge\tests\Unit\Unit.csproj]
+    - error CS1061: '(AlertResult alert, double? price)' does not contain a definition for 'Id' and no accessible extension method 'Id' accepting a first argument of type '(AlertResult alert, double? price)' could be found (are you missing a using directive or an assembly reference?) [D:\a\Trader-Forge\Trader-Forge\tests\Unit\Unit.csproj]
+    - error CS1061: '(AlertResult alert, double? price)' does not contain a definition for 'TriggeredAbove' and no accessible extension method 'TriggeredAbove' accepting a first argument of type '(AlertResult alert, double? price)' could be found (are you missing a using directive or an assembly reference?) [D:\a\Trader-Forge\Trader-Forge\tests\Unit\Unit.csproj]
+    - error CS1061: '(AlertResult alert, double? price)' does not contain a definition for 'TriggeredBelow' and no accessible extension method 'TriggeredBelow' accepting a first argument of type '(AlertResult alert, double? price)' could be found (are you missing a using directive or an assembly reference?) [D:\a\Trader-Forge\Trader-Forge\tests\Unit\Unit.csproj]
+    - error CS1061: 'double' does not contain a definition for 'HasValue' and no accessible extension method 'HasValue' accepting a first argument of type 'double' could be found (are you missing a using directive or an assembly reference?) [D:\a\Trader-Forge\Trader-Forge\tests\Unit\Unit.csproj]
+  - Warnings:
+    - warning NU1603: Unit depends on FluentAssertions (>= 6.14.0) but FluentAssertions 6.14.0 was not found. FluentAssertions 7.0.0 was resolved instead.
+    - warning NU1603: Unit depends on FluentAssertions (>= 6.14.0) but FluentAssertions 6.14.0 was not found. FluentAssertions 7.0.0 was resolved instead.
+    - warning SYSLIB0050: 'FormatterServices' is obsolete: 'Formatter-based serialization is obsolete and should not be used.' (https://aka.ms/dotnet-warnings/SYSLIB0050) [D:\a\Trader-Forge\Trader-Forge\tests\Unit\Unit.csproj]
+    - warning CS8625: Cannot convert null literal to non-nullable reference type. [D:\a\Trader-Forge\Trader-Forge\tests\Unit\Unit.csproj]
+    - warning NU1603: Unit depends on FluentAssertions (>= 6.14.0) but FluentAssertions 6.14.0 was not found. FluentAssertions 7.0.0 was resolved instead.
 
 - 2025-09-12 22:08:09 UTC — **❌ Failure** at `70%` — CI - Single (Windows build + unit tests)
   - Top errors:
