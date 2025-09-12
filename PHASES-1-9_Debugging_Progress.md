@@ -1,3 +1,36 @@
+## CI Dashboard Update — 2025-09-12 19:23:53 UTC
+
+**Run:** [CI - Single (Windows build + unit tests) (attempt 1)](https://github.com/Azrea-Shade/Trader-Forge/actions/runs/17682862149)  
+**Branch:** `testing/1.0.0`  
+**Status:** ❌ Failure  
+**Progress:** `70%`  `███████░░░`
+
+**Steps:** ✅ 7  |  ❌ 1  |  ⚠️ 0  |  ⏭️ 2  (Total: 10)
+
+**Changelog**
+- 9b611fe fix(ci): AlertResult flags -> bool; EvaluateWithPrices -> (IEnumerable<AlertResult>, IEnumerable<double?>); drop DoubleExtensions
+
+**Top Errors**
+- error CS0019: Operator '&&' cannot be applied to operands of type 'bool' and 'bool?' [D:\a\Trader-Forge\Trader-Forge\tests\Unit\Unit.csproj]
+- error CS0019: Operator '&&' cannot be applied to operands of type 'bool' and 'bool?' [D:\a\Trader-Forge\Trader-Forge\tests\Unit\Unit.csproj]
+- error CS0019: Operator '&&' cannot be applied to operands of type 'bool' and 'bool?' [D:\a\Trader-Forge\Trader-Forge\tests\Unit\Unit.csproj]
+- error CS0428: Cannot convert method group 'HasValue' to non-delegate type 'bool'. Did you intend to invoke the method? [D:\a\Trader-Forge\Trader-Forge\tests\Unit\Unit.csproj]
+- error CS1662: Cannot convert lambda expression to intended delegate type because some of the return types in the block are not implicitly convertible to the delegate return type [D:\a\Trader-Forge\Trader-Forge\tests\Unit\Unit.csproj]
+- error CS1061: '(AlertResult alert, double? price)' does not contain a definition for 'Id' and no accessible extension method 'Id' accepting a first argument of type '(AlertResult alert, double? price)' could be found (are you missing a using directive or an assembly reference?) [D:\a\Trader-Forge\Trader-Forge\tests\Unit\Unit.csproj]
+- error CS1061: '(AlertResult alert, double? price)' does not contain a definition for 'TriggeredAbove' and no accessible extension method 'TriggeredAbove' accepting a first argument of type '(AlertResult alert, double? price)' could be found (are you missing a using directive or an assembly reference?) [D:\a\Trader-Forge\Trader-Forge\tests\Unit\Unit.csproj]
+- error CS1061: '(AlertResult alert, double? price)' does not contain a definition for 'TriggeredBelow' and no accessible extension method 'TriggeredBelow' accepting a first argument of type '(AlertResult alert, double? price)' could be found (are you missing a using directive or an assembly reference?) [D:\a\Trader-Forge\Trader-Forge\tests\Unit\Unit.csproj]
+- error CS1061: '(AlertResult alert, double? price)' does not contain a definition for 'Id' and no accessible extension method 'Id' accepting a first argument of type '(AlertResult alert, double? price)' could be found (are you missing a using directive or an assembly reference?) [D:\a\Trader-Forge\Trader-Forge\tests\Unit\Unit.csproj]
+- error CS1061: '(AlertResult alert, double? price)' does not contain a definition for 'TriggeredAbove' and no accessible extension method 'TriggeredAbove' accepting a first argument of type '(AlertResult alert, double? price)' could be found (are you missing a using directive or an assembly reference?) [D:\a\Trader-Forge\Trader-Forge\tests\Unit\Unit.csproj]
+
+**Top Warnings**
+- warning NU1603: Unit depends on FluentAssertions (>= 6.14.0) but FluentAssertions 6.14.0 was not found. FluentAssertions 7.0.0 was resolved instead.
+- warning SYSLIB0050: 'FormatterServices' is obsolete: 'Formatter-based serialization is obsolete and should not be used.' (https://aka.ms/dotnet-warnings/SYSLIB0050) [D:\a\Trader-Forge\Trader-Forge\tests\Unit\Unit.csproj]
+- warning CS8625: Cannot convert null literal to non-nullable reference type. [D:\a\Trader-Forge\Trader-Forge\tests\Unit\Unit.csproj]
+- warning NU1603: Unit depends on FluentAssertions (>= 6.14.0) but FluentAssertions 6.14.0 was not found. FluentAssertions 7.0.0 was resolved instead.
+- warning SYSLIB0050: 'FormatterServices' is obsolete: 'Formatter-based serialization is obsolete and should not be used.' (https://aka.ms/dotnet-warnings/SYSLIB0050) [D:\a\Trader-Forge\Trader-Forge\tests\Unit\Unit.csproj]
+
+---
+
 ## CI Dashboard Update — 2025-09-12 19:20:44 UTC
 
 **Run:** [CI - Single (Windows build + unit tests) (attempt 1)](https://github.com/Azrea-Shade/Trader-Forge/actions/runs/17682862149)  
