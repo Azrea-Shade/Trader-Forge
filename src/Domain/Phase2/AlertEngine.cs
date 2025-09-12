@@ -15,7 +15,9 @@ namespace Domain
         public static IEnumerable<AlertResult> Evaluate(object a, object b)
             => Enumerable.Empty<AlertResult>();
 
-        public static IEnumerable<(AlertResult alert, double? price)> EvaluateWithPrices(object watchlist, object prices)
-            => Enumerable.Empty<(AlertResult, double?)>();
+        // Flattened, named tuple fields used directly in tests
+        public static IEnumerable<(int Id, bool TriggeredAbove, bool TriggeredBelow, double? Price)>
+            EvaluateWithPrices(object watchlist, object prices)
+            => Enumerable.Empty<(int, bool, bool, double?)>();
     }
 }
