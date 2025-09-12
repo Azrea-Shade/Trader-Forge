@@ -6,16 +6,16 @@ namespace Domain
 {
     public static class SchedulerCore
     {
-        public static (object gen, object noti)
+        public static (IEnumerable<DateTime> gen, IEnumerable<DateTime> noti)
             NextTimes(object expr, object start, object end, object count)
-            => ((object)Enumerable.Empty<DateTime>(), (object)Enumerable.Empty<DateTime>());
+            => (Enumerable.Empty<DateTime>(), Enumerable.Empty<DateTime>());
 
-        public static (object gen, object noti)
+        public static (IEnumerable<DateTime> gen, IEnumerable<DateTime> noti)
             NextTimes(string expr, string start, string end, int count)
-            => ((object)Enumerable.Empty<DateTime>(), (object)Enumerable.Empty<DateTime>());
+            => (Enumerable.Empty<DateTime>(), Enumerable.Empty<DateTime>());
 
-        public static (object gen, object noti)
+        public static (IEnumerable<DateTime> gen, IEnumerable<DateTime> noti)
             NextTimes(string expr, string start, string end, string count)
-            => ((object)Enumerable.Empty<DateTime>(), (object)Enumerable.Empty<DateTime>());
+            => (Enumerable.Empty<DateTime>(), Enumerable.Empty<DateTime>());
     }
 }
