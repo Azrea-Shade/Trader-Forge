@@ -1,26 +1,28 @@
 # Trader-Forge Debug Dashboard
 
 **Overall:** ❌ Failure  |  **Progress:** `70%`  `███████░░░`  
-**Run:** <https://github.com/Azrea-Shade/Trader-Forge/actions/runs/17687400584>  
-**Updated:** 2025-09-12 22:27:35 UTC
+**Run:** <https://github.com/Azrea-Shade/Trader-Forge/actions/runs/17687478233>  
+**Updated:** 2025-09-12 22:32:03 UTC
 
 ## Phase Progress (1–9)
-P1 100%  `█░░░░░░░░░░`  ✅/⚠️  
-P2 100%  `█░░░░░░░░░░`  ✅/⚠️  
-P3 100%  `█░░░░░░░░░░`  ✅/⚠️  
-P4 100%  `█░░░░░░░░░░`  ✅/⚠️  
-P5 100%  `█░░░░░░░░░░`  ✅/⚠️  
-P6 100%  `█░░░░░░░░░░`  ✅/⚠️  
-P7 100%  `█░░░░░░░░░░`  ✅/⚠️  
-P8 100%  `█░░░░░░░░░░`  ✅/⚠️  
-P9 100%  `█░░░░░░░░░░`  ✅/⚠️
-
-### Progress Pie (quadrants)
-
+P1 100%  `█░░░░░░░░░░`  
+P2 100%  `█░░░░░░░░░░`  
+P3 100%  `█░░░░░░░░░░`  
+P4 100%  `█░░░░░░░░░░`  
+P5 100%  `█░░░░░░░░░░`  
+P6 100%  `█░░░░░░░░░░`  
+P7 100%  `█░░░░░░░░░░`  
+P8 100%  `█░░░░░░░░░░`  
+P9 100%  `█░░░░░░░░░░`
 
 ---
 
 ## History
+- 2025-09-12 22:32:03 UTC — **❌ Failure** at `70%` — CI - Single (Windows build + unit tests)
+  - Top errors:
+    - error CS0246: The type or namespace name 'AlertResult' could not be found (are you missing a using directive or an assembly reference?) [D:\a\Trader-Forge\Trader-Forge\src\Presentation\Presentation_mrqcrxqy_wpftmp.csproj]
+    - error CS0246: The type or namespace name 'AlertResult' could not be found (are you missing a using directive or an assembly reference?) [D:\a\Trader-Forge\Trader-Forge\src\Presentation\Presentation_mrqcrxqy_wpftmp.csproj]
+
 - 2025-09-12 22:27:35 UTC — **❌ Failure** at `70%` — CI - Single (Windows build + unit tests)
   - Top errors:
     - error CS0722: 'AlertEngine': static types cannot be used as return types [D:\a\Trader-Forge\Trader-Forge\tests\Unit\Unit.csproj]
