@@ -3,7 +3,6 @@ using Domain;
 
 namespace Presentation
 {
-    // Simple shim to satisfy instance-based usage in WatchlistViewModel
     public class AlertEngine
     {
         public AlertEngine(object _ = null) { }

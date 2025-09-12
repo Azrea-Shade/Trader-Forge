@@ -1,32 +1,30 @@
 using System.Collections.Generic;
-using System.Linq;
+using Domain;
 
 namespace Services.Engines
 {
-    public record AlertResult
-    {
-        public int Id { get; init; }
-        public bool TriggeredAbove { get; init; }
-        public bool TriggeredBelow { get; init; }
-    }
-
-    // Non-static class so callers can 'new AlertEngine()'
     public class AlertEngine
     {
-        // Static APIs (for tests or static callers)
+        public AlertEngine(object _ = null) { }
+
+        // Instance forwards
+        public IEnumerable<AlertResult> Evaluate(object a, object b)
+            => Domain.AlertEngine.Evaluate(a, b);
+
+        public IEnumerable<(AlertResult alert, double? price)> EvaluateWithPrices(object watchlist, object prices)
+            => Domain.AlertEngine.EvaluateWithPrices(watchlist, prices);
+
+        public IEnumerable<(long Id, bool TriggeredAbove, bool TriggeredBelow, double? Price)> EvaluateWithPricesFlattened(object watchlist, object prices)
+            => Domain.AlertEngine.EvaluateWithPricesFlattened(watchlist, prices);
+
+        // Static convenience (some sites call AlertEngine.Evaluate(...))
         public static IEnumerable<AlertResult> Evaluate(object a, object b)
-            => Enumerable.Empty<AlertResult>();
+            => Domain.AlertEngine.Evaluate(a, b);
 
-        public static IEnumerable<(int Id, bool TriggeredAbove, bool TriggeredBelow, double? price)>
-            EvaluateWithPrices(object watchlist, object prices)
-            => Enumerable.Empty<(int, bool, bool, double?)>();
+        public static IEnumerable<(AlertResult alert, double? price)> EvaluateWithPrices(object watchlist, object prices)
+            => Domain.AlertEngine.EvaluateWithPrices(watchlist, prices);
 
-        // Instance wrappers (for Presentation/WatchlistViewModel)
-        public IEnumerable<AlertResult> EvaluateInstance(object a, object b)
-            => Evaluate(a, b);
-
-        public IEnumerable<(int Id, bool TriggeredAbove, bool TriggeredBelow, double? price)>
-            EvaluateWithPricesInstance(object watchlist, object prices)
-            => EvaluateWithPrices(watchlist, prices);
+        public static IEnumerable<(long Id, bool TriggeredAbove, bool TriggeredBelow, double? Price)> EvaluateWithPricesFlattened(object watchlist, object prices)
+            => Domain.AlertEngine.EvaluateWithPricesFlattened(watchlist, prices);
     }
 }

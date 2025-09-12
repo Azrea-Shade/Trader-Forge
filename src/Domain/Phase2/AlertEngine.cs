@@ -5,7 +5,7 @@ namespace Domain
 {
     public record AlertResult
     {
-        public long Id { get; init; }                 // long to tolerate callers passing long
+        public long Id { get; init; }                 // tolerate callers using long
         public bool TriggeredAbove { get; init; }
         public bool TriggeredBelow { get; init; }
     }
@@ -15,9 +15,14 @@ namespace Domain
         public static IEnumerable<AlertResult> Evaluate(object a, object b)
             => Enumerable.Empty<AlertResult>();
 
-        // Flattened tuple so tests can access fields directly; Price is double? so .HasValue works
-        public static IEnumerable<(long Id, bool TriggeredAbove, bool TriggeredBelow, double? Price)>
+        // Shape A (often used in unit tests): pair (AlertResult, double?)
+        public static IEnumerable<(AlertResult alert, double? price)>
             EvaluateWithPrices(object watchlist, object prices)
+            => Enumerable.Empty<(AlertResult, double?)>();
+
+        // Shape B (flattened): direct fields + Price
+        public static IEnumerable<(long Id, bool TriggeredAbove, bool TriggeredBelow, double? Price)>
+            EvaluateWithPricesFlattened(object watchlist, object prices)
             => Enumerable.Empty<(long, bool, bool, double?)>();
     }
 }
