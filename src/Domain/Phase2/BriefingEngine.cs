@@ -1,11 +1,10 @@
-using System;
-using System.Linq;
+using System.Collections.Generic;
 
 namespace Domain
 {
     public static class BriefingEngine
     {
-        public static string[] BuildBrief(object a, object b, object c)
-            => new[] { "stub-brief" };
+        public static List<string> BuildBrief(object a, object b, object c)
+            => new List<string> { "stub-brief" };
     }
 }

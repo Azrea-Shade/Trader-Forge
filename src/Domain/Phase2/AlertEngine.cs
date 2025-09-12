@@ -3,10 +3,16 @@ using System.Linq;
 
 namespace Domain
 {
+    public record AlertResult
+    {
+        public string Id { get; init; } = string.Empty;
+        public bool TriggeredAbove { get; init; }
+        public bool TriggeredBelow { get; init; }
+    }
+
     public static class AlertEngine
     {
-        // Enumerable so tests can call .ToList() etc.
-        public static IEnumerable<object> Evaluate(object a, object b)
-            => Enumerable.Empty<object>();
+        public static IEnumerable<AlertResult> Evaluate(object a, object b)
+            => Enumerable.Empty<AlertResult>();
     }
 }
