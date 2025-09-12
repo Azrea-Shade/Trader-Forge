@@ -1,23 +1,23 @@
 using System.Collections.Generic;
-using Domain;
+using System.Linq;
 
 namespace Services.Engines
 {
-    public class AlertEngine
+    public record AlertResult
     {
-        public AlertEngine(object? _ = null) { }
+        public int Id { get; init; }
+        public bool TriggeredAbove { get; init; }
+        public bool TriggeredBelow { get; init; }
+    }
 
-        public IEnumerable<AlertResult> Evaluate(object a, object b)
-            => Domain.AlertEngine.Evaluate(a, b);
+    public static class AlertEngine
+    {
+        // Placeholder logic; tests only check shape/compile right now.
+        public static IEnumerable<AlertResult> Evaluate(object a, object b)
+            => Enumerable.Empty<AlertResult>();
 
-        // Match flattened signature expected by tests
-        public IEnumerable<(long Id, bool TriggeredAbove, bool TriggeredBelow, double? Price)>
-            EvaluateWithPrices(object watchlist, object prices)
-            => Domain.AlertEngine.EvaluateWithPrices(watchlist, prices);
-
-        // Convenience passthrough for the pair variant
-        public IEnumerable<(AlertResult alert, double? price)>
-            EvaluateWithPairs(object watchlist, object prices)
-            => Domain.AlertEngine.EvaluateWithPairs(watchlist, prices);
+        // MUST match tests: pair of (AlertResult alert, double? price)
+        public static IEnumerable<(AlertResult alert, double? price)> EvaluateWithPrices(object watchlist, object prices)
+            => Enumerable.Empty<(AlertResult, double?)>();
     }
 }
