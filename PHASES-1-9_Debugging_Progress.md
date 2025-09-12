@@ -1,7 +1,7 @@
 # Trader-Forge — Debugging Progress (simplified)
 
-**Updated:** 2025-09-12 20:46:49 UTC  
-**Run:** [CI - Single (Windows build + unit tests) #17684050146](https://github.com/Azrea-Shade/Trader-Forge/actions/runs/17684050146) — attempt 1  
+**Updated:** 2025-09-12 20:47:17 UTC  
+**Run:** [CI - Single (Windows build + unit tests) #17682862149](https://github.com/Azrea-Shade/Trader-Forge/actions/runs/17682862149) — attempt 1  
 **Status:** failure  
 
 **Progress:** `70%`  `#####################---------`
@@ -12,7 +12,7 @@
 ---
 
 ## Latest result
-- **Run started:** 2025-09-12T19:23:39Z
+- **Run started:** 2025-09-12T18:26:49Z
 - **Steps:** ✅ 7  |  ❌ 1  |  Total: 10
 
 ### Short compiler errors (if any)
