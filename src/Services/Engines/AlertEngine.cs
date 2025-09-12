@@ -10,10 +10,14 @@ namespace Services.Engines
         public IEnumerable<AlertResult> Evaluate(object a, object b)
             => Domain.AlertEngine.Evaluate(a, b);
 
-        public IEnumerable<(AlertResult alert, double? price)> EvaluateWithPrices(object watchlist, object prices)
+        // Match flattened signature expected by tests
+        public IEnumerable<(long Id, bool TriggeredAbove, bool TriggeredBelow, double? Price)>
+            EvaluateWithPrices(object watchlist, object prices)
             => Domain.AlertEngine.EvaluateWithPrices(watchlist, prices);
 
-        public IEnumerable<(long Id, bool TriggeredAbove, bool TriggeredBelow, double? Price)> EvaluateWithPricesFlattened(object watchlist, object prices)
-            => Domain.AlertEngine.EvaluateWithPricesFlattened(watchlist, prices);
+        // Convenience passthrough for the pair variant
+        public IEnumerable<(AlertResult alert, double? price)>
+            EvaluateWithPairs(object watchlist, object prices)
+            => Domain.AlertEngine.EvaluateWithPairs(watchlist, prices);
     }
 }

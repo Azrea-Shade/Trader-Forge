@@ -15,14 +15,14 @@ namespace Domain
         public static IEnumerable<AlertResult> Evaluate(object a, object b)
             => Enumerable.Empty<AlertResult>();
 
-        // (AlertResult, double?) so tests can use .HasValue
-        public static IEnumerable<(AlertResult alert, double? price)>
-            EvaluateWithPrices(object watchlist, object prices)
-            => Enumerable.Empty<(AlertResult, double?)>();
-
-        // flattened option (some tests may use this)
+        // Tests expect flattened fields + nullable Price (double?)
         public static IEnumerable<(long Id, bool TriggeredAbove, bool TriggeredBelow, double? Price)>
-            EvaluateWithPricesFlattened(object watchlist, object prices)
+            EvaluateWithPrices(object watchlist, object prices)
             => Enumerable.Empty<(long, bool, bool, double?)>();
+
+        // Optional pair form if any caller wants the AlertResult back
+        public static IEnumerable<(AlertResult alert, double? price)>
+            EvaluateWithPairs(object watchlist, object prices)
+            => Enumerable.Empty<(AlertResult, double?)>();
     }
 }
