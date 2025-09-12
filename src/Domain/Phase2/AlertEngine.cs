@@ -15,8 +15,8 @@ public static class AlertEngine
     public static IEnumerable<AlertResult> Evaluate(object a, object b)
         => Enumerable.Empty<AlertResult>();
 
-    // Flattened tuple so tests can do x.Id / x.TriggeredAbove / x.Price.HasValue
-    public static IEnumerable<(int Id, bool TriggeredAbove, bool TriggeredBelow, double? Price)>
+    // IMPORTANT: lower-case 'price' and nullable double for .HasValue property
+    public static IEnumerable<(int Id, bool TriggeredAbove, bool TriggeredBelow, double? price)>
         EvaluateWithPrices(object watchlist, object prices)
         => Enumerable.Empty<(int, bool, bool, double?)>();
 }
