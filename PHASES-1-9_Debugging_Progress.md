@@ -1,14 +1,26 @@
 # Trader-Forge Debug Dashboard
 
-**Phase:** 2 — Core shapes compile
+**Phase:** 4 — AlertEngine shape fix
 **Status:** ❌ Failure
 **Progress:** `70%`  `███████░░░`
-**Run:** <https://github.com/Azrea-Shade/Trader-Forge/actions/runs/17686753501>
-**Updated:** 2025-09-12 21:47:56 UTC
+**Run:** <https://github.com/Azrea-Shade/Trader-Forge/actions/runs/17686820682>
+**Updated:** 2025-09-12 21:53:22 UTC
 
 ---
 
 ## History
+
+- 2025-09-12 21:53:22 UTC — **❌ Failure** at `70%` — CI - Single (Windows build + unit tests)
+  - Top errors:
+    - error CS1729: 'AlertEngine' does not contain a constructor that takes 1 arguments [D:\a\Trader-Forge\Trader-Forge\src\Presentation\Presentation_3qrkvolw_wpftmp.csproj]
+    - error CS0176: Member 'AlertEngine.Evaluate(object, object)' cannot be accessed with an instance reference; qualify it with a type name instead [D:\a\Trader-Forge\Trader-Forge\src\Presentation\Presentation_3qrkvolw_wpftmp.csproj]
+    - error CS1503: Argument 1: cannot convert from 'long' to 'int' [D:\a\Trader-Forge\Trader-Forge\src\Presentation\Presentation_3qrkvolw_wpftmp.csproj]
+    - error CS1729: 'AlertEngine' does not contain a constructor that takes 1 arguments [D:\a\Trader-Forge\Trader-Forge\src\Presentation\Presentation_3qrkvolw_wpftmp.csproj]
+    - error CS0176: Member 'AlertEngine.Evaluate(object, object)' cannot be accessed with an instance reference; qualify it with a type name instead [D:\a\Trader-Forge\Trader-Forge\src\Presentation\Presentation_3qrkvolw_wpftmp.csproj]
+    - error CS1503: Argument 1: cannot convert from 'long' to 'int' [D:\a\Trader-Forge\Trader-Forge\src\Presentation\Presentation_3qrkvolw_wpftmp.csproj]
+  - Warnings:
+    - warning NU1603: Unit depends on FluentAssertions (>= 6.14.0) but FluentAssertions 6.14.0 was not found. FluentAssertions 7.0.0 was resolved instead.
+    - warning NU1603: Unit depends on FluentAssertions (>= 6.14.0) but FluentAssertions 6.14.0 was not found. FluentAssertions 7.0.0 was resolved instead.
 
 - 2025-09-12 21:47:56 UTC — **❌ Failure** at `70%` — CI - Single (Windows build + unit tests)
   - Top errors:
