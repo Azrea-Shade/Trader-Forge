@@ -1,3 +1,34 @@
+## CI Dashboard Update — 2025-09-12 18:23:07 UTC
+
+**Run:** [CI - Single (Windows build + unit tests) (attempt 1)](https://github.com/Azrea-Shade/Trader-Forge/actions/runs/17682561942)  
+**Branch:** `testing/1.0.0`  
+**Status:** ❌ Failure  
+**Progress:** `70%`  `███████░░░`
+
+**Steps:** ✅ 7  |  ❌ 1  |  ⚠️ 0  |  ⏭️ 2  (Total: 10)
+
+**Changelog**
+- 1afebe5 fix(ci): AlertResult flags bool; EvaluateWithPrices returns (AlertResult,double); add double.HasValue() extension
+
+**Top Errors**
+- error CS0019: Operator '&&' cannot be applied to operands of type 'bool' and 'bool?' [D:\a\Trader-Forge\Trader-Forge\tests\Unit\Unit.csproj]
+- error CS0019: Operator '&&' cannot be applied to operands of type 'bool' and 'bool?' [D:\a\Trader-Forge\Trader-Forge\tests\Unit\Unit.csproj]
+- error CS0019: Operator '&&' cannot be applied to operands of type 'bool' and 'bool?' [D:\a\Trader-Forge\Trader-Forge\tests\Unit\Unit.csproj]
+- error CS1061: 'double' does not contain a definition for 'HasValue' and no accessible extension method 'HasValue' accepting a first argument of type 'double' could be found (are you missing a using directive or an assembly reference?) [D:\a\Trader-Forge\Trader-Forge\tests\Unit\Unit.csproj]
+- error CS0019: Operator '&&' cannot be applied to operands of type 'bool' and 'bool?' [D:\a\Trader-Forge\Trader-Forge\tests\Unit\Unit.csproj]
+- error CS0019: Operator '&&' cannot be applied to operands of type 'bool' and 'bool?' [D:\a\Trader-Forge\Trader-Forge\tests\Unit\Unit.csproj]
+- error CS0019: Operator '&&' cannot be applied to operands of type 'bool' and 'bool?' [D:\a\Trader-Forge\Trader-Forge\tests\Unit\Unit.csproj]
+- error CS1061: 'double' does not contain a definition for 'HasValue' and no accessible extension method 'HasValue' accepting a first argument of type 'double' could be found (are you missing a using directive or an assembly reference?) [D:\a\Trader-Forge\Trader-Forge\tests\Unit\Unit.csproj]
+
+**Top Warnings**
+- warning NU1603: Unit depends on FluentAssertions (>= 6.14.0) but FluentAssertions 6.14.0 was not found. FluentAssertions 7.0.0 was resolved instead.
+- warning SYSLIB0050: 'FormatterServices' is obsolete: 'Formatter-based serialization is obsolete and should not be used.' (https://aka.ms/dotnet-warnings/SYSLIB0050) [D:\a\Trader-Forge\Trader-Forge\tests\Unit\Unit.csproj]
+- warning CS8625: Cannot convert null literal to non-nullable reference type. [D:\a\Trader-Forge\Trader-Forge\tests\Unit\Unit.csproj]
+- warning NU1603: Unit depends on FluentAssertions (>= 6.14.0) but FluentAssertions 6.14.0 was not found. FluentAssertions 7.0.0 was resolved instead.
+- warning SYSLIB0050: 'FormatterServices' is obsolete: 'Formatter-based serialization is obsolete and should not be used.' (https://aka.ms/dotnet-warnings/SYSLIB0050) [D:\a\Trader-Forge\Trader-Forge\tests\Unit\Unit.csproj]
+
+---
+
 # PHASES 1–9 Debugging Progress ✅
 
 **Repository:** Trader-Forge  
@@ -141,4 +172,3 @@ Run from repo root (any branch):
 - `./update_phase.sh 1 "Consolidated CI into single workflow" "Removed legacy YAMLs; kept CI-Single that runs Windows build+tests."`
 
 This updates the emoji row, ASCII bar, “Completed: X / 9” count, and appends a Change Log entry to this document (on `docs`).
-
