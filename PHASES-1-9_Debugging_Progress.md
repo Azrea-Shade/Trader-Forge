@@ -3,12 +3,20 @@
 **Phase:** 2 — Core shapes compile
 **Status:** ❌ Failure
 **Progress:** `70%`  `███████░░░`
-**Run:** <https://github.com/Azrea-Shade/Trader-Forge/actions/runs/17686698750>
-**Updated:** 2025-09-12 21:43:55 UTC
+**Run:** <https://github.com/Azrea-Shade/Trader-Forge/actions/runs/17686753501>
+**Updated:** 2025-09-12 21:47:56 UTC
 
 ---
 
 ## History
+
+- 2025-09-12 21:47:56 UTC — **❌ Failure** at `70%` — CI - Single (Windows build + unit tests)
+  - Top errors:
+    - error CS0723: Cannot declare a variable of static type 'AlertEngine' [D:\a\Trader-Forge\Trader-Forge\src\Presentation\Presentation_w2ivvt1c_wpftmp.csproj]
+    - error CS0723: Cannot declare a variable of static type 'AlertEngine' [D:\a\Trader-Forge\Trader-Forge\src\Presentation\Presentation_w2ivvt1c_wpftmp.csproj]
+  - Warnings:
+    - warning NU1603: Unit depends on FluentAssertions (>= 6.14.0) but FluentAssertions 6.14.0 was not found. FluentAssertions 7.0.0 was resolved instead.
+    - warning NU1603: Unit depends on FluentAssertions (>= 6.14.0) but FluentAssertions 6.14.0 was not found. FluentAssertions 7.0.0 was resolved instead.
 
 - 2025-09-12 21:43:55 UTC — **❌ Failure** at `70%` — CI - Single (Windows build + unit tests)
   - Top errors:
