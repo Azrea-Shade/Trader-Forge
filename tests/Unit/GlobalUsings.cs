@@ -1,0 +1,9 @@
+global using System;
+global using System.IO;
+global using System.Reflection;
+global using System.Runtime.Serialization;
+global using FluentAssertions;
+global using NodaTime;
+global using Services;
+global using Domain;
+global using Infrastructure;

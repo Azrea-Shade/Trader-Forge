@@ -1,0 +1,26 @@
+# Compiled binaries
+bin/
+obj/
+out/
+artifacts/
+# VS and Rider
+.vs/
+.idea/
+# User-specific
+*.user
+*.suo
+*.userprefs
+# Logs & transient
+*.log
+logs/
+# Coverage
+TestResults/
+*.trx
+coverage*.xml
+# CLI outputs
+src/Cli/cli_out/
+D:aTrader-ForgeTrader-ForgesrcDomainbinReleasenet8.0Domain.dll
+D:aTrader-ForgeTrader-ForgesrcInfrastructurebinReleasenet8.0Infrastructure.dll
+D:aTrader-ForgeTrader-ForgesrcIntegrationsbinReleasenet8.0Integrations.dll
+D:aTrader-ForgeTrader-ForgesrcPresentationbinReleasenet8.0-windowsPresentation.dll
+D:aTrader-ForgeTrader-ForgesrcServicesbinReleasenet8.0Services.dll

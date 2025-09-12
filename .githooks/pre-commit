@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+set -euo pipefail
+changed=$(git diff --cached --name-only --diff-filter=ACMRT | grep -E '^\.github/workflows/.*\.(yml|yaml)$' || true)
+[ -z "${changed}" ] && exit 0
+fail=0
+for f in $changed; do
+  grep -Eq 'testing/v1\.0\.0' "$f" || { echo "❌ $f: missing 'testing/v1.0.0' trigger/reference" >&2; fail=1; }
+  grep -Eq "github\.ref\s*==\s*'refs/heads/testing/v1\.0\.0'" "$f" || { echo "❌ $f: missing job-level guard for testing branch" >&2; fail=1; }
+done
+[ "$fail" -eq 0 ] || { echo "🚫 Pre-commit blocked. Fix workflow guards."; exit 1; }

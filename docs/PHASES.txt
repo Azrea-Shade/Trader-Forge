@@ -1,0 +1,14 @@
+Azrea Companion — Phase Tracker
+
+Phase 1 — ✅ Repo skeleton, CI (build/test), assets
+Phase 2 — ✅ Alert engine + DB foundations
+Phase 3 — ✅ Shell, dark Material-style theme, currency ($) formatting
+Phase 4 — ✅ Watchlist (CRUD + thresholds), dummy price refresh, alert eval hook
+
+Pre-Phase-5 housekeeping — ✅
+- Publish profile for Windows (local packaging only, no releases)
+- Helper script to publish on a Windows box (no CI release)
+- Theme merge verified, UI currency polish applied
+
+Next: Phase 5 — Portfolio (schema, CRUD, dashboards)
+Phase 9 — Daily Brief pipeline (engine + SQLite + CLI + tests)

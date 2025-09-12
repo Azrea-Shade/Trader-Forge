@@ -1,0 +1,43 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+  <Style TargetType="DataGrid">
+    <Setter Property="Foreground" Value="{StaticResource Text.Primary}"/>
+    <Setter Property="Background" Value="{StaticResource Surface.Brush}"/>
+    <Setter Property="BorderBrush" Value="{StaticResource Border.Brush}"/>
+    <Setter Property="BorderThickness" Value="1"/>
+    <Setter Property="GridLinesVisibility" Value="None"/>
+    <Setter Property="HeadersVisibility" Value="Column"/>
+    <Setter Property="HorizontalGridLinesBrush" Value="{StaticResource Border.Brush}"/>
+    <Setter Property="VerticalGridLinesBrush" Value="{StaticResource Border.Brush}"/>
+    <Setter Property="RowBackground" Value="#101622"/>
+    <Setter Property="AlternatingRowBackground" Value="#0E1522"/>
+    <Setter Property="SelectionMode" Value="Extended"/>
+  </Style>
+
+  <Style TargetType="DataGridColumnHeader">
+    <Setter Property="Foreground" Value="{StaticResource Text.Secondary}"/>
+    <Setter Property="Background" Value="#121A2A"/>
+    <Setter Property="BorderBrush" Value="{StaticResource Border.Brush}"/>
+    <Setter Property="BorderThickness" Value="0,0,0,1"/>
+    <Setter Property="FontWeight" Value="SemiBold"/>
+    <Setter Property="Padding" Value="8,6"/>
+  </Style>
+
+  <Style TargetType="DataGridRow">
+    <Setter Property="Foreground" Value="{StaticResource Text.Primary}"/>
+    <Setter Property="Background" Value="{StaticResource Surface.Brush}"/>
+    <Setter Property="BorderBrush" Value="{StaticResource Border.Brush}"/>
+    <Setter Property="BorderThickness" Value="0,0,0,1"/>
+    <Style.Triggers>
+      <Trigger Property="IsSelected" Value="True">
+        <Setter Property="Background" Value="#14213A"/>
+        <Setter Property="BorderBrush" Value="{StaticResource Accent.Brush}"/>
+      </Trigger>
+      <Trigger Property="IsMouseOver" Value="True">
+        <Setter Property="Background" Value="#111A2C"/>
+      </Trigger>
+    </Style.Triggers>
+  </Style>
+
+</ResourceDictionary>
