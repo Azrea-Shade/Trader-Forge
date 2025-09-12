@@ -10,14 +10,16 @@ namespace Services.Engines
         public bool TriggeredBelow { get; init; }
     }
 
-    public static class AlertEngine
+    public class AlertEngine
     {
-        // Placeholder logic; tests only check shape/compile right now.
-        public static IEnumerable<AlertResult> Evaluate(object a, object b)
+        public AlertEngine(object? context = null) { /* keep for tests that pass null */ }
+
+        public IEnumerable<AlertResult> Evaluate(object a, object b)
             => Enumerable.Empty<AlertResult>();
 
-        // MUST match tests: pair of (AlertResult alert, double? price)
-        public static IEnumerable<(AlertResult alert, double? price)> EvaluateWithPrices(object watchlist, object prices)
-            => Enumerable.Empty<(AlertResult, double?)>();
+        // Tests expect flattened tuple with nullable double for .HasValue checks.
+        public IEnumerable<(int Id, bool TriggeredAbove, bool TriggeredBelow, double? Price)>
+            EvaluateWithPrices(object watchlist, object prices)
+            => Enumerable.Empty<(int, bool, bool, double?)>();
     }
 }
