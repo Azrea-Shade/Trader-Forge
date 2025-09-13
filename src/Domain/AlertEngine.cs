@@ -15,12 +15,11 @@ namespace Domain
         public static IEnumerable<AlertResult> Evaluate(object a, object b)
             => Enumerable.Empty<AlertResult>();
 
-        // Tests expect flattened tuple with Price as double? (for .HasValue)
+        // Tests use flattened tuple + double? Price (.HasValue)
         public static IEnumerable<(int Id, bool TriggeredAbove, bool TriggeredBelow, double? Price)>
             EvaluateWithPrices(object watchlist, object prices)
             => Enumerable.Empty<(int, bool, bool, double?)>();
 
-        // Alias retained for callers that use the *Flattened* name
         public static IEnumerable<(int Id, bool TriggeredAbove, bool TriggeredBelow, double? Price)>
             EvaluateWithPricesFlattened(object watchlist, object prices)
             => EvaluateWithPrices(watchlist, prices);
