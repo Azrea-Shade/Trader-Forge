@@ -12,14 +12,14 @@ namespace Services.Engines
 
     public class AlertEngine
     {
-        public AlertEngine(object? context = null) { /* keep for tests that pass null */ }
+        public AlertEngine(object? context = null) { }
 
         public IEnumerable<AlertResult> Evaluate(object a, object b)
             => Enumerable.Empty<AlertResult>();
 
-        // Tests expect flattened tuple with nullable double for .HasValue checks.
-        public IEnumerable<(int Id, bool TriggeredAbove, bool TriggeredBelow, double? Price)>
+        // Kept for tests that want nullable price (.HasValue)
+        public IEnumerable<(AlertResult alert, double? price)>
             EvaluateWithPrices(object watchlist, object prices)
-            => Enumerable.Empty<(int, bool, bool, double?)>();
+            => Enumerable.Empty<(AlertResult, double?)>();
     }
 }
