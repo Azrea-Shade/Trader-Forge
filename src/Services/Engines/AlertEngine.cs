@@ -13,10 +13,7 @@ namespace Services.Engines
     public class AlertEngine
     {
         public AlertEngine(object? ctx = null) { }
-
-        public IEnumerable<AlertResult> Evaluate(object a, object b)
-            => Enumerable.Empty<AlertResult>();
-
+        public IEnumerable<AlertResult> Evaluate(object a, object b) => Enumerable.Empty<AlertResult>();
         public IEnumerable<(AlertResult alert, double? price)> EvaluateWithPrices(object watchlist, object prices)
             => Enumerable.Empty<(AlertResult, double?)>();
     }

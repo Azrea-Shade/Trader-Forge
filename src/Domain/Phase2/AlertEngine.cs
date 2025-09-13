@@ -15,8 +15,8 @@ namespace Domain
         public static IEnumerable<AlertResult> Evaluate(object a, object b)
             => Enumerable.Empty<AlertResult>();
 
-        // FLAT tuple expected by tests: r.Id / r.TriggeredAbove / r.TriggeredBelow / r.Price.HasValue
-        public static IEnumerable<(int Id, bool TriggeredAbove, bool TriggeredBelow, double? Price)>
+        // FLAT tuple used in tests; 'price' is nullable double (double?) for .HasValue
+        public static IEnumerable<(int Id, bool TriggeredAbove, bool TriggeredBelow, double? price)>
             EvaluateWithPrices(object watchlist, object prices)
             => Enumerable.Empty<(int, bool, bool, double?)>();
     }
