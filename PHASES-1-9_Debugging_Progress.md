@@ -1,23 +1,25 @@
 # Trader-Forge Debug Dashboard
 
-**Overall:** ❌ Failure  |  **Progress:** `70%`  `███████░░░`  
-**Run:** <https://github.com/Azrea-Shade/Trader-Forge/actions/runs/17700444596>  
-**Updated:** 2025-09-13 18:29:21 UTC
+**Overall:** ⚠️ in_progress  |  **Progress:** `100%`  `██████████░`  
+**Run:** <https://github.com/Azrea-Shade/Trader-Forge/actions/runs/17700504162>  
+**Updated:** 2025-09-13 18:33:37 UTC
 
 ## Phase Progress (1–9)
-P1 100%  `█░░░░░░░░░░`  
-P2 100%  `█░░░░░░░░░░`  
-P3 100%  `█░░░░░░░░░░`  
-P4 100%  `█░░░░░░░░░░`  
-P5 100%  `█░░░░░░░░░░`  
-P6 100%  `█░░░░░░░░░░`  
-P7 100%  `█░░░░░░░░░░`  
-P8 100%  `█░░░░░░░░░░`  
-P9 100%  `█░░░░░░░░░░`
+P1 100%  `██████████░`  
+P2 100%  `██████████░`  
+P3 100%  `██████████░`  
+P4 100%  `██████████░`  
+P5 100%  `██████████░`  
+P6 100%  `██████████░`  
+P7 100%  `██████████░`  
+P8 100%  `██████████░`  
+P9 100%  `██████████░`
 
 ---
 
 ## History
+- 2025-09-13 18:33:37 UTC — **⚠️ in_progress** at `100%` — CI - Single (Windows build + unit tests)
+
 - 2025-09-13 18:29:21 UTC — **❌ Failure** at `70%` — CI - Single (Windows build + unit tests)
   - Top errors:
     - error CS0120: An object reference is required for the non-static field, method, or property 'AlertEngine.Evaluate(object, object)' [D:\a\Trader-Forge\Trader-Forge\src\Presentation\Presentation_tklwar3g_wpftmp.csproj]
