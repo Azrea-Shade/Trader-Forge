@@ -1,23 +1,32 @@
 # Trader-Forge Debug Dashboard
 
-**Overall:** ❌ Failure  |  **Progress:** `70%`  `███████░░░`  
-**Run:** <https://github.com/Azrea-Shade/Trader-Forge/actions/runs/17700540554>  
-**Updated:** 2025-09-13 18:38:16 UTC
+**Overall:** ❌ Failure  |  **Progress:** `82%`  `████████░░`
+**Run:** <https://github.com/Azrea-Shade/Trader-Forge/actions/runs/17700632107>
+**Updated:** 2025-09-13 18:46:26 UTC
 
 ## Phase Progress (1–9)
-P1 100%  `██████████░`  
-P2 100%  `██████████░`  
-P3 100%  `██████████░`  
-P4 100%  `██████████░`  
-P5 100%  `██████████░`  
-P6 100%  `██████████░`  
-P7 100%  `██████████░`  
-P8 100%  `██████████░`  
+P1 100%  `██████████░`
+P2 60%  `██████░░░░`
+P3 60%  `██████░░░░`
+P4 60%  `██████░░░░`
+P5 60%  `██████░░░░`
+P6 100%  `██████████░`
+P7 100%  `██████████░`
+P8 100%  `██████████░`
 P9 100%  `██████████░`
 
 ---
 
 ## History
+- 2025-09-13 18:46:26 UTC — **❌ Failure** (main `82%`) — CI - Single (Windows build + unit tests)
+  - Top errors:
+    - error CS0103: The name 'AlertEngine' does not exist in the current context [D:\a\Trader-Forge\Trader-Forge\tests\Unit\Unit.csproj]
+    - error CS0103: The name 'AlertEngine' does not exist in the current context [D:\a\Trader-Forge\Trader-Forge\tests\Unit\Unit.csproj]
+    - error CS1061: 'double' does not contain a definition for 'HasValue' and no accessible extension method 'HasValue' accepting a first argument of type 'double' could be found (are you missing a using directive or an assembly reference?) [D:\a\Trader-Forge\Trader-Forge\tests\Unit\Unit.csproj]
+    - error CS0103: The name 'AlertEngine' does not exist in the current context [D:\a\Trader-Forge\Trader-Forge\tests\Unit\Unit.csproj]
+    - error CS0103: The name 'AlertEngine' does not exist in the current context [D:\a\Trader-Forge\Trader-Forge\tests\Unit\Unit.csproj]
+    - error CS1061: 'double' does not contain a definition for 'HasValue' and no accessible extension method 'HasValue' accepting a first argument of type 'double' could be found (are you missing a using directive or an assembly reference?) [D:\a\Trader-Forge\Trader-Forge\tests\Unit\Unit.csproj]
+
 - 2025-09-13 18:38:16 UTC — **❌ Failure** at `70%` — CI - Single (Windows build + unit tests)
   - Top errors:
     - error CS0266: Cannot implicitly convert type 'long' to 'int'. An explicit conversion exists (are you missing a cast?) [D:\a\Trader-Forge\Trader-Forge\src\Presentation\Presentation_keb40xg5_wpftmp.csproj]
