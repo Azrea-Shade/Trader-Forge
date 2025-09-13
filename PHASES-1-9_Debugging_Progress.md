@@ -1,8 +1,8 @@
 # Trader-Forge Debug Dashboard
 
 **Overall:** ❌ Failure  |  **Progress:** `70%`  `███████░░░`  
-**Run:** <https://github.com/Azrea-Shade/Trader-Forge/actions/runs/17700347668>  
-**Updated:** 2025-09-13 18:20:36 UTC
+**Run:** <https://github.com/Azrea-Shade/Trader-Forge/actions/runs/17700444596>  
+**Updated:** 2025-09-13 18:29:21 UTC
 
 ## Phase Progress (1–9)
 P1 100%  `█░░░░░░░░░░`  
@@ -18,6 +18,13 @@ P9 100%  `█░░░░░░░░░░`
 ---
 
 ## History
+- 2025-09-13 18:29:21 UTC — **❌ Failure** at `70%` — CI - Single (Windows build + unit tests)
+  - Top errors:
+    - error CS0120: An object reference is required for the non-static field, method, or property 'AlertEngine.Evaluate(object, object)' [D:\a\Trader-Forge\Trader-Forge\src\Presentation\Presentation_tklwar3g_wpftmp.csproj]
+    - error CS0266: Cannot implicitly convert type 'long' to 'int'. An explicit conversion exists (are you missing a cast?) [D:\a\Trader-Forge\Trader-Forge\src\Presentation\Presentation_tklwar3g_wpftmp.csproj]
+    - error CS0120: An object reference is required for the non-static field, method, or property 'AlertEngine.Evaluate(object, object)' [D:\a\Trader-Forge\Trader-Forge\src\Presentation\Presentation_tklwar3g_wpftmp.csproj]
+    - error CS0266: Cannot implicitly convert type 'long' to 'int'. An explicit conversion exists (are you missing a cast?) [D:\a\Trader-Forge\Trader-Forge\src\Presentation\Presentation_tklwar3g_wpftmp.csproj]
+
 - 2025-09-13 18:20:36 UTC — **❌ Failure** at `70%` — CI - Single (Windows build + unit tests)
   - Top errors:
     - error CS0234: The type or namespace name 'AlertEngine' does not exist in the namespace 'Domain' (are you missing an assembly reference?) [D:\a\Trader-Forge\Trader-Forge\src\Presentation\Presentation_m0zw35wy_wpftmp.csproj]
