@@ -17,9 +17,9 @@ namespace Services.Engines
         public IEnumerable<AlertResult> Evaluate(object a, object b)
             => Enumerable.Empty<AlertResult>();
 
-        // price is double? so tests can use .HasValue
-        public IEnumerable<(AlertResult alert, double? price)>
+        // FLATTENED named tuple: tests access .Id/.TriggeredAbove/.TriggeredBelow and .Price.HasValue
+        public IEnumerable<(int Id, bool TriggeredAbove, bool TriggeredBelow, double? Price)>
             EvaluateWithPrices(object watchlist, object prices)
-            => Enumerable.Empty<(AlertResult, double?)>();
+            => Enumerable.Empty<(int, bool, bool, double?)>();
     }
 }
