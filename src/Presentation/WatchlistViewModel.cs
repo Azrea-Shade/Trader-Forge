@@ -44,7 +44,7 @@ public partial class Row : ObservableObject
             Items.Clear();
             foreach (var r in _facade.All())
             {
-                Items.Add(new Row { Id = r.Id, Ticker = r.Ticker, Above = r.Above, Below = r.Below });
+                Items.Add(new Row { Id = (int) r.Id, Ticker = r.Ticker, Above = r.Above, Below = r.Below });
             }
         }
 
