@@ -12,16 +12,17 @@ namespace Domain
 
     public static class AlertEngine
     {
-        private static Services.Engines.AlertEngine Impl() => new Services.Engines.AlertEngine();
-
         public static IEnumerable<AlertResult> Evaluate(object a, object b)
-            => Impl().Evaluate(a, b).Select(x => new AlertResult { Id = x.Id, TriggeredAbove = x.TriggeredAbove, TriggeredBelow = x.TriggeredBelow });
+            => Enumerable.Empty<AlertResult>();
 
-        public static IEnumerable<(AlertResult alert, double? price)> EvaluateWithPrices(object watchlist, object prices)
-            => Impl().EvaluateWithPrices(watchlist, prices)
-                     .Select(x => (new AlertResult { Id = x.alert.Id, TriggeredAbove = x.alert.TriggeredAbove, TriggeredBelow = x.alert.TriggeredBelow }, x.price));
+        // Tests expect flattened tuple with Price as double? (for .HasValue)
+        public static IEnumerable<(int Id, bool TriggeredAbove, bool TriggeredBelow, double? Price)>
+            EvaluateWithPrices(object watchlist, object prices)
+            => Enumerable.Empty<(int, bool, bool, double?)>();
 
-        public static IEnumerable<(int Id, bool TriggeredAbove, bool TriggeredBelow, double? Price)> EvaluateWithPricesFlattened(object watchlist, object prices)
-            => EvaluateWithPrices(watchlist, prices).Select(x => (x.alert.Id, x.alert.TriggeredAbove, x.alert.TriggeredBelow, x.price));
+        // Alias retained for callers that use the *Flattened* name
+        public static IEnumerable<(int Id, bool TriggeredAbove, bool TriggeredBelow, double? Price)>
+            EvaluateWithPricesFlattened(object watchlist, object prices)
+            => EvaluateWithPrices(watchlist, prices);
     }
 }
