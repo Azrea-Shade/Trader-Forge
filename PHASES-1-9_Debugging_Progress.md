@@ -1,8 +1,8 @@
 # Trader-Forge Debug Dashboard
 
-**Overall:** ⚠️ in_progress  |  **Progress:** `100%`  `██████████░`  
-**Run:** <https://github.com/Azrea-Shade/Trader-Forge/actions/runs/17700504162>  
-**Updated:** 2025-09-13 18:33:37 UTC
+**Overall:** ❌ Failure  |  **Progress:** `70%`  `███████░░░`  
+**Run:** <https://github.com/Azrea-Shade/Trader-Forge/actions/runs/17700540554>  
+**Updated:** 2025-09-13 18:38:16 UTC
 
 ## Phase Progress (1–9)
 P1 100%  `██████████░`  
@@ -18,6 +18,11 @@ P9 100%  `██████████░`
 ---
 
 ## History
+- 2025-09-13 18:38:16 UTC — **❌ Failure** at `70%` — CI - Single (Windows build + unit tests)
+  - Top errors:
+    - error CS0266: Cannot implicitly convert type 'long' to 'int'. An explicit conversion exists (are you missing a cast?) [D:\a\Trader-Forge\Trader-Forge\src\Presentation\Presentation_keb40xg5_wpftmp.csproj]
+    - error CS0266: Cannot implicitly convert type 'long' to 'int'. An explicit conversion exists (are you missing a cast?) [D:\a\Trader-Forge\Trader-Forge\src\Presentation\Presentation_keb40xg5_wpftmp.csproj]
+
 - 2025-09-13 18:33:37 UTC — **⚠️ in_progress** at `100%` — CI - Single (Windows build + unit tests)
 
 - 2025-09-13 18:29:21 UTC — **❌ Failure** at `70%` — CI - Single (Windows build + unit tests)
