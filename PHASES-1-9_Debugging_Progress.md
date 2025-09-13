@@ -1,53 +1,57 @@
-# 🛠️ Trader-Forge Debug Dashboard
+# 🛠️ Trader-Forge — Debug Dashboard
 
-**Status:** ❌ Failure  
-**MAIN Progress:** `85%`  🟩🟩🟩🟩🟩🟩🟩🟩🟩⬜  
-*(CI steps: `70%` 🟩🟩🟩🟩🟩🟩🟩⬜⬜⬜)*  
-**Run:** <https://github.com/Azrea-Shade/Trader-Forge/actions/runs/17700870793>  
-**Updated:** 2025-09-13 19:11:12 UTC
-
-### ✅ What’s left (auto from latest errors)
-- 🔧 error CS1061 — 'double' does not contain a definition for 'HasValue' and no accessible extension method 'HasValue' accepting a first argument of type 'double' could be found (are you missing a using directive or an assembly reference?) 
+**Overall:** ❌ Failure  
+**MAIN Progress:** `85%`  `█████████░`  
+**CI Steps:** `70%`  `███████░░░`  
+**Run:** <https://github.com/Azrea-Shade/Trader-Forge/actions/runs/17700967684>  
+**Updated:** 2025-09-13 19:20:01 UTC
 
 ---
 
-### 📊 Phase Progress (1–9)
-| Phase | Status | Progress | % |
-|:----:|:-----:|:--------|---:|
-| 1 | ✅ | 🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩⬜ | 100% |
-| 2 | ✅ | 🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩⬜ | 100% |
-| 3 | ✅ | 🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩⬜ | 100% |
-| 4 | ✅ | 🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩⬜ | 100% |
-| 5 | ✅ | 🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩⬜ | 100% |
-| 6 | ✅ | 🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩⬜ | 100% |
-| 7 | ✅ | 🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩⬜ | 100% |
-| 8 | ✅ | 🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩⬜ | 100% |
-| 9 | ✅ | 🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩⬜ | 100% |
+## 📊 Phase Progress (1–9)
+✅ **Phase 1 — Foundations** 100%  `██████████░`
+✅ **Phase 2 — Core Shapes** 100%  `██████████░`
+✅ **Phase 3 — Shell/Smoke** 100%  `██████████░`
+✅ **Phase 4 — Alerts Eval** 100%  `██████████░`
+✅ **Phase 5 — Portfolio** 100%  `██████████░`
+✅ **Phase 6 — Scheduling** 100%  `██████████░`
+✅ **Phase 7 — Infra** 100%  `██████████░`
+✅ **Phase 8 — App Glue** 100%  `██████████░`
+✅ **Phase 9 — Briefing** 100%  `██████████░`
 
-**Legend:** ✅ ≥90% · ⚠️ 60–89% · ❌ <60%
+### 🥧 Progress Pie
+```mermaid
+pie showData
+  "P1" : 100
+  "P2" : 100
+  "P3" : 100
+  "P4" : 100
+  "P5" : 100
+  "P6" : 100
+  "P7" : 100
+  "P8" : 100
+  "P9" : 100
+```
 
 ---
 
-### 🧾 History
-- 2025-09-13 19:11:12 UTC — **❌ Failure** — MAIN `85%` (CI `70%`) — CI - Single (Windows build + unit tests)
-  - Top errors:
-    - error CS1061: 'double' does not contain a definition for 'HasValue' and no accessible extension method 'HasValue' accepting a first argument of type 'double' could be found (are you missing a using directive or an assembly reference?) [D:\a\Trader-Forge\Trader-Forge\tests\Unit\Unit.csproj]
-    - error CS1061: 'double' does not contain a definition for 'HasValue' and no accessible extension method 'HasValue' accepting a first argument of type 'double' could be found (are you missing a using directive or an assembly reference?) [D:\a\Trader-Forge\Trader-Forge\tests\Unit\Unit.csproj]
-  - Warnings:
-    - warning NU1603: Unit depends on FluentAssertions (>= 6.14.0) but FluentAssertions 6.14.0 was not found. FluentAssertions 7.0.0 was resolved instead.
-    - warning SYSLIB0050: 'FormatterServices' is obsolete: 'Formatter-based serialization is obsolete and should not be used.' (https://aka.ms/dotnet-warnings/SYSLIB0050) [D:\a\Trader-Forge\Trader-Forge\tests\Unit\Unit.csproj]
-    - warning CS8625: Cannot convert null literal to non-nullable reference type. [D:\a\Trader-Forge\Trader-Forge\tests\Unit\Unit.csproj]
-    - warning NU1603: Unit depends on FluentAssertions (>= 6.14.0) but FluentAssertions 6.14.0 was not found. FluentAssertions 7.0.0 was resolved instead.
-    - warning SYSLIB0050: 'FormatterServices' is obsolete: 'Formatter-based serialization is obsolete and should not be used.' (https://aka.ms/dotnet-warnings/SYSLIB0050) [D:\a\Trader-Forge\Trader-Forge\tests\Unit\Unit.csproj]
-    - warning CS8625: Cannot convert null literal to non-nullable reference type. [D:\a\Trader-Forge\Trader-Forge\tests\Unit\Unit.csproj]
+## ✅ / ⚠️ TODOs from this run
+- error CS0234: The type or namespace name 'AlertEngineAlias' does not exist in the namespace 'Services.Engines' (are you missing an assembly reference?) [D:\a\Trader-Forge\Trader-Forge\src\Presentation\Presentation_1p22g111_wpftmp.csproj]
+- error CS0234: The type or namespace name 'AlertEngineAlias' does not exist in the namespace 'Services.Engines' (are you missing an assembly reference?) [D:\a\Trader-Forge\Trader-Forge\src\Presentation\Presentation_1p22g111_wpftmp.csproj]
+- error CS0234: The type or namespace name 'AlertResultAlias' does not exist in the namespace 'Services.Engines' (are you missing an assembly reference?) [D:\a\Trader-Forge\Trader-Forge\src\Presentation\Presentation_1p22g111_wpftmp.csproj]
+- error CS0234: The type or namespace name 'AlertResultAlias' does not exist in the namespace 'Services.Engines' (are you missing an assembly reference?) [D:\a\Trader-Forge\Trader-Forge\src\Presentation\Presentation_1p22g111_wpftmp.csproj]
+- error CS0234: The type or namespace name 'AlertEngineAlias' does not exist in the namespace 'Services.Engines' (are you missing an assembly reference?) [D:\a\Trader-Forge\Trader-Forge\src\Presentation\Presentation_1p22g111_wpftmp.csproj]
+- error CS0234: The type or namespace name 'AlertEngineAlias' does not exist in the namespace 'Services.Engines' (are you missing an assembly reference?) [D:\a\Trader-Forge\Trader-Forge\src\Presentation\Presentation_1p22g111_wpftmp.csproj]
+- error CS0234: The type or namespace name 'AlertResultAlias' does not exist in the namespace 'Services.Engines' (are you missing an assembly reference?) [D:\a\Trader-Forge\Trader-Forge\src\Presentation\Presentation_1p22g111_wpftmp.csproj]
+- error CS0234: The type or namespace name 'AlertResultAlias' does not exist in the namespace 'Services.Engines' (are you missing an assembly reference?) [D:\a\Trader-Forge\Trader-Forge\src\Presentation\Presentation_1p22g111_wpftmp.csproj]
 
-- 2025-09-13 19:05:30 UTC — **❌ Failure** — MAIN `100%` (CI `70%`) — CI - Single (Windows build + unit tests)
-  - Top errors:
-    - error CS0104: 'AlertResult' is an ambiguous reference between 'Domain.AlertResult' and 'Services.Engines.AlertResult' [D:\a\Trader-Forge\Trader-Forge\src\Presentation\Presentation_q01ooew0_wpftmp.csproj]
-    - error CS0104: 'AlertResult' is an ambiguous reference between 'Domain.AlertResult' and 'Services.Engines.AlertResult' [D:\a\Trader-Forge\Trader-Forge\src\Presentation\Presentation_q01ooew0_wpftmp.csproj]
+**Warnings**
+- warning NU1603: Unit depends on FluentAssertions (>= 6.14.0) but FluentAssertions 6.14.0 was not found. FluentAssertions 7.0.0 was resolved instead.
+- warning CS0105: The using directive for 'Services.Engines' appeared previously in this namespace [D:\a\Trader-Forge\Trader-Forge\src\Presentation\Presentation_1p22g111_wpftmp.csproj]
+- warning NU1603: Unit depends on FluentAssertions (>= 6.14.0) but FluentAssertions 6.14.0 was not found. FluentAssertions 7.0.0 was resolved instead.
+- warning CS0105: The using directive for 'Services.Engines' appeared previously in this namespace [D:\a\Trader-Forge\Trader-Forge\src\Presentation\Presentation_1p22g111_wpftmp.csproj]
 
-- 2025-09-13 18:58:33 UTC — **❌ Failure** — MAIN `100%` (CI `70%`) — CI - Single (Windows build + unit tests)
-  - Top errors:
-    - error CS0246: The type or namespace name 'Services' could not be found (are you missing a using directive or an assembly reference?) [D:\a\Trader-Forge\Trader-Forge\src\Domain\Domain.csproj]
-    - error CS0246: The type or namespace name 'Services' could not be found (are you missing a using directive or an assembly reference?) [D:\a\Trader-Forge\Trader-Forge\src\Domain\Domain.csproj]
+---
 
+## 🧾 History
+- 2025-09-13 19:20:01 UTC — **❌ Failure** · MAIN `85%` (CI `70%`) — CI - Single (Windows build + unit tests)
