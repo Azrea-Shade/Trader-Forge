@@ -12,7 +12,7 @@ namespace Services.Engines
 
     public class AlertEngine
     {
-        public AlertEngine(object? _ = null) { }
+        public AlertEngine(object? ctx = null) { }
 
         public IEnumerable<AlertResult> Evaluate(object a, object b)
             => Enumerable.Empty<AlertResult>();

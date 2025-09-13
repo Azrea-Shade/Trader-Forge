@@ -1,5 +1,9 @@
-using AlertResultSvc = Services.Engines.AlertResult;
-using AlertEngineSvc = Services.Engines.AlertEngine;
+using AlertEngineAlias = Services.Engines.AlertEngineAlias;
+using AlertResultAlias = Services.Engines.AlertResultAlias;
+using Services.Engines;
+
+using AlertResultSvc = Services.Engines.AlertResultAlias;
+using AlertEngineSvc = Services.Engines.AlertEngineAlias;
 using Services.Engines;
 using System.Collections.Generic;
 using Domain;
