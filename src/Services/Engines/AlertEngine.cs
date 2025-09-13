@@ -3,18 +3,19 @@ using System.Linq;
 
 namespace Services.Engines
 {
-    public record AlertResult
-    {
-        public int Id { get; init; }
-        public bool TriggeredAbove { get; init; }
-        public bool TriggeredBelow { get; init; }
-    }
+    // A minimal shape-only result so tests compile; behavior can be filled in later.
+    public record AlertResult(int Id, bool TriggeredAbove, bool TriggeredBelow);
 
     public class AlertEngine
     {
-        public AlertEngine(object? ctx = null) { }
-        public IEnumerable<AlertResult> Evaluate(object a, object b) => Enumerable.Empty<AlertResult>();
-        public IEnumerable<(AlertResult alert, double? price)> EvaluateWithPrices(object watchlist, object prices)
-            => Enumerable.Empty<(AlertResult, double?)>();
+        public AlertEngine(object? _ = null) {}
+
+        // Phase2/3 callers may still use this
+        public IEnumerable<(int Id, bool TriggeredAbove, bool TriggeredBelow)> Evaluate(object a, object b)
+            => Enumerable.Empty<(int, bool, bool)>();
+
+        // Phase4 expects flattened tuple with Price as double?
+        public IEnumerable<(int Id, bool TriggeredAbove, bool TriggeredBelow, double? Price)> EvaluateWithPrices(object watchlist, object prices)
+            => Enumerable.Empty<(int, bool, bool, double?)>();
     }
 }
