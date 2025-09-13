@@ -1,19 +1,14 @@
-using AlertEngineAlias = Services.Engines.AlertEngineAlias;
-using AlertResultAlias = Services.Engines.AlertResultAlias;
-using Services.Engines;
-
-using AlertResultSvc = Services.Engines.AlertResultAlias;
-using AlertEngineSvc = Services.Engines.AlertEngineAlias;
-using Services.Engines;
 using System.Collections.Generic;
-using Domain;
+using Services.Engines;
 
 namespace Presentation
 {
-    public class AlertEngineSvc
+    public static class AlertEngineShim
     {
-        public AlertEngineSvc(object? _ = null) { }
-        public IEnumerable<AlertResultSvc> Evaluate(object a, object b)
-            => (new AlertEngineSvc()).Evaluate(a, b);
+        public static IEnumerable<AlertResult> Evaluate(object a, object b)
+            => new AlertEngine().Evaluate(a, b);
+
+        public static IEnumerable<(AlertResult alert, double? price)> EvaluateWithPrices(object watchlist, object prices)
+            => new AlertEngine().EvaluateWithPrices(watchlist, prices);
     }
 }
