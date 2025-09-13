@@ -1,8 +1,8 @@
 # Trader-Forge Debug Dashboard
 
 **Overall:** ❌ Failure  |  **Progress:** `70%`  `███████░░░`  
-**Run:** <https://github.com/Azrea-Shade/Trader-Forge/actions/runs/17687478233>  
-**Updated:** 2025-09-12 22:32:03 UTC
+**Run:** <https://github.com/Azrea-Shade/Trader-Forge/actions/runs/17700347668>  
+**Updated:** 2025-09-13 18:20:36 UTC
 
 ## Phase Progress (1–9)
 P1 100%  `█░░░░░░░░░░`  
@@ -18,6 +18,13 @@ P9 100%  `█░░░░░░░░░░`
 ---
 
 ## History
+- 2025-09-13 18:20:36 UTC — **❌ Failure** at `70%` — CI - Single (Windows build + unit tests)
+  - Top errors:
+    - error CS0234: The type or namespace name 'AlertEngine' does not exist in the namespace 'Domain' (are you missing an assembly reference?) [D:\a\Trader-Forge\Trader-Forge\src\Presentation\Presentation_m0zw35wy_wpftmp.csproj]
+    - error CS1503: Argument 1: cannot convert from 'long' to 'int' [D:\a\Trader-Forge\Trader-Forge\src\Presentation\Presentation_m0zw35wy_wpftmp.csproj]
+    - error CS0234: The type or namespace name 'AlertEngine' does not exist in the namespace 'Domain' (are you missing an assembly reference?) [D:\a\Trader-Forge\Trader-Forge\src\Presentation\Presentation_m0zw35wy_wpftmp.csproj]
+    - error CS1503: Argument 1: cannot convert from 'long' to 'int' [D:\a\Trader-Forge\Trader-Forge\src\Presentation\Presentation_m0zw35wy_wpftmp.csproj]
+
 - 2025-09-12 22:32:03 UTC — **❌ Failure** at `70%` — CI - Single (Windows build + unit tests)
   - Top errors:
     - error CS0246: The type or namespace name 'AlertResult' could not be found (are you missing a using directive or an assembly reference?) [D:\a\Trader-Forge\Trader-Forge\src\Presentation\Presentation_mrqcrxqy_wpftmp.csproj]
