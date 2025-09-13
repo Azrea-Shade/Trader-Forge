@@ -14,7 +14,7 @@ namespace Presentation
 
 public partial class Row : ObservableObject
         {
-            public long Id { get; set; }
+            public int Id { get; set; }
             [ObservableProperty] private string ticker = "";
             [ObservableProperty] private double? above;
             [ObservableProperty] private double? below;

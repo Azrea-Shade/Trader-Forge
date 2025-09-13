@@ -17,7 +17,7 @@ namespace Services.Engines
         public IEnumerable<AlertResult> Evaluate(object a, object b)
             => Enumerable.Empty<AlertResult>();
 
-        // Kept for tests that want nullable price (.HasValue)
+        // Keeps tests happy: nullable price enables .HasValue on double?
         public IEnumerable<(AlertResult alert, double? price)>
             EvaluateWithPrices(object watchlist, object prices)
             => Enumerable.Empty<(AlertResult, double?)>();

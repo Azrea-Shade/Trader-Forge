@@ -8,6 +8,6 @@ namespace Presentation
     {
         public AlertEngine(object? _ = null) { }
         public IEnumerable<AlertResult> Evaluate(object a, object b)
-            => Domain.AlertEngine.Evaluate(a, b);
+            => AlertEngine.Evaluate(a, b);
     }
 }
