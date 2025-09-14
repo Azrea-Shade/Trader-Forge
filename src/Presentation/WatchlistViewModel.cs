@@ -1,3 +1,4 @@
+using DomainAlertEngine = Domain.AlertEngine;
 using AlertEngine = AlertEngine;
 using Domain;
 using Services;
@@ -13,7 +14,7 @@ namespace Presentation
 {
     public partial class WatchlistViewModel : ObservableObject
     {
-            private readonly AlertEngine _alertEngine = new AlertEngine();
+            private readonly DomainAlertEngine _alertEngine = new DomainAlertEngine();
 
 public partial class Row : ObservableObject
         {
