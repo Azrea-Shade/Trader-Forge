@@ -4,18 +4,22 @@ using Services.Engines;
 
 namespace Presentation
 {
+    /// <summary>
+    /// Flattens Services.Engines.AlertEngine results into the tuple shapes
+    /// that Phase4 unit tests expect (Id, TriggeredAbove, TriggeredBelow[, Price]).
+    /// </summary>
     public static class AlertEngineShim
     {
-        // Tests expect: IEnumerable<(int Id, bool TriggeredAbove, bool TriggeredBelow)>
         public static IEnumerable<(int Id, bool TriggeredAbove, bool TriggeredBelow)>
-            Evaluate(object a, object b)
-            => new AlertEngine().Evaluate(a, b)
-               .Select(ar => (ar.Id, ar.TriggeredAbove, ar.TriggeredBelow));
+            Evaluate(object a, object b) =>
+            new AlertEngine()
+                .Evaluate(a, b)
+                .Select(r => (r.Id, r.TriggeredAbove, r.TriggeredBelow));
 
-        // Tests expect: IEnumerable<(int Id, bool TriggeredAbove, bool TriggeredBelow, double? Price)>
         public static IEnumerable<(int Id, bool TriggeredAbove, bool TriggeredBelow, double? Price)>
-            EvaluateWithPrices(object watchlist, object prices)
-            => new AlertEngine().EvaluateWithPrices(watchlist, prices)
-               .Select(t => (t.alert.Id, t.alert.TriggeredAbove, t.alert.TriggeredBelow, t.price));
+            EvaluateWithPrices(object watchlist, object prices) =>
+            new AlertEngine()
+                .EvaluateWithPrices(watchlist, prices)
+                .Select(x => (x.alert.Id, x.alert.TriggeredAbove, x.alert.TriggeredBelow, x.price));
     }
 }
