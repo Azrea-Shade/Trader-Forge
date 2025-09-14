@@ -37,7 +37,7 @@ public class Phase4_AlertEvalWithWatchlist
         };
 
         // Act
-        var evals = AlertEngine.EvaluateWithPrices(rules, (prices?.ToDictionary(kv => kv.Key, kv => kv.Value ?? 0d).Where(kv => kv.Value.HasValue).ToDictionary(kv => kv.Key, kv => kv.Value!.Value)) ).ToList();
+        var evals = AlertEngine.EvaluateWithPrices(rules, (prices?.ToDictionary(kv => kv.Key, kv => kv.Value ?? 0d).Where(kv => ((double?)kv.Value).HasValue).ToDictionary(kv => kv.Key, kv => kv.Value!.Value)) ).ToList();
 
         // Assert
         evals.Should().Contain(e => e.Id == id1 && !e.TriggeredAbove && !e.TriggeredBelow);
