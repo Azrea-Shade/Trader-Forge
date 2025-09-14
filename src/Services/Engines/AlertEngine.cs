@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace Services.Engines
 {
-    // Tests consume *flattened tuples*, not record objects.
+    // Phase4 tests expect FLATTENED tuples (Id, TriggeredAbove, TriggeredBelow[, Price])
     public class AlertEngine
     {
         public AlertEngine() { }
