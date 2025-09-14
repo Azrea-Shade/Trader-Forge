@@ -3,17 +3,24 @@ using System.Linq;
 
 namespace Services.Engines
 {
+    // Result shape the tests expect to project from
+    public record AlertResult
+    {
+        public int Id { get; init; }
+        public bool TriggeredAbove { get; init; }
+        public bool TriggeredBelow { get; init; }
+    }
+
+    // Instance engine; real impl can replace the stubs below
     public class AlertEngine
     {
         public AlertEngine() { }
-        public AlertEngine(object? _) { }
 
-        public IEnumerable<(int Id, bool TriggeredAbove, bool TriggeredBelow)>
-            Evaluate(object a, object b)
-            => Enumerable.Empty<(int, bool, bool)>();
+        public IEnumerable<AlertResult> Evaluate(object watchlist, object prices)
+            => Enumerable.Empty<AlertResult>();
 
-        public IEnumerable<(int Id, bool TriggeredAbove, bool TriggeredBelow, double? Price)>
-            EvaluateWithPrices(object watchlist, object prices)
-            => Enumerable.Empty<(int, bool, bool, double?)>();
+        // Keep price nullable so tests can use .HasValue
+        public IEnumerable<(AlertResult alert, double? price)> EvaluateWithPrices(object watchlist, object prices)
+            => Enumerable.Empty<(AlertResult, double?)>();
     }
 }
