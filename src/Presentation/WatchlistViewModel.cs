@@ -10,7 +10,7 @@ namespace Presentation
 {
     public partial class WatchlistViewModel : ObservableObject
     {
-            private readonly AlertEngine _alertEngine = new AlertEngine(null);
+            private readonly AlertEngine _alertEngine = new AlertEngine();
 
 public partial class Row : ObservableObject
         {
