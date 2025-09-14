@@ -4,10 +4,7 @@ using Services.Engines;
 
 namespace Presentation
 {
-    /// <summary>
-    /// Flattens Services.Engines.AlertEngine results into the tuple shapes
-    /// that Phase4 unit tests expect (Id, TriggeredAbove, TriggeredBelow[, Price]).
-    /// </summary>
+    /// <summary>Adapt Services.Engines.AlertEngine to tuple shapes the tests expect.</summary>
     public static class AlertEngineShim
     {
         public static IEnumerable<(int Id, bool TriggeredAbove, bool TriggeredBelow)>
