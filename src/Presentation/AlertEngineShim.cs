@@ -5,7 +5,7 @@ namespace Presentation
 {
     public static class AlertEngineShim
     {
-        public static IEnumerable<Services.Engines.AlertResult> Evaluate(object a, object b)
+        public static IEnumerable<(int Id, bool TriggeredAbove, bool TriggeredBelow)> Evaluate(object a, object b)
             => new Services.Engines.AlertEngine().Evaluate(a, b);
 
         public static IEnumerable<(Services.Engines.AlertResult alert, double? price)> EvaluateWithPrices(object watchlist, object prices)
