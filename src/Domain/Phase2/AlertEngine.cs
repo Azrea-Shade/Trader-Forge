@@ -16,7 +16,7 @@ namespace Domain
             => Enumerable.Empty<AlertResult>();
 
         // price is nullable so tests can use .HasValue
-        public static IEnumerable<(AlertResult alert, double? price)>
+        public static IEnumerable<(int Id, bool TriggeredAbove, bool TriggeredBelow, double? Price)>
             EvaluateWithPrices(object watchlist, object prices)
             => Enumerable.Empty<(AlertResult, double?)>();
     }

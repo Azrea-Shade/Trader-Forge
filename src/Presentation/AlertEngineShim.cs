@@ -1,10 +1,8 @@
 using System.Collections.Generic;
-using Services.Engines;
+using Domain;               // prefer Domain engine so tests & app agree
 
 namespace Presentation
 {
-    /// Forwards Services.Engines.AlertEngine results as flattened tuples
-    /// (Id, TriggeredAbove, TriggeredBelow[, Price]) for Phase4 tests.
     public static class AlertEngineShim
     {
         public static IEnumerable<(int Id, bool TriggeredAbove, bool TriggeredBelow)>

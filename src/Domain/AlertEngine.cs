@@ -1,8 +1,10 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Services.Engines
+namespace Domain
 {
+    // Tests expect flattened tuples, not (AlertResult alert, double? price)
+    // Keep ctor with optional arg because tests sometimes pass one.
     public class AlertEngine
     {
         public AlertEngine() { }
