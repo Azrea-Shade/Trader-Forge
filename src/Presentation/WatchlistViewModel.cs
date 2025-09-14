@@ -99,7 +99,7 @@ public partial class Row : ObservableObject
             var rules = Items.Select(i =>
                 new Infrastructure.AlertRow(i.Id, i.Ticker, i.Above, i.Below, true)).ToArray();
 
-            var evals = _alertEngine.Evaluate(rules, latest)
+            var evals = Domain.AlertEngine.Evaluate(rules, latest)
                                    .ToDictionary(e => e.Id);
 
             foreach (var row in Items)
