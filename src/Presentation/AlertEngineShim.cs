@@ -3,6 +3,8 @@ using Services.Engines;
 
 namespace Presentation
 {
+    /// Forwards Services.Engines.AlertEngine results as flattened tuples
+    /// (Id, TriggeredAbove, TriggeredBelow[, Price]) that Phase4 tests expect.
     public static class AlertEngineShim
     {
         public static IEnumerable<(int Id, bool TriggeredAbove, bool TriggeredBelow)>
