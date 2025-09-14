@@ -10,7 +10,7 @@ namespace Presentation
             Evaluate(object a, object b) => AlertEngine.Evaluate(a, b);
 
         public static IEnumerable<(int Id, bool TriggeredAbove, bool TriggeredBelow, double? Price)>
-            EvaluateWithPrices(object watchlist, object prices)
-                => AlertEngine.EvaluateWithPrices(watchlist, prices);
+            EvaluateWithPrices(object watchlist, object prices) =>
+            AlertEngine.EvaluateWithPrices(watchlist, prices);
     }
 }

@@ -1,26 +1,25 @@
 using System.Collections.Generic;
-using System.Linq;
+using Domain;
 
 namespace Services.Engines
 {
-    // Result shape the tests expect to project from
-    public record AlertResult
-    {
-        public int Id { get; init; }
-        public bool TriggeredAbove { get; init; }
-        public bool TriggeredBelow { get; init; }
-    }
-
-    // Instance engine; real impl can replace the stubs below
+    /// <summary>
+    /// Thin wrapper so older tests that new-up an engine keep working.
+    /// Methods forward to static Domain.AlertEngine and keep tuple shapes,
+    /// with Price guaranteed as nullable double?.
+    /// </summary>
     public class AlertEngine
     {
-        public AlertEngine() { }
+        // Tests sometimes call new AlertEngine() or new AlertEngine(anything)
+        public AlertEngine() {}
+        public AlertEngine(object _) {}
 
-        public IEnumerable<AlertResult> Evaluate(object watchlist, object prices)
-            => Enumerable.Empty<AlertResult>();
+        public IEnumerable<(int Id, bool TriggeredAbove, bool TriggeredBelow)>
+            Evaluate(object a, object b) =>
+            Domain.AlertEngine.Evaluate(a, b);
 
-        // Keep price nullable so tests can use .HasValue
-        public IEnumerable<(AlertResult alert, double? price)> EvaluateWithPrices(object watchlist, object prices)
-            => Enumerable.Empty<(AlertResult, double?)>();
+        public IEnumerable<(int Id, bool TriggeredAbove, bool TriggeredBelow, double? Price)>
+            EvaluateWithPrices(object watchlist, object prices) =>
+            Domain.AlertEngine.EvaluateWithPrices(watchlist, prices);
     }
 }
