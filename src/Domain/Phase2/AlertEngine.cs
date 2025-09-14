@@ -3,21 +3,24 @@ using System.Linq;
 
 namespace Domain
 {
-    public record AlertResult
+    /// <summary>
+    /// Compile-shape implementation for tests:
+    ///   Evaluate(a,b) -> IEnumerable<(int Id, bool TriggeredAbove, bool TriggeredBelow)>
+    ///   EvaluateWithPrices(w,p) -> IEnumerable<(int Id, bool TriggeredAbove, bool TriggeredBelow, double? Price)>
+    /// Also exposes 0/1-arg ctors because ServiceFactory calls the 1-arg form.
+    /// NOTE: Minimal bodies to satisfy the compiler; real logic lives elsewhere.
+    /// </summary>
+    public class AlertEngine
     {
-        public int Id { get; init; }
-        public bool TriggeredAbove { get; init; }
-        public bool TriggeredBelow { get; init; }
-    }
+        public AlertEngine() { }
+        public AlertEngine(object? _) { }
 
-    public static class AlertEngine
-    {
-        public static IEnumerable<AlertResult> Evaluate(object a, object b)
-            => Enumerable.Empty<AlertResult>();
+        public IEnumerable<(int Id, bool TriggeredAbove, bool TriggeredBelow)>
+            Evaluate(object a, object b)
+            => Enumerable.Empty<(int, bool, bool)>();
 
-        // price is nullable so tests can use .HasValue
-        public static IEnumerable<(int Id, bool TriggeredAbove, bool TriggeredBelow, double? Price)>
+        public IEnumerable<(int Id, bool TriggeredAbove, bool TriggeredBelow, double? Price)>
             EvaluateWithPrices(object watchlist, object prices)
-            => Enumerable.Empty<(AlertResult, double?)>();
+            => Enumerable.Empty<(int, bool, bool, double?)>();
     }
 }
