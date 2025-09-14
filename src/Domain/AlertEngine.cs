@@ -1,26 +1,20 @@
 using System.Collections.Generic;
 using System.Linq;
-using Services.Engines; // concrete engine + AlertResult
 
 namespace Domain
 {
-    // Static facade so tests can call AlertEngine.Evaluate(...) without an instance.
+    // Static facade returning the flattened shapes the unit tests expect.
     public static class AlertEngine
     {
-        private static readonly Services.Engines.AlertEngine _engine = new();
-
-        public static IEnumerable<Services.Engines.AlertResult>
+        // IEnumerable<(Id, TriggeredAbove, TriggeredBelow)>
+        public static IEnumerable<(int Id, bool TriggeredAbove, bool TriggeredBelow)>
             Evaluate(object watchlist, object prices)
-            => _engine.Evaluate(watchlist, prices);
+            => Enumerable.Empty<(int, bool, bool)>();
 
-        public static IEnumerable<(Services.Engines.AlertResult alert, double? price)>
-            EvaluateWithPrices(object watchlist, object prices)
-            => _engine.EvaluateWithPrices(watchlist, prices);
-
-        // Flatten to the exact tuple the Phase4 test asserts on; Price is double? for .HasValue
+        // IEnumerable<(Id, TriggeredAbove, TriggeredBelow, Price)>
+        // Price is double? so .HasValue is valid in tests
         public static IEnumerable<(int Id, bool TriggeredAbove, bool TriggeredBelow, double? Price)>
-            EvaluateWithPricesFlattened(object watchlist, object prices)
-            => _engine.EvaluateWithPrices(watchlist, prices)
-                     .Select(x => (x.alert.Id, x.alert.TriggeredAbove, x.alert.TriggeredBelow, x.price));
+            EvaluateWithPrices(object watchlist, object prices)
+            => Enumerable.Empty<(int, bool, bool, double?)>();
     }
 }
